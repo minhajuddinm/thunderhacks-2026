@@ -16,7 +16,7 @@ export function Footer() {
                 className="rounded"
               />
               <div>
-                <div className="font-bold text-foreground">Thunder Hacks 2025</div>
+                <div className="font-bold text-foreground">Thunder Hacks 2026</div>
                 <div className="text-sm text-muted-foreground">Powered by ALCOMS</div>
               </div>
             </div>

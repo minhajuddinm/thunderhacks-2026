@@ -4,76 +4,86 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Thunder Hacks Dark Theme - Deep Navy with Electric Blue */
-  --background: oklch(0.15 0.03 270);
-  --foreground: oklch(0.95 0.01 90);
-  --card: oklch(0.18 0.035 270);
-  --card-foreground: oklch(0.95 0.01 90);
-  --popover: oklch(0.18 0.035 270);
-  --popover-foreground: oklch(0.95 0.01 90);
-  --primary: oklch(0.65 0.2 250);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.25 0.04 270);
-  --secondary-foreground: oklch(0.95 0.01 90);
-  --muted: oklch(0.22 0.03 270);
-  --muted-foreground: oklch(0.65 0.02 270);
-  --accent: oklch(0.75 0.15 190);
-  --accent-foreground: oklch(0.15 0.03 270);
-  --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.28 0.04 270);
-  --input: oklch(0.22 0.03 270);
-  --ring: oklch(0.65 0.2 250);
-  --chart-1: oklch(0.65 0.2 250);
-  --chart-2: oklch(0.75 0.15 190);
-  --chart-3: oklch(0.7 0.18 320);
-  --chart-4: oklch(0.8 0.15 85);
-  --chart-5: oklch(0.6 0.2 30);
+  /* Thunder Hacks Electric High-Contrast Theme */
+  /* Background: #0B0E14 Deep Midnight/Charcoal */
+  /* Primary/Accent1: #00D4FF Electric Blue/Cyan (Energy) */
+  /* Secondary/Accent2: #7000FF Vibrant Purple/Magenta (Action) */
+  /* Accent/Success: #FFEA00 Electric Yellow (Thunder/Highlights) */
+  /* Text: #F8F9FA Crisp White/Light Gray */
+  --background: #0B0E14;
+  --foreground: #F8F9FA;
+  --card: #10141c;
+  --card-foreground: #F8F9FA;
+  --popover: #10141c;
+  --popover-foreground: #F8F9FA;
+  --primary: #00D4FF;
+  --primary-foreground: #0B0E14;
+  --secondary: #7000FF;
+  --secondary-foreground: #F8F9FA;
+  --muted: #1a1f2e;
+  --muted-foreground: #9ca3af;
+  --accent: #FFEA00;
+  --accent-foreground: #0B0E14;
+  --destructive: #ef4444;
+  --destructive-foreground: #F8F9FA;
+  --border: #1f2937;
+  --input: #1a1f2e;
+  --ring: #00D4FF;
+  --chart-1: #00D4FF;
+  --chart-2: #7000FF;
+  --chart-3: #FFEA00;
+  --chart-4: #10b981;
+  --chart-5: #f97316;
   --radius: 0.625rem;
-  --sidebar: oklch(0.12 0.025 270);
-  --sidebar-foreground: oklch(0.95 0.01 90);
-  --sidebar-primary: oklch(0.65 0.2 250);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-accent: oklch(0.22 0.03 270);
-  --sidebar-accent-foreground: oklch(0.95 0.01 90);
-  --sidebar-border: oklch(0.28 0.04 270);
-  --sidebar-ring: oklch(0.65 0.2 250);
+  --sidebar: #080a0f;
+  --sidebar-foreground: #F8F9FA;
+  --sidebar-primary: #00D4FF;
+  --sidebar-primary-foreground: #0B0E14;
+  --sidebar-accent: #1a1f2e;
+  --sidebar-accent-foreground: #F8F9FA;
+  --sidebar-border: #1f2937;
+  --sidebar-ring: #00D4FF;
 }
 
 .dark {
-  /* Thunder Hacks Dark Theme - Deep Navy with Electric Blue */
-  --background: oklch(0.15 0.03 270);
-  --foreground: oklch(0.95 0.01 90);
-  --card: oklch(0.18 0.035 270);
-  --card-foreground: oklch(0.95 0.01 90);
-  --popover: oklch(0.18 0.035 270);
-  --popover-foreground: oklch(0.95 0.01 90);
-  --primary: oklch(0.65 0.2 250);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.25 0.04 270);
-  --secondary-foreground: oklch(0.95 0.01 90);
-  --muted: oklch(0.22 0.03 270);
-  --muted-foreground: oklch(0.65 0.02 270);
-  --accent: oklch(0.75 0.15 190);
-  --accent-foreground: oklch(0.15 0.03 270);
-  --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.28 0.04 270);
-  --input: oklch(0.22 0.03 270);
-  --ring: oklch(0.65 0.2 250);
-  --chart-1: oklch(0.65 0.2 250);
-  --chart-2: oklch(0.75 0.15 190);
-  --chart-3: oklch(0.7 0.18 320);
-  --chart-4: oklch(0.8 0.15 85);
-  --chart-5: oklch(0.6 0.2 30);
-  --sidebar: oklch(0.12 0.025 270);
-  --sidebar-foreground: oklch(0.95 0.01 90);
-  --sidebar-primary: oklch(0.65 0.2 250);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-accent: oklch(0.22 0.03 270);
-  --sidebar-accent-foreground: oklch(0.95 0.01 90);
-  --sidebar-border: oklch(0.28 0.04 270);
-  --sidebar-ring: oklch(0.65 0.2 250);
+  /* Thunder Hacks Electric High-Contrast Theme */
+  /* Background: #0B0E14 Deep Midnight/Charcoal */
+  /* Primary/Accent1: #00D4FF Electric Blue/Cyan (Energy) */
+  /* Secondary/Accent2: #7000FF Vibrant Purple/Magenta (Action) */
+  /* Accent/Success: #FFEA00 Electric Yellow (Thunder/Highlights) */
+  /* Text: #F8F9FA Crisp White/Light Gray */
+  --background: #0B0E14;
+  --foreground: #F8F9FA;
+  --card: #10141c;
+  --card-foreground: #F8F9FA;
+  --popover: #10141c;
+  --popover-foreground: #F8F9FA;
+  --primary: #00D4FF;
+  --primary-foreground: #0B0E14;
+  --secondary: #7000FF;
+  --secondary-foreground: #F8F9FA;
+  --muted: #1a1f2e;
+  --muted-foreground: #9ca3af;
+  --accent: #FFEA00;
+  --accent-foreground: #0B0E14;
+  --destructive: #ef4444;
+  --destructive-foreground: #F8F9FA;
+  --border: #1f2937;
+  --input: #1a1f2e;
+  --ring: #00D4FF;
+  --chart-1: #00D4FF;
+  --chart-2: #7000FF;
+  --chart-3: #FFEA00;
+  --chart-4: #10b981;
+  --chart-5: #f97316;
+  --sidebar: #080a0f;
+  --sidebar-foreground: #F8F9FA;
+  --sidebar-primary: #00D4FF;
+  --sidebar-primary-foreground: #0B0E14;
+  --sidebar-accent: #1a1f2e;
+  --sidebar-accent-foreground: #F8F9FA;
+  --sidebar-border: #1f2937;
+  --sidebar-ring: #00D4FF;
 }
 
 @theme inline {

@@ -5,8 +5,8 @@ import { Badge } from "@/components/ui/badge"
 import { Trophy, Award, Star, Zap, Brain, Palette, Heart } from "lucide-react"
 
 export const metadata = {
-  title: "Prizes | Thunder Hacks 2025",
-  description: "Up to $1,250 in prizes across multiple categories at Thunder Hacks 2025.",
+  title: "Prizes | Thunder Hacks 2026",
+  description: "Up to $1,250 in prizes across multiple categories at Thunder Hacks 2026.",
 }
 
 const mainPrizes = [

@@ -11,7 +11,8 @@ const navLinks = [
   { href: "/register", label: "Register" },
   { href: "/teams", label: "Teams" },
   { href: "/prizes", label: "Prizes" },
-  { href: "/event", label: "Event Details" },
+  { href: "/event", label: "Event" },
+  { href: "/faq", label: "FAQ" },
 ]
 
 export function Navigation() {
