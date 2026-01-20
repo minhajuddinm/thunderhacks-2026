@@ -31,13 +31,13 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="block flex-shrink-0"
                 >
-                  <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#00D4FF]/30 hover:border-[#00D4FF] transition-colors">
+                  <div className="w-16 h-12 rounded-lg overflow-hidden border-2 border-[#00D4FF]/30 hover:border-[#00D4FF] transition-colors">
                     <Image
-                      src="/images/alcoms-logo.jpg"
+                      src="/images/alcoms-circle.png"
                       alt="ALCOMS - Algoma University Computer Society"
-                      width={56}
-                      height={56}
-                      className="object-cover scale-125"
+                      width={64}
+                      height={48}
+                      className="object-cover w-full h-full"
                     />
                   </div>
                 </a>
