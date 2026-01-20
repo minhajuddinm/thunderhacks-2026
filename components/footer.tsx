@@ -9,7 +9,7 @@ export function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <Image
-                src="/images/thunderhacks-logo.png"
+                src="/images/th-logo.png"
                 alt="Thunder Hacks Logo"
                 width={48}
                 height={48}
@@ -31,12 +31,12 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="block flex-shrink-0"
                 >
-                  <div className="w-16 h-12 rounded-lg overflow-hidden border-2 border-[#00D4FF]/30 hover:border-[#00D4FF] transition-colors">
+                  <div className="w-14 h-14 rounded-lg overflow-hidden border-2 border-[#00D4FF]/30 hover:border-[#00D4FF] transition-colors">
                     <Image
-                      src="/images/alcoms-circle.png"
+                      src="/images/alcoms-logo.png"
                       alt="ALCOMS - Algoma University Computer Society"
-                      width={64}
-                      height={48}
+                      width={56}
+                      height={56}
                       className="object-cover w-full h-full"
                     />
                   </div>

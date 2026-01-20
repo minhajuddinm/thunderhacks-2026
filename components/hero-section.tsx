@@ -57,7 +57,7 @@ export function HeroSection() {
         {/* Logo */}
         <div className="flex justify-center mb-6">
           <Image
-            src="/images/thunderhacks-logo.png"
+            src="/images/th-logo.png"
             alt="Thunder Hacks"
             width={180}
             height={180}
