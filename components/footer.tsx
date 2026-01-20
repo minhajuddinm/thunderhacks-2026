@@ -16,13 +16,47 @@ export function Footer() {
               />
               <div>
                 <div className="font-bold text-foreground">Thunder Hacks 2026</div>
-                <div className="text-sm text-muted-foreground">Powered by ALCOMS</div>
               </div>
             </div>
-            <p className="text-muted-foreground text-sm max-w-md">
-              Thunder Hacks is organized by ALCOMS - Algoma University Computer Society. 
-              Join us for an exciting weekend of innovation, learning, and collaboration.
+            <p className="text-muted-foreground text-sm max-w-md mb-6">
+              Join us for an exciting weekend of innovation, learning, and collaboration at Algoma University.
             </p>
+            
+            {/* ALCOMS Credit Section */}
+            <div className="border-t border-border pt-6">
+              <div className="flex items-center gap-4 mb-3">
+                <a 
+                  href="https://alcoms.ca" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block flex-shrink-0"
+                >
+                  <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#00D4FF]/30 hover:border-[#00D4FF] transition-colors">
+                    <Image
+                      src="/images/alcoms-logo.jpg"
+                      alt="ALCOMS - Algoma University Computer Society"
+                      width={56}
+                      height={56}
+                      className="object-cover scale-125"
+                    />
+                  </div>
+                </a>
+                <div>
+                  <p className="text-sm font-medium text-foreground">Organized & Hosted by</p>
+                  <a 
+                    href="https://alcoms.ca" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-[#00D4FF] hover:text-[#00D4FF]/80 font-semibold transition-colors"
+                  >
+                    ALCOMS
+                  </a>
+                </div>
+              </div>
+              <p className="text-muted-foreground text-xs max-w-sm">
+                Thunder Hacks is organized and hosted by the Algoma University Computer Science Society (ALCOMS).
+              </p>
+            </div>
           </div>
 
           <div>
