@@ -139,15 +139,9 @@ export function RegistrationForm() {
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" name="phone" type="tel" placeholder="+1 (555) 000-0000" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="school">School/University *</Label>
-                  <Input id="school" name="school" required placeholder="Algoma University" />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="phone">Phone</Label>
+                <Input id="phone" name="phone" type="tel" placeholder="+1 (555) 000-0000" />
               </div>
 
               <div className="space-y-2">
@@ -213,15 +207,9 @@ export function RegistrationForm() {
                   </div>
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="leaderPhone">Phone</Label>
-                    <Input id="leaderPhone" name="leaderPhone" type="tel" placeholder="+1 (555) 000-0000" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="leaderSchool">School/University *</Label>
-                    <Input id="leaderSchool" name="leaderSchool" required placeholder="Algoma University" />
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="leaderPhone">Phone</Label>
+                  <Input id="leaderPhone" name="leaderPhone" type="tel" placeholder="+1 (555) 000-0000" />
                 </div>
 
                 <div className="space-y-2">
@@ -272,15 +260,9 @@ export function RegistrationForm() {
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="joinPhone">Phone</Label>
-                  <Input id="joinPhone" name="phone" type="tel" placeholder="+1 (555) 000-0000" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="joinSchool">School/University *</Label>
-                  <Input id="joinSchool" name="school" required placeholder="Algoma University" />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="joinPhone">Phone</Label>
+                <Input id="joinPhone" name="phone" type="tel" placeholder="+1 (555) 000-0000" />
               </div>
 
               <div className="space-y-2">

@@ -14,15 +14,15 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/images/alcoms-logo.jpg',
+        url: '/images/thunderhacks-logo.png',
         media: '(prefers-color-scheme: light)',
       },
       {
-        url: '/images/alcoms-logo.jpg',
+        url: '/images/thunderhacks-logo.png',
         media: '(prefers-color-scheme: dark)',
       },
     ],
-    apple: '/images/alcoms-logo.jpg',
+    apple: '/images/thunderhacks-logo.png',
   },
 }
 

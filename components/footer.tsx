@@ -9,11 +9,10 @@ export function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <Image
-                src="/images/alcoms-logo.jpg"
-                alt="ALCOMS Logo"
+                src="/images/thunderhacks-logo.png"
+                alt="Thunder Hacks Logo"
                 width={48}
                 height={48}
-                className="rounded"
               />
               <div>
                 <div className="font-bold text-foreground">Thunder Hacks 2026</div>

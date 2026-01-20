@@ -55,13 +55,13 @@ export function HeroSection() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
         {/* Logo */}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-6">
           <Image
-            src="/images/alcoms-logo.jpg"
-            alt="ALCOMS - Algoma University Computer Society"
-            width={140}
-            height={140}
-            className="rounded-xl shadow-2xl shadow-[#00D4FF]/30"
+            src="/images/thunderhacks-logo.png"
+            alt="Thunder Hacks"
+            width={180}
+            height={180}
+            className="drop-shadow-2xl"
             priority
           />
         </div>

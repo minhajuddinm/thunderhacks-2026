@@ -24,11 +24,10 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/images/alcoms-logo.jpg"
-              alt="ALCOMS Logo"
+              src="/images/thunderhacks-logo.png"
+              alt="Thunder Hacks Logo"
               width={40}
               height={40}
-              className="rounded"
             />
             <span className="font-bold text-lg text-foreground">Thunder Hacks</span>
           </Link>

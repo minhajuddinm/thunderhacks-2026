@@ -18,7 +18,7 @@ export async function registerIndividual(formData: FormData) {
     full_name: formData.get("fullName") as string,
     email: formData.get("email") as string,
     phone: formData.get("phone") as string || null,
-    school: formData.get("school") as string,
+    school: "Algoma University",
     dietary_restrictions: formData.get("dietaryRestrictions") as string || null,
     looking_for_team: formData.get("lookingForTeam") === "true",
     skills: formData.get("skills") as string || null,
@@ -67,7 +67,7 @@ export async function registerTeam(formData: FormData) {
     full_name: formData.get("leaderName") as string,
     email: formData.get("leaderEmail") as string,
     phone: formData.get("leaderPhone") as string || null,
-    school: formData.get("leaderSchool") as string,
+    school: "Algoma University",
     dietary_restrictions: formData.get("leaderDietary") as string || null,
     is_leader: true,
   }
@@ -120,7 +120,7 @@ export async function joinTeamByCode(formData: FormData) {
     full_name: formData.get("fullName") as string,
     email: formData.get("email") as string,
     phone: formData.get("phone") as string || null,
-    school: formData.get("school") as string,
+    school: "Algoma University",
     dietary_restrictions: formData.get("dietaryRestrictions") as string || null,
     is_leader: false,
   }
