@@ -11,12 +11,41 @@ function generateTeamCode(): string {
   return code
 }
 
+async function checkEmailExists(supabase: Awaited<ReturnType<typeof getSupabaseServerClient>>, email: string) {
+  // Check individuals table
+  const { data: individual } = await supabase
+    .from("individuals")
+    .select("id")
+    .eq("email", email)
+    .single()
+  
+  if (individual) return true
+
+  // Check team_members table
+  const { data: teamMember } = await supabase
+    .from("team_members")
+    .select("id")
+    .eq("email", email)
+    .single()
+  
+  if (teamMember) return true
+
+  return false
+}
+
 export async function registerIndividual(formData: FormData) {
   const supabase = await getSupabaseServerClient()
+  const email = formData.get("email") as string
+
+  // Check if email already exists in any table
+  const emailExists = await checkEmailExists(supabase, email)
+  if (emailExists) {
+    return { success: false, error: "This email is already registered. You can only register once." }
+  }
 
   const data = {
     full_name: formData.get("fullName") as string,
-    email: formData.get("email") as string,
+    email: email,
     phone: formData.get("phone") as string || null,
     school: "Algoma University",
     dietary_restrictions: formData.get("dietaryRestrictions") as string || null,
@@ -28,7 +57,7 @@ export async function registerIndividual(formData: FormData) {
 
   if (error) {
     if (error.code === "23505") {
-      return { success: false, error: "This email is already registered." }
+      return { success: false, error: "This email is already registered. You can only register once." }
     }
     return { success: false, error: error.message }
   }
@@ -38,6 +67,13 @@ export async function registerIndividual(formData: FormData) {
 
 export async function registerTeam(formData: FormData) {
   const supabase = await getSupabaseServerClient()
+  const leaderEmail = formData.get("leaderEmail") as string
+
+  // Check if email already exists in any table
+  const emailExists = await checkEmailExists(supabase, leaderEmail)
+  if (emailExists) {
+    return { success: false, error: "This email is already registered. You can only register once." }
+  }
 
   const teamName = formData.get("teamName") as string
   const lookingForMembers = formData.get("lookingForMembers") === "true"
@@ -90,6 +126,13 @@ export async function registerTeam(formData: FormData) {
 
 export async function joinTeamByCode(formData: FormData) {
   const supabase = await getSupabaseServerClient()
+  const email = formData.get("email") as string
+
+  // Check if email already exists in any table
+  const emailExists = await checkEmailExists(supabase, email)
+  if (emailExists) {
+    return { success: false, error: "This email is already registered. You can only register once." }
+  }
 
   const teamCode = (formData.get("teamCode") as string).toUpperCase()
 

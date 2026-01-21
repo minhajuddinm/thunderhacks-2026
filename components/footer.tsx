@@ -31,7 +31,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="block flex-shrink-0"
                 >
-                  <div className="w-14 h-14 rounded-lg overflow-hidden border-2 border-[#00D4FF]/30 hover:border-[#00D4FF] transition-colors">
+                  <div className="w-14 h-14 rounded-lg overflow-hidden border-2 border-[#7000FF]/30 hover:border-[#7000FF] transition-colors">
                     <Image
                       src="/images/alcoms-logo.png"
                       alt="ALCOMS - Algoma University Computer Society"
@@ -47,7 +47,7 @@ export function Footer() {
                     href="https://alcoms.ca" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-[#00D4FF] hover:text-[#00D4FF]/80 font-semibold transition-colors"
+                    className="text-[#FFEA00] hover:text-[#FFEA00]/80 font-semibold transition-colors"
                   >
                     ALCOMS
                   </a>

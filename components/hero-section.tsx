@@ -24,7 +24,7 @@ function ParticleBackground() {
       {Array.from({ length: 20 }).map((_, i) => (
         <div
           key={i}
-          className="absolute w-1 h-1 bg-[#00D4FF]/40 rounded-full animate-pulse"
+          className="absolute w-1 h-1 bg-[#7000FF]/40 rounded-full animate-pulse"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
@@ -34,8 +34,8 @@ function ParticleBackground() {
         />
       ))}
       {/* Larger glowing orbs */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#00D4FF]/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#7000FF]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#7000FF]/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#9333ea]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
       <div className="absolute top-1/2 right-1/3 w-48 h-48 bg-[#FFEA00]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "0.5s" }} />
     </div>
   )
@@ -45,13 +45,13 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#00D4FF]/10 via-[#0B0E14] to-[#7000FF]/10" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#7000FF]/10 via-[#0B0E14] to-[#FFEA00]/5" />
       
       {/* Particle background */}
       <ParticleBackground />
       
       {/* Animated grid pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,212,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,212,255,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(112,0,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(112,0,255,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
         {/* Logo */}
@@ -76,7 +76,7 @@ export function HeroSection() {
         </div>
         
         {/* Year */}
-        <div className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight mb-4 bg-gradient-to-r from-[#00D4FF] via-[#7000FF] to-[#FFEA00] bg-clip-text text-transparent">
+        <div className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight mb-4 bg-gradient-to-r from-[#7000FF] via-[#9333ea] to-[#FFEA00] bg-clip-text text-transparent">
           2026
         </div>
 
@@ -91,12 +91,12 @@ export function HeroSection() {
 
         {/* Key Details */}
         <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-10">
-          <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm px-4 py-2 rounded-full border border-[#00D4FF]/30">
-            <Calendar className="h-5 w-5 text-[#00D4FF]" />
+          <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm px-4 py-2 rounded-full border border-[#7000FF]/30">
+            <Calendar className="h-5 w-5 text-[#9333ea]" />
             <span className="text-foreground font-medium">March 14-15, 2026</span>
           </div>
-          <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm px-4 py-2 rounded-full border border-[#00D4FF]/30">
-            <MapPin className="h-5 w-5 text-[#00D4FF]" />
+          <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm px-4 py-2 rounded-full border border-[#7000FF]/30">
+            <MapPin className="h-5 w-5 text-[#9333ea]" />
             <span className="text-foreground font-medium">Brampton, ON</span>
           </div>
           <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm px-4 py-2 rounded-full border border-[#FFEA00]/30">
@@ -107,7 +107,7 @@ export function HeroSection() {
 
         {/* Prominent Register Button */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-          <Button asChild size="lg" className="text-lg px-10 py-7 font-bold bg-[#00D4FF] hover:bg-[#00D4FF]/90 text-[#0B0E14] shadow-lg shadow-[#00D4FF]/30 hover:shadow-[#00D4FF]/50 transition-all hover:scale-105">
+          <Button asChild size="lg" className="text-lg px-10 py-7 font-bold bg-[#FFEA00] hover:bg-[#FFEA00]/90 text-[#0B0E14] shadow-lg shadow-[#FFEA00]/30 hover:shadow-[#FFEA00]/50 transition-all hover:scale-105">
             <Link href="/register">
               <Zap className="mr-2 h-5 w-5" />
               Register Now
@@ -127,7 +127,7 @@ export function HeroSection() {
             { value: "20+", label: "Projects" },
           ].map((stat) => (
             <div key={stat.label} className="text-center p-4 rounded-xl bg-card/30 backdrop-blur-sm border border-border/50">
-              <div className="text-3xl sm:text-4xl font-black text-[#00D4FF]">{stat.value}</div>
+              <div className="text-3xl sm:text-4xl font-black text-[#FFEA00]">{stat.value}</div>
               <div className="text-muted-foreground text-sm">{stat.label}</div>
             </div>
           ))}

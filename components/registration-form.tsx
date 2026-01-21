@@ -131,11 +131,11 @@ export function RegistrationForm() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="fullName">Full Name *</Label>
-                  <Input id="fullName" name="fullName" required placeholder="John Doe" />
+                  <Input id="fullName" name="fullName" required placeholder="Alex Chen" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email *</Label>
-                  <Input id="email" name="email" type="email" required placeholder="john@example.com" />
+                  <Input id="email" name="email" type="email" required placeholder="alex.chen@algomau.ca" />
                 </div>
               </div>
 
@@ -199,11 +199,11 @@ export function RegistrationForm() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="leaderName">Full Name *</Label>
-                    <Input id="leaderName" name="leaderName" required placeholder="John Doe" />
+                    <Input id="leaderName" name="leaderName" required placeholder="Sarah Martinez" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="leaderEmail">Email *</Label>
-                    <Input id="leaderEmail" name="leaderEmail" type="email" required placeholder="john@example.com" />
+                    <Input id="leaderEmail" name="leaderEmail" type="email" required placeholder="sarah.m@algomau.ca" />
                   </div>
                 </div>
 
@@ -252,11 +252,11 @@ export function RegistrationForm() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="joinFullName">Full Name *</Label>
-                  <Input id="joinFullName" name="fullName" required placeholder="John Doe" />
+                  <Input id="joinFullName" name="fullName" required placeholder="Jordan Lee" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="joinEmail">Email *</Label>
-                  <Input id="joinEmail" name="email" type="email" required placeholder="john@example.com" />
+                  <Input id="joinEmail" name="email" type="email" required placeholder="jordan.lee@algomau.ca" />
                 </div>
               </div>
 

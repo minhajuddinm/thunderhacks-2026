@@ -4,11 +4,10 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Thunder Hacks Electric High-Contrast Theme */
+  /* Thunder Hacks Purple & Yellow Theme */
   /* Background: #0B0E14 Deep Midnight/Charcoal */
-  /* Primary/Accent1: #00D4FF Electric Blue/Cyan (Energy) */
-  /* Secondary/Accent2: #7000FF Vibrant Purple/Magenta (Action) */
-  /* Accent/Success: #FFEA00 Electric Yellow (Thunder/Highlights) */
+  /* Primary: #7000FF Vibrant Purple (Main Action) */
+  /* Accent: #FFEA00 Electric Yellow (Thunder/Highlights) */
   /* Text: #F8F9FA Crisp White/Light Gray */
   --background: #0B0E14;
   --foreground: #F8F9FA;
@@ -16,9 +15,9 @@
   --card-foreground: #F8F9FA;
   --popover: #10141c;
   --popover-foreground: #F8F9FA;
-  --primary: #00D4FF;
-  --primary-foreground: #0B0E14;
-  --secondary: #7000FF;
+  --primary: #7000FF;
+  --primary-foreground: #F8F9FA;
+  --secondary: #9333ea;
   --secondary-foreground: #F8F9FA;
   --muted: #1a1f2e;
   --muted-foreground: #9ca3af;
@@ -26,31 +25,30 @@
   --accent-foreground: #0B0E14;
   --destructive: #ef4444;
   --destructive-foreground: #F8F9FA;
-  --border: #1f2937;
+  --border: #2d2640;
   --input: #1a1f2e;
-  --ring: #00D4FF;
-  --chart-1: #00D4FF;
-  --chart-2: #7000FF;
+  --ring: #7000FF;
+  --chart-1: #7000FF;
+  --chart-2: #9333ea;
   --chart-3: #FFEA00;
-  --chart-4: #10b981;
-  --chart-5: #f97316;
+  --chart-4: #c084fc;
+  --chart-5: #fde047;
   --radius: 0.625rem;
   --sidebar: #080a0f;
   --sidebar-foreground: #F8F9FA;
-  --sidebar-primary: #00D4FF;
-  --sidebar-primary-foreground: #0B0E14;
+  --sidebar-primary: #7000FF;
+  --sidebar-primary-foreground: #F8F9FA;
   --sidebar-accent: #1a1f2e;
   --sidebar-accent-foreground: #F8F9FA;
-  --sidebar-border: #1f2937;
-  --sidebar-ring: #00D4FF;
+  --sidebar-border: #2d2640;
+  --sidebar-ring: #7000FF;
 }
 
 .dark {
-  /* Thunder Hacks Electric High-Contrast Theme */
+  /* Thunder Hacks Purple & Yellow Theme */
   /* Background: #0B0E14 Deep Midnight/Charcoal */
-  /* Primary/Accent1: #00D4FF Electric Blue/Cyan (Energy) */
-  /* Secondary/Accent2: #7000FF Vibrant Purple/Magenta (Action) */
-  /* Accent/Success: #FFEA00 Electric Yellow (Thunder/Highlights) */
+  /* Primary: #7000FF Vibrant Purple (Main Action) */
+  /* Accent: #FFEA00 Electric Yellow (Thunder/Highlights) */
   /* Text: #F8F9FA Crisp White/Light Gray */
   --background: #0B0E14;
   --foreground: #F8F9FA;
@@ -58,9 +56,9 @@
   --card-foreground: #F8F9FA;
   --popover: #10141c;
   --popover-foreground: #F8F9FA;
-  --primary: #00D4FF;
-  --primary-foreground: #0B0E14;
-  --secondary: #7000FF;
+  --primary: #7000FF;
+  --primary-foreground: #F8F9FA;
+  --secondary: #9333ea;
   --secondary-foreground: #F8F9FA;
   --muted: #1a1f2e;
   --muted-foreground: #9ca3af;
@@ -68,22 +66,22 @@
   --accent-foreground: #0B0E14;
   --destructive: #ef4444;
   --destructive-foreground: #F8F9FA;
-  --border: #1f2937;
+  --border: #2d2640;
   --input: #1a1f2e;
-  --ring: #00D4FF;
-  --chart-1: #00D4FF;
-  --chart-2: #7000FF;
+  --ring: #7000FF;
+  --chart-1: #7000FF;
+  --chart-2: #9333ea;
   --chart-3: #FFEA00;
-  --chart-4: #10b981;
-  --chart-5: #f97316;
+  --chart-4: #c084fc;
+  --chart-5: #fde047;
   --sidebar: #080a0f;
   --sidebar-foreground: #F8F9FA;
-  --sidebar-primary: #00D4FF;
-  --sidebar-primary-foreground: #0B0E14;
+  --sidebar-primary: #7000FF;
+  --sidebar-primary-foreground: #F8F9FA;
   --sidebar-accent: #1a1f2e;
   --sidebar-accent-foreground: #F8F9FA;
-  --sidebar-border: #1f2937;
-  --sidebar-ring: #00D4FF;
+  --sidebar-border: #2d2640;
+  --sidebar-ring: #7000FF;
 }
 
 @theme inline {
