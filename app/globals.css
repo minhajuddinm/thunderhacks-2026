@@ -1,8 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
-
 :root {
   /* Thunder Hacks Purple & Yellow Theme */
   /* Background: #0B0E14 Deep Midnight/Charcoal */
