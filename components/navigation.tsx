@@ -2,14 +2,14 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
+import { Menu, X, User } from "lucide-react"
+
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/register", label: "Register" },
-  { href: "/teams", label: "Teams" },
   { href: "/prizes", label: "Prizes" },
   { href: "/event", label: "Event" },
   { href: "/faq", label: "FAQ" },
@@ -17,6 +17,26 @@ const navLinks = [
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [user, setUser] = useState<{ email: string } | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  const supabase = getSupabaseBrowserClient()
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user ? { email: user.email || "" } : null)
+      setLoading(false)
+    }
+
+    getUser()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ? { email: session.user.email || "" } : null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [supabase])
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
@@ -43,9 +63,26 @@ export function Navigation() {
                 {link.label}
               </Link>
             ))}
-            <Button asChild className="ml-4">
-              <Link href="/register">Register Now</Link>
-            </Button>
+            
+            {!loading && (
+              user ? (
+                <Button asChild className="ml-4">
+                  <Link href="/dashboard">
+                    <User className="mr-2 h-4 w-4" />
+                    Dashboard
+                  </Link>
+                </Button>
+              ) : (
+                <div className="flex items-center gap-2 ml-4">
+                  <Button asChild variant="outline">
+                    <Link href="/login">Login</Link>
+                  </Button>
+                  <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+                    <Link href="/signup">Sign Up</Link>
+                  </Button>
+                </div>
+              )
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -73,11 +110,26 @@ export function Navigation() {
                   {link.label}
                 </Link>
               ))}
-              <Button asChild className="mt-2">
-                <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
-                  Register Now
-                </Link>
-              </Button>
+              
+              {!loading && (
+                user ? (
+                  <Button asChild className="mt-2">
+                    <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                      <User className="mr-2 h-4 w-4" />
+                      Dashboard
+                    </Link>
+                  </Button>
+                ) : (
+                  <div className="flex flex-col gap-2 mt-2">
+                    <Button asChild variant="outline">
+                      <Link href="/login" onClick={() => setMobileMenuOpen(false)}>Login</Link>
+                    </Button>
+                    <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+                      <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>Sign Up</Link>
+                    </Button>
+                  </div>
+                )
+              )}
             </div>
           </div>
         )}
