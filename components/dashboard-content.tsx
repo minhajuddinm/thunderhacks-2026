@@ -64,8 +64,7 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
-    router.push("/")
-    router.refresh()
+    window.location.href = "/"
   }
 
   const copyTeamCode = () => {
@@ -111,13 +110,19 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
 
     setSuccess(`Request ${action}!`)
     setLoading(null)
-    router.refresh()
+    // Reload to show updated team members
+    window.location.reload()
   }
 
   const handleLeaveTeam = async () => {
     if (!confirm("Are you sure you want to leave the team?")) return
     
     setLoading("leave")
+    
+    // Check if user is the team owner (last member leaves = delete team)
+    const isOwner = teamMembers.length === 1
+    
+    // First, update the profile to remove team association
     const { error } = await supabase
       .from("profiles")
       .update({ team_id: null })
@@ -129,11 +134,27 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
       return
     }
 
-    router.refresh()
+    // If user was the only member, delete the team from the database
+    if (isOwner && team) {
+      // Delete any pending join requests for this team
+      await supabase
+        .from("join_requests")
+        .delete()
+        .eq("team_id", team.id)
+      
+      // Delete the team itself
+      await supabase
+        .from("teams")
+        .delete()
+        .eq("id", team.id)
+    }
+
+    // Use hard redirect to ensure fresh page load
+    window.location.href = "/dashboard"
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="max-w-4xl mx-auto space-y-8 pt-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>

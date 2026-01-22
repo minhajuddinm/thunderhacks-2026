@@ -115,8 +115,8 @@ export default function CreateTeamPage() {
       return
     }
 
-    router.push("/dashboard")
-    router.refresh()
+    // Use hard redirect to ensure fresh page load
+    window.location.href = "/dashboard"
   }
 
   if (checkingAuth) {
