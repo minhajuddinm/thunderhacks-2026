@@ -40,7 +40,7 @@ const skillOptions = [
   { id: "hardware", label: "Hardware / IoT" },
 ]
 
-const createBrowserClient = getSupabaseBrowserClient;
+
 
 export default function ProfilePage() {
   const [fullName, setFullName] = useState("")

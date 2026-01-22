@@ -23,8 +23,32 @@ export default function SignupPage() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [checkingAuth, setCheckingAuth] = useState(true)
 
   const supabase = getSupabaseBrowserClient()
+
+  // Check if already logged in
+  React.useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        window.location.href = "/dashboard"
+      } else {
+        setCheckingAuth(false)
+      }
+    })
+  }, [supabase])
+
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <Navigation />
+        <main className="flex-1 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </main>
+        <Footer />
+      </div>
+    )
+  }
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()

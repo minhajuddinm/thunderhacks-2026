@@ -8,7 +8,6 @@ import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -28,7 +27,6 @@ function generateTeamCode(): string {
 
 export default function CreateTeamPage() {
   const [teamName, setTeamName] = useState("")
-  const [description, setDescription] = useState("")
   const [lookingForMembers, setLookingForMembers] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -87,8 +85,7 @@ export default function CreateTeamPage() {
     const { data: team, error: teamError } = await supabase
       .from("teams")
       .insert({
-        name: teamName,
-        description: description || null,
+        team_name: teamName,
         team_code: teamCode,
         looking_for_members: lookingForMembers,
         owner_id: userId,
@@ -172,18 +169,6 @@ export default function CreateTeamPage() {
                     onChange={(e) => setTeamName(e.target.value)}
                     required
                     maxLength={50}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="description">Team Description (Optional)</Label>
-                  <Textarea
-                    id="description"
-                    placeholder="Tell others what your team is about, what you're planning to build..."
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    rows={3}
-                    maxLength={500}
                   />
                 </div>
 

@@ -22,7 +22,7 @@ interface Profile {
 
 interface Team {
   id: string
-  name: string
+  team_name: string
   team_code: string
   looking_for_members: boolean
 }
@@ -51,7 +51,7 @@ interface DashboardContentProps {
   joinRequests: JoinRequest[]
 }
 
-const createBrowserClient = getSupabaseBrowserClient;
+
 
 export function DashboardContent({ profile, team, teamMembers, joinRequests }: DashboardContentProps) {
   const [loading, setLoading] = useState<string | null>(null)
@@ -175,7 +175,7 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
               <div>
                 <CardTitle className="text-xl text-foreground flex items-center gap-2">
                   <Users className="h-5 w-5 text-primary" />
-                  {team.name}
+                  {team.team_name}
                 </CardTitle>
                 <CardDescription>Your team for Thunder Hacks 2026</CardDescription>
               </div>

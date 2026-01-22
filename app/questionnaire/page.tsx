@@ -39,7 +39,7 @@ const skillOptions = [
   { id: "hardware", label: "Hardware / IoT" },
 ]
 
-const createBrowserClient = getSupabaseBrowserClient;
+
 
 export default function QuestionnairePage() {
   const [phone, setPhone] = useState("")
@@ -116,25 +116,52 @@ export default function QuestionnairePage() {
       ...(otherSkills ? [otherSkills] : [])
     ].join(", ")
 
-    const { error } = await supabase
+    // First check if profile exists
+    const { data: existingProfile } = await supabase
       .from("profiles")
-      .update({
-        phone: phone || null,
-        dietary_restrictions: dietaryRestrictions || null,
-        skills: skills || null,
-        questionnaire_completed: true,
-        updated_at: new Date().toISOString(),
-      })
+      .select("id")
       .eq("id", user.id)
+      .single()
 
-    if (error) {
-      setError(error.message)
+    let profileError;
+    
+    if (existingProfile) {
+      // Update existing profile
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          phone: phone || null,
+          dietary_restrictions: dietaryRestrictions || null,
+          skills: skills || null,
+          questionnaire_completed: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", user.id)
+      profileError = error
+    } else {
+      // Create new profile if it doesn't exist
+      const { error } = await supabase
+        .from("profiles")
+        .insert({
+          id: user.id,
+          email: user.email!,
+          full_name: user.user_metadata?.full_name || user.email!.split("@")[0],
+          phone: phone || null,
+          dietary_restrictions: dietaryRestrictions || null,
+          skills: skills || null,
+          questionnaire_completed: true,
+        })
+      profileError = error
+    }
+
+    if (profileError) {
+      setError(profileError.message)
       setLoading(false)
       return
     }
 
-    router.push("/dashboard")
-    router.refresh()
+    // Force a hard navigation to ensure fresh data is fetched
+    window.location.href = "/dashboard"
   }
 
   if (checkingAuth) {

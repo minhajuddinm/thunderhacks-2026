@@ -22,8 +22,7 @@ import { Footer } from "@/components/footer"
 
 interface Team {
   id: string
-  name: string
-  description: string | null
+  team_name: string
   team_code: string
   looking_for_members: boolean
   member_count: number
@@ -82,7 +81,7 @@ export default function BrowseTeamsPage() {
       // Load teams that are looking for members
       const { data: teamsData } = await supabase
         .from("teams")
-        .select("id, name, description, team_code, looking_for_members")
+        .select("id, team_name, team_code, looking_for_members")
         .eq("looking_for_members", true)
 
       if (teamsData) {
@@ -231,8 +230,7 @@ export default function BrowseTeamsPage() {
   }
 
   const filteredTeams = teams.filter(team =>
-    team.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (team.description && team.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    team.team_name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   if (initialLoading) {
@@ -312,10 +310,7 @@ export default function BrowseTeamsPage() {
                       <CardHeader className="pb-3">
                         <div className="flex justify-between items-start">
                           <div>
-                            <CardTitle className="text-lg text-foreground">{team.name}</CardTitle>
-                            {team.description && (
-                              <CardDescription className="mt-1">{team.description}</CardDescription>
-                            )}
+                            <CardTitle className="text-lg text-foreground">{team.team_name}</CardTitle>
                           </div>
                           <Badge variant="outline" className="ml-2">
                             {team.member_count}/4 members
@@ -330,7 +325,7 @@ export default function BrowseTeamsPage() {
                           </Button>
                         ) : (
                           <Button
-                            onClick={() => handleRequestToJoin(team.id, team.name)}
+                            onClick={() => handleRequestToJoin(team.id, team.team_name)}
                             disabled={loadingTeamId === team.id}
                             className="w-full"
                           >

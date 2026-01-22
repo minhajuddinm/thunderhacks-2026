@@ -21,9 +21,33 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [checkingAuth, setCheckingAuth] = useState(true)
   const router = useRouter()
 
   const supabase = getSupabaseBrowserClient()
+
+  // Check if already logged in
+  React.useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        router.push("/dashboard")
+      } else {
+        setCheckingAuth(false)
+      }
+    })
+  }, [supabase, router])
+
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <Navigation />
+        <main className="flex-1 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </main>
+        <Footer />
+      </div>
+    )
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,19 +61,25 @@ export default function LoginPage() {
       return
     }
 
-    const { error } = await supabase.auth.signInWithPassword({
+    console.log("[v0] Attempting login for:", email)
+    
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
 
+    console.log("[v0] Login result:", { data, error })
+
     if (error) {
+      console.log("[v0] Login error:", error.message)
       setError(error.message)
       setLoading(false)
       return
     }
 
-    router.push("/dashboard")
-    router.refresh()
+    console.log("[v0] Login successful, redirecting to dashboard")
+    // Use hard redirect to ensure fresh page load
+    window.location.href = "/dashboard"
   }
 
   return (
