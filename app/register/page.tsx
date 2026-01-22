@@ -1,33 +1,42 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
-import { RegistrationForm } from "@/components/registration-form"
-
-export const metadata = {
-  title: "Register | Thunder Hacks 2025",
-  description: "Register for Thunder Hacks 2025 - Join as an individual or create/join a team.",
-}
+import { Loader2 } from "lucide-react"
 
 export default function RegisterPage() {
-  return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      
-      <main className="pt-24 pb-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-              Register for Thunder Hacks 2025
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Join us for an exciting weekend of innovation. Register as an individual, 
-              create a new team, or join an existing team with a code.
-            </p>
-          </div>
+  const [checking, setChecking] = useState(true)
+  const router = useRouter()
+  const supabase = getSupabaseBrowserClient()
 
-          <RegistrationForm />
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (user) {
+        // User is logged in, redirect to dashboard
+        window.location.href = "/dashboard"
+      } else {
+        // User is not logged in, redirect to login
+        window.location.href = "/login"
+      }
+    }
+
+    checkAuth()
+  }, [supabase])
+
+  return (
+    <div className="min-h-screen flex flex-col bg-background">
+      <Navigation />
+      <main className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-muted-foreground">Redirecting...</p>
         </div>
       </main>
-
       <Footer />
     </div>
   )

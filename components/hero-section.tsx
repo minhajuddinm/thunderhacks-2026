@@ -105,19 +105,6 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Prominent Register Button */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-          <Button asChild size="lg" className="text-lg px-10 py-7 font-bold bg-[#FFEA00] hover:bg-[#FFEA00]/90 text-[#0B0E14] shadow-lg shadow-[#FFEA00]/30 hover:shadow-[#FFEA00]/50 transition-all hover:scale-105">
-            <Link href="/register">
-              <Zap className="mr-2 h-5 w-5" />
-              Register Now
-            </Link>
-          </Button>
-          <Button asChild variant="outline" size="lg" className="text-lg px-8 py-7 bg-transparent border-2 border-[#7000FF] text-foreground hover:bg-[#7000FF]/20 transition-all">
-            <Link href="/teams">Find a Team</Link>
-          </Button>
-        </div>
-
         {/* Stats with electric styling */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto">
           {[

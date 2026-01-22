@@ -62,8 +62,8 @@ export function Footer() {
           <div>
             <h3 className="font-semibold text-foreground mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/register" className="hover:text-foreground transition-colors">Register</Link></li>
-              <li><Link href="/teams" className="hover:text-foreground transition-colors">Teams</Link></li>
+              <li><Link href="/login" className="hover:text-foreground transition-colors">Sign In</Link></li>
+              <li><Link href="/dashboard" className="hover:text-foreground transition-colors">Dashboard</Link></li>
               <li><Link href="/prizes" className="hover:text-foreground transition-colors">Prizes</Link></li>
               <li><Link href="/event" className="hover:text-foreground transition-colors">Event Details</Link></li>
             </ul>
