@@ -80,13 +80,17 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
 
     if (action === "accepted") {
       // Update the requester's profile to add them to the team
+      console.log("[v0] Accepting request - updating profile:", { requesterId: request.requester_id, teamId: team?.id })
       const { error: profileError } = await supabase
         .from("profiles")
         .update({ team_id: team?.id })
         .eq("id", request.requester_id)
 
+      console.log("[v0] Profile update result:", { profileError })
+
       if (profileError) {
-        setError("Failed to add member to team")
+        console.log("[v0] Profile error details:", profileError)
+        setError(`Failed to add member to team: ${profileError.message}`)
         setLoading(null)
         return
       }
@@ -98,8 +102,11 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
       .update({ status: action })
       .eq("id", requestId)
 
+    console.log("[v0] Join request update result:", { requestId, action, requestError })
+
     if (requestError) {
-      setError("Failed to update request")
+      console.log("[v0] Join request error details:", requestError)
+      setError(`Failed to update request: ${requestError.message}`)
       setLoading(null)
       return
     }
