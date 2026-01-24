@@ -71,25 +71,21 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
     }
   }
 
-  const handleJoinRequest = async (requestId: string, action: "accepted" | "rejected") => {
+  const handleJoinRequest = async (requestId: string, action: "approved" | "rejected") => {
     setLoading(requestId)
     setError(null)
     
     const request = joinRequests.find(r => r.id === requestId)
     if (!request) return
 
-    if (action === "accepted") {
+    if (action === "approved") {
       // Update the requester's profile to add them to the team
-      console.log("[v0] Accepting request - updating profile:", { requesterId: request.requester_id, teamId: team?.id })
       const { error: profileError } = await supabase
         .from("profiles")
         .update({ team_id: team?.id })
         .eq("id", request.requester_id)
 
-      console.log("[v0] Profile update result:", { profileError })
-
       if (profileError) {
-        console.log("[v0] Profile error details:", profileError)
         setError(`Failed to add member to team: ${profileError.message}`)
         setLoading(null)
         return
@@ -102,10 +98,7 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
       .update({ status: action })
       .eq("id", requestId)
 
-    console.log("[v0] Join request update result:", { requestId, action, requestError })
-
     if (requestError) {
-      console.log("[v0] Join request error details:", requestError)
       setError(`Failed to update request: ${requestError.message}`)
       setLoading(null)
       return
@@ -250,7 +243,7 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
                         <Button 
                           size="sm" 
                           className="bg-green-600 hover:bg-green-700"
-                          onClick={() => handleJoinRequest(request.id, "accepted")}
+                          onClick={() => handleJoinRequest(request.id, "approved")}
                           disabled={loading === request.id || teamMembers.length >= 4}
                         >
                           <Check className="h-4 w-4" />
