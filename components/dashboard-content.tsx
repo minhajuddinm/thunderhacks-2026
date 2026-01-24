@@ -36,12 +36,8 @@ interface TeamMember {
 interface JoinRequest {
   id: string
   requester_id: string
+  requester_name: string
   status: string
-  profiles: {
-    full_name: string
-    email: string
-    skills: string
-  }
 }
 
 interface DashboardContentProps {
@@ -241,11 +237,7 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
                   {joinRequests.map((request) => (
                     <div key={request.id} className="flex items-center justify-between p-3 bg-accent/10 rounded-lg border border-accent/30">
                       <div>
-                        <p className="font-medium text-foreground">{request.profiles.full_name}</p>
-                        <p className="text-sm text-muted-foreground">{request.profiles.email}</p>
-                        {request.profiles.skills && (
-                          <p className="text-xs text-muted-foreground mt-1">Skills: {request.profiles.skills}</p>
-                        )}
+                        <p className="font-medium text-foreground">{request.requester_name}</p>
                       </div>
                       <div className="flex gap-2">
                         <Button 

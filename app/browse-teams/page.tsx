@@ -46,6 +46,7 @@ export default function BrowseTeamsPage() {
   const [initialLoading, setInitialLoading] = useState(true)
   const [userId, setUserId] = useState<string | null>(null)
   const [userName, setUserName] = useState<string>("")
+  const [userEmail, setUserEmail] = useState<string>("")
   const [pendingRequests, setPendingRequests] = useState<string[]>([])
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -78,6 +79,7 @@ export default function BrowseTeamsPage() {
       }
 
       setUserId(user.id)
+      setUserEmail(user.email || "")
 
       // Store user's profile info for join requests
       const { data: userProfile } = await supabase
@@ -134,7 +136,7 @@ export default function BrowseTeamsPage() {
     setSuccess(null)
     setLoading(true)
 
-    if (!userId || !userName) {
+    if (!userId || !userName || !userEmail) {
       setError("Not authenticated or profile not loaded")
       setLoading(false)
       return
@@ -192,6 +194,7 @@ export default function BrowseTeamsPage() {
         team_id: team.id,
         requester_id: userId,
         requester_name: userName,
+        requester_email: userEmail,
         status: "pending",
       })
 
@@ -201,7 +204,7 @@ export default function BrowseTeamsPage() {
       return
     }
 
-    setSuccess(`Request sent to join the team! The team will review your request.`)
+    setSuccess("Request sent to join the team! The team will review your request.")
     setTeamCode("")
     setPendingRequests([...pendingRequests, team.id])
     setLoading(false)
@@ -212,7 +215,7 @@ export default function BrowseTeamsPage() {
     setSuccess(null)
     setLoadingTeamId(teamId)
 
-    if (!userId || !userName) {
+    if (!userId || !userName || !userEmail) {
       setError("Not authenticated or profile not loaded")
       setLoadingTeamId(null)
       return
@@ -225,6 +228,7 @@ export default function BrowseTeamsPage() {
         team_id: teamId,
         requester_id: userId,
         requester_name: userName,
+        requester_email: userEmail,
         status: "pending",
       })
 

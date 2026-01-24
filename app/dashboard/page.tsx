@@ -36,12 +36,8 @@ interface TeamMember {
 interface JoinRequest {
   id: string
   requester_id: string
+  requester_name: string
   status: string
-  profiles: {
-    full_name: string
-    email: string
-    skills: string
-  }
 }
 
 export default function DashboardPage() {
@@ -112,7 +108,7 @@ export default function DashboardPage() {
         // Get pending join requests for this team
         const { data: requests } = await supabase
           .from("join_requests")
-          .select("id, requester_id, status, profiles!join_requests_requester_id_fkey(full_name, email, skills)")
+          .select("id, requester_id, requester_name, status")
           .eq("team_id", profileData.team_id)
           .eq("status", "pending")
         
