@@ -45,6 +45,7 @@ export default function BrowseTeamsPage() {
   const [loadingTeamId, setLoadingTeamId] = useState<string | null>(null)
   const [initialLoading, setInitialLoading] = useState(true)
   const [userId, setUserId] = useState<string | null>(null)
+  const [userName, setUserName] = useState<string>("")
   const [pendingRequests, setPendingRequests] = useState<string[]>([])
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -77,6 +78,17 @@ export default function BrowseTeamsPage() {
       }
 
       setUserId(user.id)
+
+      // Store user's profile info for join requests
+      const { data: userProfile } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("id", user.id)
+        .single()
+      
+      // Use full_name from profile, or fallback to email username
+      const name = userProfile?.full_name || user.email?.split("@")[0] || "Unknown User"
+      setUserName(name)
 
       // Load teams that are looking for members
       const { data: teamsData } = await supabase
@@ -122,8 +134,8 @@ export default function BrowseTeamsPage() {
     setSuccess(null)
     setLoading(true)
 
-    if (!userId) {
-      setError("Not authenticated")
+    if (!userId || !userName) {
+      setError("Not authenticated or profile not loaded")
       setLoading(false)
       return
     }
@@ -179,6 +191,7 @@ export default function BrowseTeamsPage() {
       .insert({
         team_id: team.id,
         requester_id: userId,
+        requester_name: userName,
         status: "pending",
       })
 
@@ -188,7 +201,7 @@ export default function BrowseTeamsPage() {
       return
     }
 
-    setSuccess(`Request sent to join "${team.name}"! The team will review your request.`)
+    setSuccess(`Request sent to join the team! The team will review your request.`)
     setTeamCode("")
     setPendingRequests([...pendingRequests, team.id])
     setLoading(false)
@@ -199,8 +212,8 @@ export default function BrowseTeamsPage() {
     setSuccess(null)
     setLoadingTeamId(teamId)
 
-    if (!userId) {
-      setError("Not authenticated")
+    if (!userId || !userName) {
+      setError("Not authenticated or profile not loaded")
       setLoadingTeamId(null)
       return
     }
@@ -211,6 +224,7 @@ export default function BrowseTeamsPage() {
       .insert({
         team_id: teamId,
         requester_id: userId,
+        requester_name: userName,
         status: "pending",
       })
 
