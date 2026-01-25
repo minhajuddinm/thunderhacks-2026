@@ -36,12 +36,8 @@ interface TeamMember {
 interface JoinRequest {
   id: string
   requester_id: string
+  requester_name: string
   status: string
-  profiles: {
-    full_name: string
-    email: string
-    skills: string
-  }
 }
 
 interface DashboardContentProps {
@@ -75,14 +71,14 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
     }
   }
 
-  const handleJoinRequest = async (requestId: string, action: "accepted" | "rejected") => {
+  const handleJoinRequest = async (requestId: string, action: "approved" | "rejected") => {
     setLoading(requestId)
     setError(null)
     
     const request = joinRequests.find(r => r.id === requestId)
     if (!request) return
 
-    if (action === "accepted") {
+    if (action === "approved") {
       // Update the requester's profile to add them to the team
       const { error: profileError } = await supabase
         .from("profiles")
@@ -90,7 +86,7 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
         .eq("id", request.requester_id)
 
       if (profileError) {
-        setError("Failed to add member to team")
+        setError(`Failed to add member to team: ${profileError.message}`)
         setLoading(null)
         return
       }
@@ -103,7 +99,7 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
       .eq("id", requestId)
 
     if (requestError) {
-      setError("Failed to update request")
+      setError(`Failed to update request: ${requestError.message}`)
       setLoading(null)
       return
     }
@@ -241,17 +237,13 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
                   {joinRequests.map((request) => (
                     <div key={request.id} className="flex items-center justify-between p-3 bg-accent/10 rounded-lg border border-accent/30">
                       <div>
-                        <p className="font-medium text-foreground">{request.profiles.full_name}</p>
-                        <p className="text-sm text-muted-foreground">{request.profiles.email}</p>
-                        {request.profiles.skills && (
-                          <p className="text-xs text-muted-foreground mt-1">Skills: {request.profiles.skills}</p>
-                        )}
+                        <p className="font-medium text-foreground">{request.requester_name}</p>
                       </div>
                       <div className="flex gap-2">
                         <Button 
                           size="sm" 
                           className="bg-green-600 hover:bg-green-700"
-                          onClick={() => handleJoinRequest(request.id, "accepted")}
+                          onClick={() => handleJoinRequest(request.id, "approved")}
                           disabled={loading === request.id || teamMembers.length >= 4}
                         >
                           <Check className="h-4 w-4" />
