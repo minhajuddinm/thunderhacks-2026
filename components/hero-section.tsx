@@ -58,7 +58,7 @@ export function HeroSection() {
         <div className="flex justify-center mb-6">
           <Image
             src="/images/th-logo.png"
-            alt="Thunder Hacks"
+            alt="ThunderHacks"
             width={180}
             height={180}
             className="drop-shadow-2xl"
@@ -70,7 +70,7 @@ export function HeroSection() {
         <div className="flex justify-center items-center gap-3 mb-2">
           <LightningBolt className="w-8 h-8 sm:w-10 sm:h-10 text-[#FFEA00] animate-pulse" />
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground uppercase">
-            Thunder Hacks
+            ThunderHacks
           </h1>
           <LightningBolt className="w-8 h-8 sm:w-10 sm:h-10 text-[#FFEA00] animate-pulse" />
         </div>

@@ -182,14 +182,14 @@ export default function QuestionnairePage() {
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/th-logo.png"
-                alt="Thunder Hacks"
+                alt="ThunderHacks"
                 width={80}
                 height={80}
               />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">Complete Your Profile</CardTitle>
             <CardDescription>
-              Tell us a bit more about yourself to help us make Thunder Hacks 2026 amazing for you!
+              Tell us a bit more about yourself to help us make ThunderHacks 2026 amazing for you!
             </CardDescription>
           </CardHeader>
           

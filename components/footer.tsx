@@ -10,12 +10,12 @@ export function Footer() {
             <div className="flex items-center gap-3 mb-4">
               <Image
                 src="/images/th-logo.png"
-                alt="Thunder Hacks Logo"
+                alt="ThunderHacks Logo"
                 width={48}
                 height={48}
               />
               <div>
-                <div className="font-bold text-foreground">Thunder Hacks 2026</div>
+                <div className="font-bold text-foreground">ThunderHacks 2026</div>
               </div>
             </div>
             <p className="text-muted-foreground text-sm max-w-md mb-6">
@@ -54,7 +54,7 @@ export function Footer() {
                 </div>
               </div>
               <p className="text-muted-foreground text-xs max-w-sm">
-                Thunder Hacks is organized and hosted by the Algoma University Computer Science Society (ALCOMS).
+                ThunderHacks is organized and hosted by the Algoma University Computer Science Society (ALCOMS).
               </p>
             </div>
           </div>
@@ -89,7 +89,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Thunder Hacks. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} ThunderHacks. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -13,8 +13,8 @@ import Link from "next/link"
 import { HelpCircle, Mail, ArrowRight } from "lucide-react"
 
 export const metadata = {
-  title: "FAQ | Thunder Hacks 2026",
-  description: "Frequently asked questions about Thunder Hacks 2026 - registration, teams, what to bring, and more.",
+  title: "FAQ | ThunderHacks 2026",
+  description: "Frequently asked questions about ThunderHacks 2026 - registration, teams, what to bring, and more.",
 }
 
 const faqs = [
@@ -22,20 +22,20 @@ const faqs = [
     category: "General",
     questions: [
       {
-        q: "What is Thunder Hacks?",
-        a: "Thunder Hacks is Algoma University's premier hackathon event where students come together to build innovative projects over two days. It's a great opportunity to learn, collaborate, and compete for prizes!",
+        q: "What is ThunderHacks?",
+        a: "ThunderHacks is Algoma University's premier hackathon event where students come together to build innovative projects over two days. It's a great opportunity to learn, collaborate, and compete for prizes!",
       },
       {
         q: "Who can participate?",
-        a: "Thunder Hacks is open to all university students. You don't need to be a computer science major - we welcome students from all disciplines! Whether you're a designer, business student, or engineer, there's a place for you.",
+        a: "ThunderHacks is open to all university students. You don't need to be a computer science major - we welcome students from all disciplines! Whether you're a designer, business student, or engineer, there's a place for you.",
       },
       {
         q: "Is there a cost to participate?",
-        a: "Thunder Hacks is completely free! We provide meals, snacks, and swag at no cost to participants. All you need to bring is your laptop and enthusiasm.",
+        a: "ThunderHacks is completely free! We provide meals, snacks, and swag at no cost to participants. All you need to bring is your laptop and enthusiasm.",
       },
       {
-        q: "When and where is Thunder Hacks 2026?",
-        a: "Thunder Hacks 2026 takes place on March 14-15, 2026 at Algoma University, 24 Queen St E, Brampton, ON. The venue is open from 8 AM to 10 PM both days (no overnight stay).",
+        q: "When and where is ThunderHacks 2026?",
+        a: "ThunderHacks 2026 takes place on March 14-15, 2026 at Algoma University, 24 Queen St E, Brampton, ON. The venue is open from 8 AM to 10 PM both days (no overnight stay).",
       },
     ],
   },
@@ -81,7 +81,7 @@ const faqs = [
       },
       {
         q: "Is this an overnight hackathon?",
-        a: "No, Thunder Hacks is NOT an overnight event. The venue is open from 8 AM to 10 PM on both days. You'll need to leave at 10 PM on Saturday and return on Sunday morning to continue working.",
+        a: "No, ThunderHacks is NOT an overnight event. The venue is open from 8 AM to 10 PM on both days. You'll need to leave at 10 PM on Saturday and return on Sunday morning to continue working.",
       },
     ],
   },
@@ -102,7 +102,7 @@ const faqs = [
       },
       {
         q: "Do I get to keep my project?",
-        a: "Absolutely! You retain full ownership of everything you create at Thunder Hacks. We encourage you to continue developing your projects after the event.",
+        a: "Absolutely! You retain full ownership of everything you create at ThunderHacks. We encourage you to continue developing your projects after the event.",
       },
     ],
   },
@@ -127,7 +127,7 @@ export default function FAQPage() {
               </h1>
             </div>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to know about Thunder Hacks 2026.
+              Everything you need to know about ThunderHacks 2026.
               Can't find your answer? Reach out to us!
             </p>
           </div>
@@ -182,7 +182,7 @@ export default function FAQPage() {
             <CardContent className="py-8 text-center">
               <h2 className="text-xl font-bold text-foreground mb-2">Ready to hack?</h2>
               <p className="text-muted-foreground mb-4">
-                Join us at Thunder Hacks 2026!
+                Join us at ThunderHacks 2026!
               </p>
               <Button asChild>
                 <Link href="/register">

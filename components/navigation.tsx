@@ -46,11 +46,11 @@ export function Navigation() {
           <Link href="/" className="flex items-center gap-3">
             <Image
               src="/images/th-logo.png"
-              alt="Thunder Hacks Logo"
+              alt="ThunderHacks Logo"
               width={40}
               height={40}
             />
-            <span className="font-bold text-lg text-foreground">Thunder Hacks</span>
+            <span className="font-bold text-lg text-foreground">ThunderHacks</span>
           </Link>
 
           {/* Desktop Navigation */}

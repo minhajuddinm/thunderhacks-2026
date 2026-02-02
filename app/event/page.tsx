@@ -17,12 +17,12 @@ import {
 
 const faqs = [
   {
-    q: "What is Thunder Hacks?",
-    a: "Thunder Hacks is a 2-day hackathon where participants come together to build innovative projects.",
+    q: "What is ThunderHacks?",
+    a: "ThunderHacks is a 2-day hackathon where participants come together to build innovative projects.",
   },
   {
     q: "Who can participate?",
-    a: "Thunder Hacks is open to students, developers, and anyone interested in technology.",
+    a: "ThunderHacks is open to students, developers, and anyone interested in technology.",
   },
   {
     q: "Do I need to know how to code?",
@@ -31,8 +31,8 @@ const faqs = [
 ]
 
 export const metadata = {
-  title: "Event Details | Thunder Hacks 2026",
-  description: "Everything you need to know about Thunder Hacks 2026 - schedule, venue, and FAQs.",
+  title: "Event Details | ThunderHacks 2026",
+  description: "Everything you need to know about ThunderHacks 2026 - schedule, venue, and FAQs.",
 }
 
 const schedule = [
@@ -60,7 +60,7 @@ const schedule = [
       { time: "3:00 PM", event: "Deliberation Break", desc: "Judges evaluate projects" },
       { time: "4:00 PM", event: "Awards Ceremony", desc: "Winners announced!" },
       { time: "5:00 PM", event: "Closing & Networking", desc: "Thank you and goodbye" },
-      { time: "10:00 PM", event: "Venue Closes", desc: "End of Thunder Hacks 2026" },
+      { time: "10:00 PM", event: "Venue Closes", desc: "End of ThunderHacks 2026" },
     ],
   },
 ]
@@ -81,7 +81,7 @@ export default function EventPage() {
               Event Details
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to know about Thunder Hacks 2026.
+              Everything you need to know about ThunderHacks 2026.
               Mark your calendar and get ready for an amazing experience!
             </p>
           </div>
@@ -187,7 +187,7 @@ export default function EventPage() {
               <CardContent className="py-12 text-center">
                 <h2 className="text-2xl font-bold text-foreground mb-4">Ready to Join?</h2>
                 <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-                  Registration is open! Secure your spot at Thunder Hacks 2026 today.
+                  Registration is open! Secure your spot at ThunderHacks 2026 today.
                 </p>
                 <Button asChild size="lg">
                   <Link href="/register">
