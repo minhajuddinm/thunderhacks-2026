@@ -147,7 +147,7 @@ export default function CreateTeamPage() {
               </div>
               <CardTitle className="text-2xl font-bold text-foreground">Create a Team</CardTitle>
               <CardDescription>
-                Start your team for Thunder Hacks 2026 and invite others to join!
+                Start your team for ThunderHacks 2026 and invite others to join!
               </CardDescription>
             </CardHeader>
             

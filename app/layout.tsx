@@ -8,8 +8,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Thunder Hacks 2026 | Algoma University Hackathon',
-  description: 'Join Thunder Hacks 2026 - Algoma University\'s premier hackathon event. Build, collaborate, and compete for amazing prizes!',
+  title: 'ThunderHacks 2026 | Algoma University Hackathon',
+  description: 'Join ThunderHacks 2026 - Algoma University\'s premier hackathon event. Build, collaborate, and compete for amazing prizes!',
   generator: 'v0.app',
   icons: {
     icon: [

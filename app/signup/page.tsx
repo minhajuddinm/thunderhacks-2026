@@ -137,14 +137,14 @@ export default function SignupPage() {
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/th-logo.png"
-                alt="Thunder Hacks"
+                alt="ThunderHacks"
                 width={80}
                 height={80}
               />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">Create Account</CardTitle>
             <CardDescription>
-              Join Thunder Hacks 2026 at Algoma University
+              Join ThunderHacks 2026 at Algoma University
             </CardDescription>
           </CardHeader>
           

@@ -92,14 +92,14 @@ export default function LoginPage() {
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/th-logo.png"
-                alt="Thunder Hacks"
+                alt="ThunderHacks"
                 width={80}
                 height={80}
               />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">Welcome Back</CardTitle>
             <CardDescription>
-              Sign in to your Thunder Hacks account
+              Sign in to your ThunderHacks account
             </CardDescription>
           </CardHeader>
           

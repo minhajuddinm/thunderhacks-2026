@@ -127,7 +127,7 @@ export default function SponsorsPage() {
               Our Sponsors
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
-              Thunder Hacks 2026 is made possible by the generous support of our sponsors. 
+              ThunderHacks 2026 is made possible by the generous support of our sponsors. 
               Thank you for empowering the next generation of innovators!
             </p>
           </div>

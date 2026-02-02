@@ -9,8 +9,8 @@ import { Users, User, ArrowRight } from "lucide-react"
 import Link from "next/link"
 
 export const metadata = {
-  title: "Teams | Thunder Hacks 2025",
-  description: "Browse all registered teams and individuals looking for teams at Thunder Hacks 2025.",
+  title: "Teams | ThunderHacks 2025",
+  description: "Browse all registered teams and individuals looking for teams at ThunderHacks 2025.",
 }
 
 export const dynamic = "force-dynamic"
