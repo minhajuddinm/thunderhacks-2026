@@ -20,7 +20,6 @@ const dietaryOptions = [
   { id: "vegetarian", label: "Vegetarian" },
   { id: "vegan", label: "Vegan" },
   { id: "halal", label: "Halal" },
-  { id: "kosher", label: "Kosher" },
   { id: "gluten-free", label: "Gluten-free" },
   { id: "dairy-free", label: "Dairy-free" },
   { id: "nut-allergy", label: "Nut Allergy" },
@@ -46,7 +45,6 @@ export default function QuestionnairePage() {
   const [selectedDietary, setSelectedDietary] = useState<string[]>([])
   const [otherDietary, setOtherDietary] = useState("")
   const [selectedSkills, setSelectedSkills] = useState<string[]>([])
-  const [otherSkills, setOtherSkills] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [checkingAuth, setCheckingAuth] = useState(true)
@@ -111,10 +109,7 @@ export default function QuestionnairePage() {
     ].join(", ")
 
     // Compile skills
-    const skills = [
-      ...selectedSkills.map(id => skillOptions.find(s => s.id === id)?.label || id),
-      ...(otherSkills ? [otherSkills] : [])
-    ].join(", ")
+    const skills = selectedSkills.map(id => skillOptions.find(s => s.id === id)?.label || id).join(", ")
 
     // First check if profile exists
     const { data: existingProfile } = await supabase
@@ -263,12 +258,6 @@ export default function QuestionnairePage() {
                     </div>
                   ))}
                 </div>
-                <Textarea
-                  placeholder="Other skills, technologies, or interests..."
-                  value={otherSkills}
-                  onChange={(e) => setOtherSkills(e.target.value)}
-                  rows={2}
-                />
               </div>
             </CardContent>
             
