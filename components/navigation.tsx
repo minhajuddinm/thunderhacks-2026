@@ -50,7 +50,7 @@ export function Navigation() {
               width={40}
               height={40}
             />
-            <span className="font-bold text-lg text-foreground">ThunderHacks</span>
+            <span className="font-bold text-lg text-foreground">hunderHacks</span>
           </Link>
 
           {/* Desktop Navigation */}
