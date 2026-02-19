@@ -43,14 +43,15 @@ export function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center -space-x-1">
             <Image
               src="/images/th-logo.png"
-              alt="Thunder Hacks Logo"
+              alt="ThunderHacks Logo"
               width={40}
               height={40}
+              className="relative -mr-1"
             />
-            <span className="font-bold text-lg text-foreground">Thunder Hacks</span>
+            <span className="font-bold text-lg text-foreground">hunderHacks</span>
           </Link>
 
           {/* Desktop Navigation */}
