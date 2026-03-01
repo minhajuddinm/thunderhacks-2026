@@ -34,13 +34,26 @@ export function AnnouncementForm() {
     setSuccess(false)
 
     try {
-      const { error: insertError } = await supabase
+      // Check auth status
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      console.log("[v0] Auth check - User:", user?.email, "Error:", authError?.message)
+      
+      if (!user) {
+        throw new Error("You must be logged in to post announcements")
+      }
+      
+      console.log("[v0] Attempting insert with user:", user.id)
+      
+      const { error: insertError, data: insertData } = await supabase
         .from("announcements")
         .insert({
           title,
           content,
           category,
         })
+        .select()
+
+      console.log("[v0] Insert result - Error:", insertError?.message, "Data:", insertData)
 
       if (insertError) {
         throw insertError
