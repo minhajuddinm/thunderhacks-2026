@@ -10,7 +10,6 @@ import {
   Clock,
   Wifi,
   Utensils,
-  Car,
   HelpCircle,
   ArrowRight,
 } from "lucide-react"
@@ -111,11 +110,10 @@ export default function EventPage() {
           {/* Amenities */}
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground text-center mb-8">What We Provide</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
               {[
                 { icon: Wifi, label: "High-Speed WiFi" },
                 { icon: Utensils, label: "Free Meals" },
-                { icon: Car, label: "Free Parking" },
               ].map((item) => (
                 <Card key={item.label} className="bg-card/50 border-border">
                   <CardContent className="pt-6 text-center">

@@ -98,7 +98,7 @@ const faqs = [
       },
       {
         q: "What are the prizes?",
-        a: "We're offering up to $1,250 in prizes! First place wins $750, second place $250, third place $150, and there's a $100 prize for Most Creative. Check our Prizes page for more details.",
+        a: "We're offering up to $1,700 in prizes! First place wins $600, second place $400, third place $200. Plus, there are sponsor category prizes: $300 for the Shield Identity Category and $200 for the Digital Move Category. Check our Prizes page for more details.",
       },
       {
         q: "Do I get to keep my project?",
