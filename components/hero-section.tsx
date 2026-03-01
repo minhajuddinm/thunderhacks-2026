@@ -82,7 +82,7 @@ export function HeroSection() {
             alt="ThunderHacks"
             width={180}
             height={180}
-            className="drop-shadow-2xl"
+            className="drop-shadow-2xl h-auto"
             priority
           />
         </div>

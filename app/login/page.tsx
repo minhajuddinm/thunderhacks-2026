@@ -95,6 +95,7 @@ export default function LoginPage() {
                 alt="ThunderHacks"
                 width={80}
                 height={80}
+                className="h-auto"
               />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">Welcome Back</CardTitle>

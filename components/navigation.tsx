@@ -50,6 +50,7 @@ export function Navigation() {
               alt="ThunderHacks Logo"
               width={40}
               height={40}
+              className="h-auto"
             />
             <span className="font-bold text-lg text-foreground">hunderHacks</span>
           </Link>
