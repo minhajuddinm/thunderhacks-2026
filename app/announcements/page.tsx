@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Bell, Calendar, Info, AlertTriangle, PartyPopper } from "lucide-react"
-import { createClient } from "@/lib/supabase/server"
+import { getSupabaseServerClient } from "@/lib/supabase/server"
 import { AnnouncementForm } from "@/components/announcement-form"
 
 export const metadata = {
@@ -40,7 +40,7 @@ function formatDate(dateString: string) {
 }
 
 export default async function AnnouncementsPage() {
-  const supabase = await createClient()
+  const supabase = await getSupabaseServerClient()
 
   // Check if the current user is admin
   const { data: { user } } = await supabase.auth.getUser()
