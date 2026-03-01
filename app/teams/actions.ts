@@ -35,15 +35,22 @@ export async function getTeams() {
       is_leader
     `)
 
+  console.log("[v0] All members fetched:", allMembers?.length, "members")
+  console.log("[v0] Members data:", JSON.stringify(allMembers, null, 2))
+  
   if (membersError) {
-    console.error("Error fetching team members:", membersError)
+    console.error("[v0] Error fetching team members:", membersError)
   }
 
   // Combine teams with their members
-  const teamsWithMembers = teams.map(team => ({
-    ...team,
-    team_members: (allMembers || []).filter(member => member.team_id === team.id)
-  }))
+  const teamsWithMembers = teams.map(team => {
+    const teamMembers = (allMembers || []).filter(member => member.team_id === team.id)
+    console.log(`[v0] Team ${team.team_name} (${team.id}): ${teamMembers.length} members`)
+    return {
+      ...team,
+      team_members: teamMembers
+    }
+  })
 
   return teamsWithMembers
 }
