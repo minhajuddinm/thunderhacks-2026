@@ -1,8 +1,7 @@
 "use client"
 
-import Link from "next/link"
+import { useState, useEffect } from "react"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
 import { Calendar, MapPin, Zap } from "lucide-react"
 
 function LightningBolt({ className }: { className?: string }) {
@@ -17,19 +16,41 @@ function LightningBolt({ className }: { className?: string }) {
   )
 }
 
+interface Particle {
+  id: number
+  left: number
+  top: number
+  delay: number
+  duration: number
+}
+
 function ParticleBackground() {
+  const [particles, setParticles] = useState<Particle[]>([])
+
+  useEffect(() => {
+    // Generate particles only on the client to avoid hydration mismatch
+    const generatedParticles = Array.from({ length: 20 }).map((_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      delay: Math.random() * 2,
+      duration: 2 + Math.random() * 3,
+    }))
+    setParticles(generatedParticles)
+  }, [])
+
   return (
     <div className="absolute inset-0 overflow-hidden">
       {/* Animated particles */}
-      {Array.from({ length: 20 }).map((_, i) => (
+      {particles.map((particle) => (
         <div
-          key={i}
+          key={particle.id}
           className="absolute w-1 h-1 bg-[#7000FF]/40 rounded-full animate-pulse"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 2}s`,
-            animationDuration: `${2 + Math.random() * 3}s`,
+            left: `${particle.left}%`,
+            top: `${particle.top}%`,
+            animationDelay: `${particle.delay}s`,
+            animationDuration: `${particle.duration}s`,
           }}
         />
       ))}
