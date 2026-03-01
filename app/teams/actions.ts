@@ -17,6 +17,8 @@ export async function getTeams() {
       team_members (
         id,
         full_name,
+        email,
+        school,
         is_leader
       )
     `)
@@ -26,6 +28,8 @@ export async function getTeams() {
     console.error("Error fetching teams:", error)
     return []
   }
+
+  console.log("[v0] Teams fetched:", JSON.stringify(teams, null, 2))
 
   return teams
 }
