@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
@@ -53,7 +53,7 @@ export function AnnouncementForm() {
         })
         .select()
 
-      console.log("[v0] Insert result - Error:", insertError?.message, "Data:", insertData)
+      console.log("[v0] Insert result - Error:", insertError?.message, insertError?.code, insertError?.details, "Data:", insertData)
 
       if (insertError) {
         throw insertError
@@ -65,6 +65,7 @@ export function AnnouncementForm() {
       setCategory("general")
       router.refresh()
     } catch (err) {
+      console.error("[v0] Announcement error:", err)
       setError(err instanceof Error ? err.message : "Failed to post announcement")
     } finally {
       setIsSubmitting(false)
@@ -72,14 +73,14 @@ export function AnnouncementForm() {
   }
 
   return (
-    <Card className="bg-card border-primary/30 mb-8">
+    <Card className="bg-card border-primary/20 mb-8">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-foreground">
           <PlusCircle className="h-5 w-5 text-primary" />
-          Post Announcement
+          Post New Announcement
         </CardTitle>
         <CardDescription>
-          Create a new announcement visible to all users.
+          Create an announcement that will be visible to all participants
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -88,25 +89,24 @@ export function AnnouncementForm() {
             <Label htmlFor="title">Title</Label>
             <Input
               id="title"
-              placeholder="Announcement title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              placeholder="Announcement title"
               required
+              className="bg-background"
             />
           </div>
-
           <div className="space-y-2">
             <Label htmlFor="content">Content</Label>
             <Textarea
               id="content"
-              placeholder="Write your announcement here..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              rows={4}
+              placeholder="Write your announcement here..."
               required
+              className="bg-background min-h-[100px]"
             />
           </div>
-
           <div className="space-y-2">
             <Label htmlFor="category">Category</Label>
             <select
@@ -122,15 +122,12 @@ export function AnnouncementForm() {
               ))}
             </select>
           </div>
-
           {error && (
-            <p className="text-sm text-destructive">{error}</p>
+            <p className="text-sm text-red-500">{error}</p>
           )}
-
           {success && (
             <p className="text-sm text-green-500">Announcement posted successfully!</p>
           )}
-
           <Button type="submit" disabled={isSubmitting} className="w-full">
             {isSubmitting ? (
               <>

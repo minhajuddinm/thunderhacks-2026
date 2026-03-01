@@ -54,88 +54,85 @@ export default async function AnnouncementsPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-
-      <main className="pt-24 pb-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <div className="text-center mb-12">
+      <main className="pt-20">
+        {/* Header */}
+        <section className="py-16 bg-gradient-to-b from-primary/10 to-background">
+          <div className="container mx-auto px-4 text-center">
             <Badge variant="secondary" className="mb-4">
-              <Bell className="mr-1 h-3 w-3" />
               Stay Updated
             </Badge>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               Announcements
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Stay up to date with the latest news and updates from ThunderHacks 2026.
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Important updates and news from the ThunderHacks team
             </p>
           </div>
+        </section>
 
-          {/* Admin Form - Only visible to admin */}
-          {isAdmin && <AnnouncementForm />}
+        {/* Announcements Content */}
+        <section className="py-12">
+          <div className="container mx-auto px-4 max-w-4xl">
+            {/* Admin Form - Only visible to admin */}
+            {isAdmin && <AnnouncementForm />}
 
-          {/* Announcements List */}
-          <div className="space-y-6">
-            {error && (
-              <Card className="bg-destructive/10 border-destructive/30">
-                <CardContent className="pt-6 text-center">
-                  <p className="text-destructive">Failed to load announcements. Please try again later.</p>
-                </CardContent>
-              </Card>
-            )}
-
-            {!error && announcements && announcements.length === 0 && (
-              <Card className="bg-card border-border">
-                <CardContent className="py-12 text-center">
-                  <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">No Announcements Yet</h3>
-                  <p className="text-muted-foreground">
-                    Check back soon for updates about ThunderHacks 2026!
-                  </p>
-                </CardContent>
-              </Card>
-            )}
-
-            {!error && announcements && announcements.map((announcement: Announcement) => {
-              const config = categoryConfig[announcement.category] || categoryConfig.general
-              const Icon = config.icon
-
-              return (
-                <Card key={announcement.id} className="bg-card border-border">
-                  <CardHeader>
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex items-start gap-3">
-                        <div className={`p-2 rounded-lg ${config.bgColor}`}>
-                          <Icon className={`h-5 w-5 ${config.color}`} />
-                        </div>
-                        <div className="space-y-1">
-                          <CardTitle className="text-foreground">{announcement.title}</CardTitle>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Calendar className="h-3 w-3" />
-                            <span>{formatDate(announcement.created_at)}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <Badge
-                        variant="secondary"
-                        className={`${config.bgColor} ${config.color} border-0`}
-                      >
-                        {announcement.category}
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base whitespace-pre-wrap">
-                      {announcement.content}
-                    </CardDescription>
+            {/* Announcements List */}
+            <div className="space-y-6">
+              {error && (
+                <Card className="bg-red-500/10 border-red-500/30">
+                  <CardContent className="p-6">
+                    <p className="text-red-500">Failed to load announcements. Please try again later.</p>
                   </CardContent>
                 </Card>
-              )
-            })}
-          </div>
-        </div>
-      </main>
+              )}
 
+              {announcements && announcements.length === 0 && (
+                <Card className="bg-card border-border">
+                  <CardContent className="p-12 text-center">
+                    <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-foreground mb-2">No Announcements Yet</h3>
+                    <p className="text-muted-foreground">
+                      Check back soon for updates from the ThunderHacks team!
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+
+              {announcements && announcements.map((announcement: Announcement) => {
+                const config = categoryConfig[announcement.category] || categoryConfig.general
+                const IconComponent = config.icon
+                
+                return (
+                  <Card key={announcement.id} className="bg-card border-border hover:border-primary/30 transition-colors">
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className={`p-2 rounded-lg ${config.bgColor}`}>
+                            <IconComponent className={`h-5 w-5 ${config.color}`} />
+                          </div>
+                          <div>
+                            <CardTitle className="text-xl text-foreground">{announcement.title}</CardTitle>
+                            <div className="flex items-center gap-2 mt-1">
+                              <Calendar className="h-4 w-4 text-muted-foreground" />
+                              <CardDescription>{formatDate(announcement.created_at)}</CardDescription>
+                            </div>
+                          </div>
+                        </div>
+                        <Badge variant="outline" className="capitalize">
+                          {announcement.category}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground whitespace-pre-wrap">{announcement.content}</p>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      </main>
       <Footer />
     </div>
   )
