@@ -5,7 +5,8 @@ import { getSupabaseServerClient } from "@/lib/supabase/server"
 export async function getTeams() {
   const supabase = await getSupabaseServerClient()
 
-  const { data: teams, error } = await supabase
+  // First fetch all teams
+  const { data: teams, error: teamsError } = await supabase
     .from("teams")
     .select(`
       id,
@@ -13,25 +14,38 @@ export async function getTeams() {
       team_code,
       looking_for_members,
       max_members,
-      created_at,
-      team_members (
-        id,
-        full_name,
-        email,
-        school,
-        is_leader
-      )
+      created_at
     `)
     .order("created_at", { ascending: false })
 
-  if (error) {
-    console.error("Error fetching teams:", error)
+  if (teamsError) {
+    console.error("Error fetching teams:", teamsError)
     return []
   }
 
-  console.log("[v0] Teams fetched:", JSON.stringify(teams, null, 2))
+  // Then fetch all team members
+  const { data: allMembers, error: membersError } = await supabase
+    .from("team_members")
+    .select(`
+      id,
+      team_id,
+      full_name,
+      email,
+      school,
+      is_leader
+    `)
 
-  return teams
+  if (membersError) {
+    console.error("Error fetching team members:", membersError)
+  }
+
+  // Combine teams with their members
+  const teamsWithMembers = teams.map(team => ({
+    ...team,
+    team_members: (allMembers || []).filter(member => member.team_id === team.id)
+  }))
+
+  return teamsWithMembers
 }
 
 export async function getIndividualsLookingForTeam() {
