@@ -23,29 +23,28 @@ export async function getTeams() {
     return []
   }
 
-  // Then fetch all team members
+  // Fetch team members from profiles table (where team member data is actually stored)
   const { data: allMembers, error: membersError } = await supabase
-    .from("team_members")
+    .from("profiles")
     .select(`
       id,
       team_id,
       full_name,
       email,
-      school,
-      is_leader
+      school
     `)
+    .not("team_id", "is", null)
 
-  console.log("[v0] All members fetched:", allMembers?.length, "members")
-  console.log("[v0] Members data:", JSON.stringify(allMembers, null, 2))
-  
   if (membersError) {
-    console.error("[v0] Error fetching team members:", membersError)
+    console.error("Error fetching team members:", membersError)
   }
 
   // Combine teams with their members
   const teamsWithMembers = teams.map(team => {
-    const teamMembers = (allMembers || []).filter(member => member.team_id === team.id)
-    console.log(`[v0] Team ${team.team_name} (${team.id}): ${teamMembers.length} members`)
+    const teamMembers = (allMembers || []).filter(member => member.team_id === team.id).map(member => ({
+      ...member,
+      is_leader: false // profiles table doesn't have is_leader, default to false
+    }))
     return {
       ...team,
       team_members: teamMembers
