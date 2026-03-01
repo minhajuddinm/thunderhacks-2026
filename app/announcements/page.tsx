@@ -42,7 +42,6 @@ function formatDate(dateString: string) {
 export default async function AnnouncementsPage() {
   const supabase = await getSupabaseServerClient()
 
-  // Check if the current user is admin
   const { data: { user } } = await supabase.auth.getUser()
   const isAdmin = user?.email === ADMIN_EMAIL
 
@@ -52,87 +51,82 @@ export default async function AnnouncementsPage() {
     .order("created_at", { ascending: false })
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col bg-background">
       <Navigation />
-      <main className="pt-20">
-        {/* Header */}
-        <section className="py-16 bg-gradient-to-b from-primary/10 to-background">
-          <div className="container mx-auto px-4 text-center">
+      
+      <main className="flex-1 py-12">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="text-center mb-12">
             <Badge variant="secondary" className="mb-4">
-              Stay Updated
+              Stay Informed
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Announcements
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <h1 className="text-4xl font-bold text-foreground mb-4">Announcements</h1>
+            <p className="text-muted-foreground text-lg">
               Important updates and news from the ThunderHacks team
             </p>
           </div>
-        </section>
 
-        {/* Announcements Content */}
-        <section className="py-12">
-          <div className="container mx-auto px-4 max-w-4xl">
-            {/* Admin Form - Only visible to admin */}
-            {isAdmin && <AnnouncementForm />}
+          {isAdmin && <AnnouncementForm />}
 
-            {/* Announcements List */}
-            <div className="space-y-6">
-              {error && (
-                <Card className="bg-red-500/10 border-red-500/30">
-                  <CardContent className="p-6">
-                    <p className="text-red-500">Failed to load announcements. Please try again later.</p>
-                  </CardContent>
-                </Card>
-              )}
+          <div className="space-y-6">
+            {error && (
+              <Card className="bg-red-500/10 border-red-500/30">
+                <CardContent className="p-6">
+                  <p className="text-red-500">Failed to load announcements. Please try again later.</p>
+                </CardContent>
+              </Card>
+            )}
 
-              {announcements && announcements.length === 0 && (
-                <Card className="bg-card border-border">
-                  <CardContent className="p-12 text-center">
-                    <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-foreground mb-2">No Announcements Yet</h3>
-                    <p className="text-muted-foreground">
-                      Check back soon for updates from the ThunderHacks team!
-                    </p>
-                  </CardContent>
-                </Card>
-              )}
+            {!error && (!announcements || announcements.length === 0) && (
+              <Card className="bg-card border-border">
+                <CardContent className="p-12 text-center">
+                  <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-foreground mb-2">No Announcements Yet</h3>
+                  <p className="text-muted-foreground">
+                    Check back later for updates from the ThunderHacks team.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
 
-              {announcements && announcements.map((announcement: Announcement) => {
-                const config = categoryConfig[announcement.category] || categoryConfig.general
-                const IconComponent = config.icon
-                
-                return (
-                  <Card key={announcement.id} className="bg-card border-border hover:border-primary/30 transition-colors">
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className={`p-2 rounded-lg ${config.bgColor}`}>
-                            <IconComponent className={`h-5 w-5 ${config.color}`} />
-                          </div>
-                          <div>
-                            <CardTitle className="text-xl text-foreground">{announcement.title}</CardTitle>
-                            <div className="flex items-center gap-2 mt-1">
-                              <Calendar className="h-4 w-4 text-muted-foreground" />
-                              <CardDescription>{formatDate(announcement.created_at)}</CardDescription>
-                            </div>
+            {announcements && announcements.map((announcement: Announcement) => {
+              const config = categoryConfig[announcement.category] || categoryConfig.general
+              const Icon = config.icon
+
+              return (
+                <Card key={announcement.id} className="bg-card border-border hover:border-primary/30 transition-colors">
+                  <CardHeader>
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex items-start gap-3">
+                        <div className={`p-2 rounded-lg ${config.bgColor}`}>
+                          <Icon className={`h-5 w-5 ${config.color}`} />
+                        </div>
+                        <div>
+                          <CardTitle className="text-xl text-foreground">{announcement.title}</CardTitle>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Calendar className="h-4 w-4 text-muted-foreground" />
+                            <CardDescription>{formatDate(announcement.created_at)}</CardDescription>
                           </div>
                         </div>
-                        <Badge variant="outline" className="capitalize">
-                          {announcement.category}
-                        </Badge>
                       </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground whitespace-pre-wrap">{announcement.content}</p>
-                    </CardContent>
-                  </Card>
-                )
-              })}
-            </div>
+                      <Badge 
+                        variant="outline" 
+                        className={`${config.color} border-current capitalize`}
+                      >
+                        {announcement.category}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground whitespace-pre-wrap">{announcement.content}</p>
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
-        </section>
+        </div>
       </main>
+      
       <Footer />
     </div>
   )

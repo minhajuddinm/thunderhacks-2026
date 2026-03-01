@@ -76,19 +76,33 @@ export default function SignupPage() {
       return
     }
 
-    const { error } = await supabase.auth.signUp({
+    const redirectUrl = process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/dashboard`
+    console.log("[v0] Signup attempt for:", email)
+    console.log("[v0] Redirect URL:", redirectUrl)
+    
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
           full_name: fullName,
         },
-        emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/dashboard`,
+        emailRedirectTo: redirectUrl,
       },
     })
 
+    console.log("[v0] Signup result - Data:", data)
+    console.log("[v0] Signup result - Error:", error)
+
     if (error) {
       setError(error.message)
+      setLoading(false)
+      return
+    }
+
+    // Check if email confirmation is needed
+    if (data?.user?.identities?.length === 0) {
+      setError("This email is already registered. Please login or use a different email.")
       setLoading(false)
       return
     }

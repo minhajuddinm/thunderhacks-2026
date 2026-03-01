@@ -3,10 +3,10 @@
 import { useState } from "react"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { PlusCircle, Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 
@@ -34,26 +34,19 @@ export function AnnouncementForm() {
     setSuccess(false)
 
     try {
-      // Check auth status
       const { data: { user }, error: authError } = await supabase.auth.getUser()
-      console.log("[v0] Auth check - User:", user?.email, "Error:", authError?.message)
       
-      if (!user) {
+      if (authError || !user) {
         throw new Error("You must be logged in to post announcements")
       }
       
-      console.log("[v0] Attempting insert with user:", user.id)
-      
-      const { error: insertError, data: insertData } = await supabase
+      const { error: insertError } = await supabase
         .from("announcements")
         .insert({
           title,
           content,
           category,
         })
-        .select()
-
-      console.log("[v0] Insert result - Error:", insertError?.message, insertError?.code, insertError?.details, "Data:", insertData)
 
       if (insertError) {
         throw insertError
@@ -65,7 +58,6 @@ export function AnnouncementForm() {
       setCategory("general")
       router.refresh()
     } catch (err) {
-      console.error("[v0] Announcement error:", err)
       setError(err instanceof Error ? err.message : "Failed to post announcement")
     } finally {
       setIsSubmitting(false)
@@ -73,15 +65,12 @@ export function AnnouncementForm() {
   }
 
   return (
-    <Card className="bg-card border-primary/20 mb-8">
+    <Card className="mb-8 border-primary/30 bg-card">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-foreground">
           <PlusCircle className="h-5 w-5 text-primary" />
           Post New Announcement
         </CardTitle>
-        <CardDescription>
-          Create an announcement that will be visible to all participants
-        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -93,9 +82,9 @@ export function AnnouncementForm() {
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Announcement title"
               required
-              className="bg-background"
             />
           </div>
+
           <div className="space-y-2">
             <Label htmlFor="content">Content</Label>
             <Textarea
@@ -103,10 +92,14 @@ export function AnnouncementForm() {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Write your announcement here..."
+              rows={4}
               required
-              className="bg-background min-h-[100px]"
             />
+            <p className="text-xs text-muted-foreground">
+              Tip: End with "— The ALCOMS Team" for a professional touch
+            </p>
           </div>
+
           <div className="space-y-2">
             <Label htmlFor="category">Category</Label>
             <select
@@ -122,13 +115,20 @@ export function AnnouncementForm() {
               ))}
             </select>
           </div>
+
           {error && (
             <p className="text-sm text-red-500">{error}</p>
           )}
+          
           {success && (
             <p className="text-sm text-green-500">Announcement posted successfully!</p>
           )}
-          <Button type="submit" disabled={isSubmitting} className="w-full">
+
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+          >
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
