@@ -35,8 +35,11 @@ export async function getTeams() {
     `)
     .not("team_id", "is", null)
 
+  console.log("[v0] Teams fetched:", teams?.length)
+  console.log("[v0] Members fetched:", allMembers?.length, allMembers)
+  
   if (membersError) {
-    console.error("Error fetching team members:", membersError)
+    console.error("[v0] Error fetching team members:", membersError)
   }
 
   // Combine teams with their members
