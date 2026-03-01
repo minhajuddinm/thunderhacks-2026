@@ -51,18 +51,18 @@ export default async function AnnouncementsPage() {
     .order("created_at", { ascending: false })
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen bg-background">
       <Navigation />
-      
-      <main className="flex-1 py-12">
+
+      <main className="pt-24 pb-16">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="text-center mb-12">
             <Badge variant="secondary" className="mb-4">
-              Stay Informed
+              Stay Updated
             </Badge>
             <h1 className="text-4xl font-bold text-foreground mb-4">Announcements</h1>
-            <p className="text-muted-foreground text-lg">
-              Important updates and news from the ThunderHacks team
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Important updates and information about ThunderHacks 2026.
             </p>
           </div>
 
@@ -70,49 +70,43 @@ export default async function AnnouncementsPage() {
 
           <div className="space-y-6">
             {error && (
-              <Card className="bg-red-500/10 border-red-500/30">
-                <CardContent className="p-6">
+              <Card className="border-red-500/20">
+                <CardContent className="pt-6">
                   <p className="text-red-500">Failed to load announcements. Please try again later.</p>
                 </CardContent>
               </Card>
             )}
 
             {!error && (!announcements || announcements.length === 0) && (
-              <Card className="bg-card border-border">
-                <CardContent className="p-12 text-center">
-                  <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">No Announcements Yet</h3>
-                  <p className="text-muted-foreground">
-                    Check back later for updates from the ThunderHacks team.
-                  </p>
+              <Card className="border-muted">
+                <CardContent className="pt-6 text-center">
+                  <Bell className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <p className="text-muted-foreground">No announcements yet. Check back later!</p>
                 </CardContent>
               </Card>
             )}
 
-            {announcements && announcements.map((announcement: Announcement) => {
+            {announcements?.map((announcement: Announcement) => {
               const config = categoryConfig[announcement.category] || categoryConfig.general
-              const Icon = config.icon
+              const IconComponent = config.icon
 
               return (
-                <Card key={announcement.id} className="bg-card border-border hover:border-primary/30 transition-colors">
+                <Card key={announcement.id} className="border-border hover:border-primary/30 transition-colors">
                   <CardHeader>
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex items-start gap-3">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
                         <div className={`p-2 rounded-lg ${config.bgColor}`}>
-                          <Icon className={`h-5 w-5 ${config.color}`} />
+                          <IconComponent className={`h-5 w-5 ${config.color}`} />
                         </div>
                         <div>
-                          <CardTitle className="text-xl text-foreground">{announcement.title}</CardTitle>
+                          <CardTitle className="text-lg text-foreground">{announcement.title}</CardTitle>
                           <div className="flex items-center gap-2 mt-1">
-                            <Calendar className="h-4 w-4 text-muted-foreground" />
+                            <Calendar className="h-3 w-3 text-muted-foreground" />
                             <CardDescription>{formatDate(announcement.created_at)}</CardDescription>
                           </div>
                         </div>
                       </div>
-                      <Badge 
-                        variant="outline" 
-                        className={`${config.color} border-current capitalize`}
-                      >
+                      <Badge variant="outline" className="capitalize">
                         {announcement.category}
                       </Badge>
                     </div>
@@ -126,7 +120,7 @@ export default async function AnnouncementsPage() {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   )

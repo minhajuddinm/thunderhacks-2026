@@ -3,10 +3,10 @@
 import { useState } from "react"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { PlusCircle, Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 
@@ -39,7 +39,7 @@ export function AnnouncementForm() {
       if (authError || !user) {
         throw new Error("You must be logged in to post announcements")
       }
-      
+
       const { error: insertError } = await supabase
         .from("announcements")
         .insert({
@@ -65,7 +65,7 @@ export function AnnouncementForm() {
   }
 
   return (
-    <Card className="mb-8 border-primary/30 bg-card">
+    <Card className="mb-8 border-primary/20">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-foreground">
           <PlusCircle className="h-5 w-5 text-primary" />
@@ -80,8 +80,9 @@ export function AnnouncementForm() {
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Announcement title"
+              placeholder="Announcement title..."
               required
+              className="bg-background"
             />
           </div>
 
@@ -91,13 +92,11 @@ export function AnnouncementForm() {
               id="content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Write your announcement here..."
+              placeholder="Write your announcement..."
               rows={4}
               required
+              className="bg-background"
             />
-            <p className="text-xs text-muted-foreground">
-              Tip: End with "— The ALCOMS Team" for a professional touch
-            </p>
           </div>
 
           <div className="space-y-2">
@@ -119,7 +118,7 @@ export function AnnouncementForm() {
           {error && (
             <p className="text-sm text-red-500">{error}</p>
           )}
-          
+
           {success && (
             <p className="text-sm text-green-500">Announcement posted successfully!</p>
           )}
@@ -127,7 +126,7 @@ export function AnnouncementForm() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+            className="w-full"
           >
             {isSubmitting ? (
               <>
