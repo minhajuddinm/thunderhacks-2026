@@ -180,6 +180,7 @@ export default function QuestionnairePage() {
                 alt="ThunderHacks"
                 width={80}
                 height={80}
+                className="h-auto"
               />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">Complete Your Profile</CardTitle>

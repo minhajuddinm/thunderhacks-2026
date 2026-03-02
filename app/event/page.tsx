@@ -10,7 +10,6 @@ import {
   Clock,
   Wifi,
   Utensils,
-  Car,
   HelpCircle,
   ArrowRight,
 } from "lucide-react"
@@ -39,28 +38,22 @@ const schedule = [
   {
     day: "Day 1 - Saturday, March 14",
     events: [
-      { time: "8:00 AM", event: "Doors Open", desc: "Venue opens for participants" },
-      { time: "9:00 AM", event: "Registration & Check-in", desc: "Get your badge and swag" },
-      { time: "10:00 AM", event: "Opening Ceremony & Hacking Begins!", desc: "Welcome, rules overview, and start building" },
-      { time: "12:00 PM", event: "Lunch", desc: "Fuel up for the journey ahead" },
-      { time: "2:00 PM", event: "Workshop: Intro to AI", desc: "Learn AI basics with experts" },
-      { time: "4:00 PM", event: "Workshop: UI/UX Design", desc: "Design tips for your project" },
-      { time: "6:00 PM", event: "Dinner", desc: "Take a break and recharge" },
-      { time: "8:00 PM", event: "Mini Games", desc: "Fun activities and networking" },
-      { time: "10:00 PM", event: "Day 1 Ends", desc: "Venue closes - resume tomorrow!" },
+      { time: "11:00 AM", event: "Opening Ceremony", desc: "Welcome and event kickoff" },
+      { time: "12:00 PM", event: "Hacking Begins!", desc: "Start building your projects" },
+      { time: "1:00 PM", event: "Workshop 1", desc: "Learn new skills with our first workshop" },
+      { time: "3:00 PM", event: "Lunch", desc: "Fuel up for the journey ahead" },
+      { time: "4:30 PM", event: "Workshop 2", desc: "More learning opportunities" },
+      { time: "7:00 PM", event: "Dinner", desc: "Take a break and recharge" },
+      { time: "9:00 PM", event: "Gaming Event", desc: "Compete in our gaming tournament" },
     ],
   },
   {
     day: "Day 2 - Sunday, March 15",
     events: [
-      { time: "8:00 AM", event: "Doors Open & Breakfast", desc: "Continue hacking!" },
-      { time: "12:00 PM", event: "Lunch & Hacking Ends", desc: "Code freeze!" },
-      { time: "12:30 PM", event: "Project Submissions", desc: "Submit your project" },
-      { time: "1:00 PM", event: "Presentations", desc: "Demo your project to judges" },
-      { time: "3:00 PM", event: "Deliberation Break", desc: "Judges evaluate projects" },
-      { time: "4:00 PM", event: "Awards Ceremony", desc: "Winners announced!" },
-      { time: "5:00 PM", event: "Closing & Networking", desc: "Thank you and goodbye" },
-      { time: "10:00 PM", event: "Venue Closes", desc: "End of ThunderHacks 2026" },
+      { time: "10:00 AM", event: "Breakfast", desc: "Morning fuel and continue hacking" },
+      { time: "12:00 PM", event: "Project Submissions Due", desc: "Code freeze - submit your project!" },
+      { time: "1:00 PM", event: "Presentations Begin", desc: "Demo your project to judges" },
+      { time: "3:00 PM", event: "Closing Ceremony & Final Lunch", desc: "Winners announced and farewell" },
     ],
   },
 ]
@@ -117,11 +110,10 @@ export default function EventPage() {
           {/* Amenities */}
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground text-center mb-8">What We Provide</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
               {[
                 { icon: Wifi, label: "High-Speed WiFi" },
                 { icon: Utensils, label: "Free Meals" },
-                { icon: Car, label: "Free Parking" },
               ].map((item) => (
                 <Card key={item.label} className="bg-card/50 border-border">
                   <CardContent className="pt-6 text-center">

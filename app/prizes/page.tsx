@@ -2,17 +2,17 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Trophy, Award, Star, Zap, Brain, Palette, Heart } from "lucide-react"
+import { Trophy, Award, Star, Shield, Monitor, Gamepad2 } from "lucide-react"
 
 export const metadata = {
   title: "Prizes | ThunderHacks 2026",
-  description: "Up to $1,250 in prizes across multiple categories at ThunderHacks 2026.",
+  description: "Up to $1,700 in prizes across multiple categories at ThunderHacks 2026.",
 }
 
 const mainPrizes = [
   {
     place: "1st Place",
-    prize: "$750",
+    prize: "$600",
     description: "Grand prize for the overall best project",
     icon: Trophy,
     color: "text-yellow-500",
@@ -21,7 +21,7 @@ const mainPrizes = [
   },
   {
     place: "2nd Place",
-    prize: "$250",
+    prize: "$400",
     description: "Runner-up for outstanding innovation",
     icon: Award,
     color: "text-gray-400",
@@ -30,7 +30,7 @@ const mainPrizes = [
   },
   {
     place: "3rd Place",
-    prize: "$150",
+    prize: "$200",
     description: "Third place for exceptional work",
     icon: Star,
     color: "text-amber-600",
@@ -39,12 +39,27 @@ const mainPrizes = [
   },
 ]
 
-const categoryPrizes = [
+const sponsorPrizes = [
   {
-    category: "Most Creative",
-    prize: "$100",
-    description: "For the most creative and original solution to a problem.",
-    icon: Brain,
+    category: "Shield Identity Category",
+    prize: "$300",
+    description: "Best project leveraging security or identity solutions. Sponsored by Shield Identity.",
+    icon: Shield,
+  },
+  {
+    category: "Digital Move Category",
+    prize: "$200",
+    description: "Best project showcasing digital transformation or innovative technology solutions. Sponsored by Digital Move.",
+    icon: Monitor,
+  },
+]
+
+const gamingPrizes = [
+  {
+    category: "Gaming Tournament Winners",
+    prize: "TBD",
+    description: "Compete in our gaming tournament on Saturday night for prizes and glory!",
+    icon: Gamepad2,
   },
 ]
 
@@ -57,7 +72,7 @@ export default function PrizesPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <Badge variant="secondary" className="mb-4">
-              Up to $1,250 in Prizes
+              Up to $1,700 in Prizes
             </Badge>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
               Prizes & Awards
@@ -95,11 +110,11 @@ export default function PrizesPage() {
             </div>
           </section>
 
-          {/* Category Prizes */}
+          {/* Sponsor Category Prizes */}
           <section className="mb-16">
-            <h2 className="text-2xl font-bold text-foreground text-center mb-8">Category Prizes</h2>
+            <h2 className="text-2xl font-bold text-foreground text-center mb-8">Sponsor Category Prizes</h2>
             <div className="grid md:grid-cols-2 gap-6">
-              {categoryPrizes.map((prize) => (
+              {sponsorPrizes.map((prize) => (
                 <Card key={prize.category} className="bg-card border-border">
                   <CardHeader>
                     <div className="flex items-start justify-between">
@@ -110,6 +125,33 @@ export default function PrizesPage() {
                         <div>
                           <CardTitle className="text-lg text-foreground">{prize.category}</CardTitle>
                           <div className="text-2xl font-bold text-primary">{prize.prize}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription>{prize.description}</CardDescription>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+
+          {/* Gaming Tournament */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold text-foreground text-center mb-8">Gaming Tournament</h2>
+            <div className="max-w-lg mx-auto">
+              {gamingPrizes.map((prize) => (
+                <Card key={prize.category} className="bg-card border-border border-2 border-[#7000FF]/30">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-[#7000FF]/10 rounded-lg">
+                          <prize.icon className="h-6 w-6 text-[#7000FF]" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-lg text-foreground">{prize.category}</CardTitle>
+                          <div className="text-2xl font-bold text-[#7000FF]">{prize.prize}</div>
                         </div>
                       </div>
                     </div>

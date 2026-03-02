@@ -43,7 +43,7 @@ export default function HomePage() {
               {
                 icon: Trophy,
                 title: "Win Prizes",
-                description: "Compete for up to $1,250 in prizes across multiple categories.",
+                description: "Compete for up to $1,750 in prizes across multiple categories.",
               },
             ].map((feature) => (
               <Card key={feature.title} className="bg-card border-border hover:border-primary/50 transition-colors">

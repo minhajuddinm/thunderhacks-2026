@@ -8,7 +8,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Users, Plus, UserPlus, LogOut, Settings, Check, X, Copy, CheckCircle } from "lucide-react"
+import { Users, Plus, UserPlus, LogOut, Settings, Check, X, Copy, CheckCircle, Shield, Bell } from "lucide-react"
+
+const ADMIN_EMAIL = "alcoms@algomau.ca"
 
 interface Profile {
   id: string
@@ -47,8 +49,6 @@ interface DashboardContentProps {
   joinRequests: JoinRequest[]
 }
 
-
-
 export function DashboardContent({ profile, team, teamMembers, joinRequests }: DashboardContentProps) {
   const [loading, setLoading] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
@@ -57,6 +57,7 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
   const router = useRouter()
 
   const supabase = getSupabaseBrowserClient()
+  const isAdmin = profile.email === ADMIN_EMAIL
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -149,6 +150,86 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
     window.location.href = "/dashboard"
   }
 
+  // Admin Dashboard View
+  if (isAdmin) {
+    return (
+      <div className="max-w-4xl mx-auto space-y-8 pt-8">
+        {/* Admin Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <Shield className="h-5 w-5 text-primary" />
+              <Badge className="bg-primary text-primary-foreground">Admin</Badge>
+            </div>
+            <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
+            <p className="text-muted-foreground">Welcome back, {profile.full_name}</p>
+          </div>
+          <Button variant="outline" size="sm" onClick={handleLogout}>
+            <LogOut className="mr-2 h-4 w-4" />
+            Logout
+          </Button>
+        </div>
+
+        {/* Admin Quick Actions */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <Card className="bg-card border-border hover:border-primary/50 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-foreground">
+                <Bell className="h-5 w-5 text-primary" />
+                Post Announcements
+              </CardTitle>
+              <CardDescription>
+                Create announcements visible to all registered participants.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button asChild className="w-full">
+                <Link href="/announcements">Go to Announcements</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-card border-border hover:border-primary/50 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-foreground">
+                <Users className="h-5 w-5 text-accent" />
+                Browse Teams
+              </CardTitle>
+              <CardDescription>
+                View all registered teams and their members.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button asChild variant="outline" className="w-full">
+                <Link href="/teams">View All Teams</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Admin Profile Summary */}
+        <Card className="bg-card border-border">
+          <CardHeader>
+            <CardTitle className="text-lg text-foreground">Your Profile</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-muted-foreground">Email</p>
+                <p className="font-medium text-foreground">{profile.email}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Phone</p>
+                <p className="font-medium text-foreground">{profile.phone || "Not provided"}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  // Regular User Dashboard View
   return (
     <div className="max-w-4xl mx-auto space-y-8 pt-8">
       {/* Header */}

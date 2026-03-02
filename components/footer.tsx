@@ -13,6 +13,7 @@ export function Footer() {
                 alt="ThunderHacks Logo"
                 width={48}
                 height={48}
+                className="h-auto"
               />
               <div>
                 <div className="font-bold text-foreground">ThunderHacks 2026</div>
