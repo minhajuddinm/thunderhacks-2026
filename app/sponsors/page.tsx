@@ -12,7 +12,7 @@ const sponsors = {
       name: "Shield Identity",
       logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/SHIELD%20IDENTITY%20Side%20Logo-QiUEhUByRFTn5OnwQmXo2ahOK5EGJN.png",
       description: "Leading provider of identity verification and security solutions. Shield Identity protects digital identities with cutting-edge authentication technology.",
-      website: "https://example.com",
+      website: "https://shield-identity.com/",
     },
   ],
   gold: [
@@ -21,7 +21,7 @@ const sponsors = {
       name: "Digital Move",
       logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/DMIT-gm7czS1ojr5I0B6d9IvxsGZg1I9flo.png",
       description: "Driving digital transformation for businesses worldwide. Digital Move helps organizations embrace innovative technology solutions.",
-      website: "https://example.com",
+      website: "https://digital-move.com/",
     },
   ],
   food: [
@@ -30,7 +30,7 @@ const sponsors = {
       name: "Circuit Revival",
       logo: "/placeholder-logo.svg",
       description: "Proud catering partner of ThunderHacks 2026. Circuit Revival keeps our hackers fueled with delicious meals throughout the event.",
-      website: "https://example.com",
+      website: "https://algomau.ca",
     },
   ],
 }
