@@ -5,7 +5,6 @@ import { NextResponse } from "next/server"
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get("code")
-  const next = searchParams.get("next") ?? "/dashboard"
 
   if (code) {
     const cookieStore = await cookies()
@@ -32,14 +31,30 @@ export async function GET(request: Request) {
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      const forwardedHost = request.headers.get("x-forwarded-host")
-      const isLocalEnv = process.env.NODE_ENV === "development"
-      if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${next}`)
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`)
-      } else {
-        return NextResponse.redirect(`${origin}${next}`)
+      // Get the authenticated user
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (user) {
+        // Check if profile exists and is complete
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("questionnaire_completed")
+          .eq("id", user.id)
+          .single()
+
+        const forwardedHost = request.headers.get("x-forwarded-host")
+        const isLocalEnv = process.env.NODE_ENV === "development"
+        
+        // Determine redirect URL based on profile completion
+        const redirectPath = profile?.questionnaire_completed ? "/dashboard" : "/onboarding"
+        
+        if (isLocalEnv) {
+          return NextResponse.redirect(`${origin}${redirectPath}`)
+        } else if (forwardedHost) {
+          return NextResponse.redirect(`https://${forwardedHost}${redirectPath}`)
+        } else {
+          return NextResponse.redirect(`${origin}${redirectPath}`)
+        }
       }
     }
   }

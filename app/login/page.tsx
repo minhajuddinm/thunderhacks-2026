@@ -2,23 +2,18 @@
 
 import React from "react"
 import { useState } from "react"
-import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2, Zap } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [checkingAuth, setCheckingAuth] = useState(true)
@@ -49,31 +44,21 @@ export default function LoginPage() {
     )
   }
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
+  const handleGoogleLogin = async () => {
     setLoading(true)
-
-    // Validate email domain
-    if (!email.endsWith("@algomau.ca")) {
-      setError("Only @algomau.ca email addresses are allowed.")
-      setLoading(false)
-      return
-    }
-
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    setError(null)
+    
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
     })
-
+    
     if (error) {
       setError(error.message)
       setLoading(false)
-      return
     }
-
-    // Use hard redirect to ensure fresh page load
-    window.location.href = "/dashboard"
   }
 
   return (
@@ -92,104 +77,30 @@ export default function LoginPage() {
                 className="h-auto"
               />
             </div>
-            <CardTitle className="text-2xl font-bold text-foreground">Welcome Back</CardTitle>
+            <CardTitle className="text-2xl font-bold text-foreground">Welcome to ThunderHacks</CardTitle>
             <CardDescription>
-              Sign in to your ThunderHacks account
+              Sign in with your Algoma University Google account
             </CardDescription>
           </CardHeader>
           
-          <form onSubmit={handleLogin}>
-            <CardContent className="space-y-4">
-              {error && (
-                <Alert variant="destructive">
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
-              
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="yourname@algomau.ca"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-                <p className="text-xs text-muted-foreground">
-                  Only @algomau.ca emails are accepted
-                </p>
-              </div>
-              
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="/forgot-password"
-                    className="text-xs text-primary hover:underline"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-            </CardContent>
+          <CardContent className="space-y-4">
+            {error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
             
-            <CardFooter className="flex flex-col gap-4">
-              <Button
-                type="submit"
-                className="w-full bg-primary hover:bg-primary/90"
-                disabled={loading}
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Signing in...
-                  </>
-                ) : (
-                  <>
-                    <Zap className="mr-2 h-4 w-4" />
-                    Sign In
-                  </>
-                )}
-              </Button>
-
-              <div className="relative w-full">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-border" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
-                </div>
-              </div>
-
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={async () => {
-                  setLoading(true)
-                  const { error } = await supabase.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                      redirectTo: `${window.location.origin}/auth/callback`,
-                    },
-                  })
-                  if (error) {
-                    setError(error.message)
-                    setLoading(false)
-                  }
-                }}
-                disabled={loading}
-              >
-                <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full h-12 text-base"
+              onClick={handleGoogleLogin}
+              disabled={loading}
+            >
+              {loading ? (
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              ) : (
+                <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
                   <path
                     d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                     fill="#4285F4"
@@ -207,17 +118,14 @@ export default function LoginPage() {
                     fill="#EA4335"
                   />
                 </svg>
-                Continue with Google
-              </Button>
-              
-              <p className="text-sm text-muted-foreground text-center">
-                Don't have an account?{" "}
-                <Link href="/signup" className="text-primary hover:underline">
-                  Sign up
-                </Link>
-              </p>
-            </CardFooter>
-          </form>
+              )}
+              Sign in with Google
+            </Button>
+            
+            <p className="text-xs text-muted-foreground text-center">
+              Use your @algomau.ca Google account to sign in
+            </p>
+          </CardContent>
         </Card>
       </main>
       
