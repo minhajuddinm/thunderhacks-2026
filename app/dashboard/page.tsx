@@ -70,7 +70,7 @@ export default function DashboardPage() {
 
       if (profileError && profileError.code === "PGRST116") {
         // Profile doesn't exist
-        router.push("/questionnaire")
+        router.push("/onboarding")
         return
       }
 
@@ -81,7 +81,7 @@ export default function DashboardPage() {
       }
 
       if (profileData && !profileData.questionnaire_completed) {
-        router.push("/questionnaire")
+        router.push("/onboarding")
         return
       }
 
