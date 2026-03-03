@@ -23,10 +23,14 @@ export default function LoginPage() {
 
   // Check if already logged in
   React.useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    console.log("[v0] Login: checking auth state...")
+    supabase.auth.getUser().then(({ data: { user }, error }) => {
+      console.log("[v0] Login: user =", user?.email, "error =", error?.message)
       if (user) {
+        console.log("[v0] Login: user found, redirecting to dashboard")
         router.push("/dashboard")
       } else {
+        console.log("[v0] Login: no user, showing login form")
         setCheckingAuth(false)
       }
     })

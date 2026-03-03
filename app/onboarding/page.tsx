@@ -28,9 +28,13 @@ export default function OnboardingPage() {
 
   useEffect(() => {
     const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
+      console.log("[v0] Onboarding: checking user session...")
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      
+      console.log("[v0] Onboarding: user =", user?.email, "error =", authError?.message)
       
       if (!user) {
+        console.log("[v0] Onboarding: no user, redirecting to login")
         router.push("/login")
         return
       }

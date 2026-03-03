@@ -5,6 +5,8 @@ import { NextResponse } from "next/server"
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get("code")
+  
+  console.log("[v0] Auth callback: code present =", !!code)
 
   if (code) {
     const cookieStore = await cookies()
@@ -30,9 +32,12 @@ export async function GET(request: Request) {
     )
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
+    console.log("[v0] Auth callback: exchangeCodeForSession error =", error?.message)
+    
     if (!error) {
       // Get the authenticated user
       const { data: { user } } = await supabase.auth.getUser()
+      console.log("[v0] Auth callback: user =", user?.email)
       
       if (user) {
         // Check if profile exists and is complete
@@ -47,6 +52,7 @@ export async function GET(request: Request) {
         
         // Determine redirect URL based on profile completion
         const redirectPath = profile?.questionnaire_completed ? "/dashboard" : "/onboarding"
+        console.log("[v0] Auth callback: profile completed =", profile?.questionnaire_completed, "redirecting to", redirectPath)
         
         if (isLocalEnv) {
           return NextResponse.redirect(`${origin}${redirectPath}`)
