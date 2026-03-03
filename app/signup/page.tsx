@@ -77,8 +77,6 @@ export default function SignupPage() {
     }
 
     const redirectUrl = process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/dashboard`
-    console.log("[v0] Signup attempt for:", email)
-    console.log("[v0] Redirect URL:", redirectUrl)
     
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -91,11 +89,15 @@ export default function SignupPage() {
       },
     })
 
-    console.log("[v0] Signup result - Data:", data)
-    console.log("[v0] Signup result - Error:", error)
-
     if (error) {
-      setError(error.message)
+      // Handle email sending rate limit errors
+      if (error.message.toLowerCase().includes("email") && error.message.toLowerCase().includes("send")) {
+        setError("The email service is temporarily rate-limited. Your account may have been created. Please try logging in, or wait a few minutes and try signing up again.")
+      } else if (error.message.toLowerCase().includes("rate") || error.status === 429) {
+        setError("Too many signup attempts. Please wait a few minutes and try again.")
+      } else {
+        setError(error.message)
+      }
       setLoading(false)
       return
     }
