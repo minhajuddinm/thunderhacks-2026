@@ -61,23 +61,17 @@ export default function LoginPage() {
       return
     }
 
-    console.log("[v0] Attempting login for:", email)
-    
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
 
-    console.log("[v0] Login result:", { data, error })
-
     if (error) {
-      console.log("[v0] Login error:", error.message)
       setError(error.message)
       setLoading(false)
       return
     }
 
-    console.log("[v0] Login successful, redirecting to dashboard")
     // Use hard redirect to ensure fresh page load
     window.location.href = "/dashboard"
   }
@@ -128,7 +122,15 @@ export default function LoginPage() {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  <Link
+                    href="/forgot-password"
+                    className="text-xs text-primary hover:underline"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
                 <Input
                   id="password"
                   type="password"
