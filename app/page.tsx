@@ -67,22 +67,14 @@ export default function HomePage() {
             Ready to Hack?
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Sign in with your @algomau.ca email to register and join a team.
+            Sign in with your Algoma University Google account to register and join a team.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/login"
-              className="inline-flex items-center justify-center px-8 py-4 bg-accent text-accent-foreground font-bold rounded-lg hover:bg-accent/90 transition-colors shadow-lg shadow-accent/30"
-            >
-              Sign In
-            </a>
-            <a
-              href="/signup"
-              className="inline-flex items-center justify-center px-8 py-4 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/80 transition-colors"
-            >
-              Create Account
-            </a>
-          </div>
+          <a
+            href="/login"
+            className="inline-flex items-center justify-center px-8 py-4 bg-accent text-accent-foreground font-bold rounded-lg hover:bg-accent/90 transition-colors shadow-lg shadow-accent/30"
+          >
+            Login with Google
+          </a>
         </div>
       </section>
 

@@ -5,7 +5,14 @@ import { NextResponse } from "next/server"
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get("code")
-
+  const errorParam = searchParams.get("error")
+  const errorDescription = searchParams.get("error_description")
+  
+  // Handle OAuth errors from provider
+  if (errorParam) {
+    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(errorDescription || errorParam)}`)
+  }
+  
   if (code) {
     const cookieStore = await cookies()
     const supabase = createServerClient(
@@ -30,34 +37,40 @@ export async function GET(request: Request) {
     )
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) {
-      // Get the authenticated user
-      const { data: { user } } = await supabase.auth.getUser()
-      
-      if (user) {
-        // Check if profile exists and is complete
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("questionnaire_completed")
-          .eq("id", user.id)
-          .single()
-
-        const forwardedHost = request.headers.get("x-forwarded-host")
-        const isLocalEnv = process.env.NODE_ENV === "development"
-        
-        // Determine redirect URL based on profile completion
-        const redirectPath = profile?.questionnaire_completed ? "/dashboard" : "/onboarding"
-        
-        if (isLocalEnv) {
-          return NextResponse.redirect(`${origin}${redirectPath}`)
-        } else if (forwardedHost) {
-          return NextResponse.redirect(`https://${forwardedHost}${redirectPath}`)
-        } else {
-          return NextResponse.redirect(`${origin}${redirectPath}`)
-        }
-      }
+    
+    if (error) {
+      return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`)
     }
+    
+    // Get the authenticated user
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    if (!user) {
+      return NextResponse.redirect(`${origin}/login?error=Could not get user`)
+    }
+    
+    // Check if profile exists and is complete
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("questionnaire_completed")
+      .eq("id", user.id)
+      .single()
+
+    const forwardedHost = request.headers.get("x-forwarded-host")
+    const isLocalEnv = process.env.NODE_ENV === "development"
+    
+    // If no profile or profile not complete, redirect to onboarding
+    // If profile exists and complete, redirect to dashboard
+    const redirectPath = (profile && profile.questionnaire_completed) ? "/dashboard" : "/onboarding"
+    
+    const redirectUrl = isLocalEnv 
+      ? `${origin}${redirectPath}`
+      : forwardedHost 
+        ? `https://${forwardedHost}${redirectPath}`
+        : `${origin}${redirectPath}`
+    
+    return NextResponse.redirect(redirectUrl)
   }
 
-  return NextResponse.redirect(`${origin}/login?error=Could not authenticate`)
+  return NextResponse.redirect(`${origin}/login?error=No code provided`)
 }

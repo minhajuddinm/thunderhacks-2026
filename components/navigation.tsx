@@ -50,7 +50,7 @@ export function Navigation() {
               alt="ThunderHacks Logo"
               width={40}
               height={40}
-              className="h-auto"
+              className="w-[40px] h-auto"
             />
             <span className="font-bold text-lg text-foreground">hunderHacks</span>
           </Link>
@@ -76,14 +76,9 @@ export function Navigation() {
                   </Link>
                 </Button>
               ) : (
-                <div className="flex items-center gap-2 ml-4">
-                  <Button asChild variant="outline">
-                    <Link href="/login">Login</Link>
-                  </Button>
-                  <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-                    <Link href="/signup">Sign Up</Link>
-                  </Button>
-                </div>
+                <Button asChild className="ml-4">
+                  <Link href="/login">Login</Link>
+                </Button>
               )
             )}
           </div>
@@ -123,14 +118,9 @@ export function Navigation() {
                     </Link>
                   </Button>
                 ) : (
-                  <div className="flex flex-col gap-2 mt-2">
-                    <Button asChild variant="outline">
-                      <Link href="/login" onClick={() => setMobileMenuOpen(false)}>Login</Link>
-                    </Button>
-                    <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-                      <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>Sign Up</Link>
-                    </Button>
-                  </div>
+                  <Button asChild className="mt-2">
+                    <Link href="/login" onClick={() => setMobileMenuOpen(false)}>Login</Link>
+                  </Button>
                 )
               )}
             </div>
