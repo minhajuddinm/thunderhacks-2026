@@ -133,7 +133,7 @@ export default function OnboardingPage() {
                 alt="ThunderHacks"
                 width={80}
                 height={80}
-                className="h-auto"
+                style={{ width: '80px', height: 'auto' }}
               />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">Complete Your Profile</CardTitle>
