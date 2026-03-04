@@ -82,9 +82,9 @@ export function HeroSection() {
             alt="ThunderHacks"
             width={180}
             height={180}
-            className="drop-shadow-2xl"
-            style={{ width: '180px', height: 'auto' }}
+            className="drop-shadow-2xl w-[180px] h-auto"
             priority
+            loading="eager"
           />
         </div>
 

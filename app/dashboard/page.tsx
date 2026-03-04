@@ -50,9 +50,9 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    const supabase = getSupabaseBrowserClient()
+    
     const loadDashboard = async () => {
-      const supabase = getSupabaseBrowserClient()
-      
       // Check auth
       const { data: { user }, error: authError } = await supabase.auth.getUser()
       
@@ -118,7 +118,18 @@ export default function DashboardPage() {
       setLoading(false)
     }
 
+    // Listen for auth state changes (handles OAuth callback)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        loadDashboard()
+      } else if (event === 'SIGNED_OUT') {
+        router.push("/login")
+      }
+    })
+
     loadDashboard()
+    
+    return () => subscription.unsubscribe()
   }, [router])
 
   if (loading) {

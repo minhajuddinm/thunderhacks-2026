@@ -51,7 +51,7 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${window.location.origin}/dashboard`,
       },
     })
     
@@ -74,7 +74,7 @@ export default function LoginPage() {
                 alt="ThunderHacks"
                 width={80}
                 height={80}
-                style={{ width: '80px', height: 'auto' }}
+                className="w-[80px] h-auto"
               />
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">Welcome to ThunderHacks</CardTitle>
