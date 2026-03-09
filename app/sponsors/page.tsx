@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
 
-// Sponsor tiers - Platinum, Gold, Food (no Silver)
+// Sponsor tiers - Platinum, Gold, Bronze, Food
 const sponsors = {
   platinum: [
     {
@@ -24,13 +24,22 @@ const sponsors = {
       website: "https://digital-move.com/",
     },
   ],
-  food: [
+  bronze: [
     {
       id: 3,
       name: "Circuit Revival",
       logo: "/placeholder-logo.svg",
-      description: "Proud catering partner of ThunderHacks 2026. Circuit Revival keeps our hackers fueled with delicious meals throughout the event.",
+      description: "Supporting the next generation of tech innovators. Circuit Revival is proud to sponsor ThunderHacks 2026.",
       website: "https://algomau.ca",
+    },
+  ],
+  food: [
+    {
+      id: 4,
+      name: "The Food Quotient",
+      logo: "/images/sponsors/food-quotient.png",
+      description: "Local Food for the Global Mind. The Food Quotient is our official food partner, keeping hackers fueled with delicious meals throughout the event.",
+      website: "https://thefoodquotient.com",
     },
   ],
 }
@@ -38,19 +47,22 @@ const sponsors = {
 const tierColors = {
   platinum: "bg-gradient-to-r from-slate-300 to-slate-100 text-slate-900",
   gold: "bg-gradient-to-r from-yellow-400 to-amber-300 text-amber-900",
-  food: "bg-gradient-to-r from-orange-400 to-red-400 text-white",
+  bronze: "bg-gradient-to-r from-amber-600 to-orange-500 text-white",
+  food: "bg-gradient-to-r from-green-500 to-emerald-400 text-white",
 }
 
 const tierBorders = {
   platinum: "border-slate-400/50 hover:border-slate-300",
   gold: "border-yellow-500/50 hover:border-yellow-400",
-  food: "border-orange-400/50 hover:border-orange-300",
+  bronze: "border-amber-600/50 hover:border-amber-500",
+  food: "border-green-500/50 hover:border-green-400",
 }
 
 const tierShadows = {
   platinum: "hover:shadow-slate-400/20",
   gold: "hover:shadow-yellow-400/20",
-  food: "hover:shadow-orange-400/20",
+  bronze: "hover:shadow-amber-600/20",
+  food: "hover:shadow-green-500/20",
 }
 
 export default function SponsorsPage() {
@@ -144,13 +156,45 @@ export default function SponsorsPage() {
           </div>
         </section>
 
-        {/* Food Sponsor - Circuit Revival */}
+        {/* Bronze Sponsor - Circuit Revival */}
         <section className="py-12 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-center gap-3 mb-8">
-              <Badge className={tierColors.food}>Food & Catering Partner</Badge>
+              <Badge className={tierColors.bronze}>Bronze Sponsor</Badge>
             </div>
-            <div className="max-w-xl mx-auto">
+            <div className="max-w-md mx-auto">
+              {sponsors.bronze.map((sponsor) => (
+                <a
+                  key={sponsor.id}
+                  href={sponsor.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <Card className={`bg-card border-2 ${tierBorders.bronze} transition-all hover:shadow-lg ${tierShadows.bronze}`}>
+                    <CardContent className="p-6 flex flex-col items-center text-center">
+                      <div className="w-28 h-28 bg-muted rounded-lg flex items-center justify-center mb-4">
+                        <span className="text-3xl font-bold text-muted-foreground">
+                          {sponsor.name.charAt(0)}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold text-foreground mb-2">{sponsor.name}</h3>
+                      <p className="text-sm text-muted-foreground">{sponsor.description}</p>
+                    </CardContent>
+                  </Card>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Food Partner - The Food Quotient */}
+        <section className="py-12">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <Badge className={tierColors.food}>Official Food Partner</Badge>
+            </div>
+            <div className="max-w-md mx-auto">
               {sponsors.food.map((sponsor) => (
                 <a
                   key={sponsor.id}
@@ -160,14 +204,18 @@ export default function SponsorsPage() {
                   className="block"
                 >
                   <Card className={`bg-card border-2 ${tierBorders.food} transition-all hover:shadow-lg ${tierShadows.food}`}>
-                    <CardContent className="p-8 flex flex-col items-center text-center">
-                      <div className="w-32 h-32 bg-muted rounded-lg flex items-center justify-center mb-4">
-                        <span className="text-4xl font-bold text-muted-foreground">
-                          {sponsor.name.charAt(0)}
-                        </span>
+                    <CardContent className="p-6 flex flex-col items-center text-center">
+                      <div className="w-28 h-28 bg-white rounded-lg flex items-center justify-center mb-4 p-2">
+                        <Image
+                          src={sponsor.logo}
+                          alt={sponsor.name}
+                          width={100}
+                          height={100}
+                          className="object-contain"
+                        />
                       </div>
-                      <h3 className="text-xl font-bold text-foreground mb-2">{sponsor.name}</h3>
-                      <p className="text-muted-foreground">{sponsor.description}</p>
+                      <h3 className="text-lg font-bold text-foreground mb-2">{sponsor.name}</h3>
+                      <p className="text-sm text-muted-foreground">{sponsor.description}</p>
                     </CardContent>
                   </Card>
                 </a>

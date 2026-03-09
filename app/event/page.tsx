@@ -39,21 +39,18 @@ const schedule = [
     day: "Day 1 - Saturday, March 14",
     events: [
       { time: "11:00 AM", event: "Opening Ceremony", desc: "Welcome and event kickoff" },
-      { time: "12:00 PM", event: "Hacking Begins!", desc: "Start building your projects" },
-      { time: "1:00 PM", event: "Workshop 1", desc: "Learn new skills with our first workshop" },
-      { time: "3:00 PM", event: "Lunch", desc: "Fuel up for the journey ahead" },
-      { time: "4:30 PM", event: "Workshop 2", desc: "More learning opportunities" },
-      { time: "7:00 PM", event: "Dinner", desc: "Take a break and recharge" },
-      { time: "9:00 PM", event: "Gaming Event", desc: "Compete in our gaming tournament" },
+      { time: "1:00 PM", event: "Lunch", desc: "Fuel up for the journey ahead" },
+      { time: "3:00 PM", event: "Gaming Tournament", desc: "Compete in our gaming tournament" },
+      { time: "5:00 PM", event: "Dinner", desc: "Take a break and recharge" },
     ],
   },
   {
     day: "Day 2 - Sunday, March 15",
     events: [
-      { time: "10:00 AM", event: "Breakfast", desc: "Morning fuel and continue hacking" },
-      { time: "12:00 PM", event: "Project Submissions Due", desc: "Code freeze - submit your project!" },
-      { time: "1:00 PM", event: "Presentations Begin", desc: "Demo your project to judges" },
-      { time: "3:00 PM", event: "Closing Ceremony & Final Lunch", desc: "Winners announced and farewell" },
+      { time: "11:00 AM", event: "Breakfast", desc: "Morning fuel and continue hacking" },
+      { time: "12:00 PM", event: "Project Submission", desc: "Code freeze - submit your project!" },
+      { time: "1:00 PM", event: "Presentations", desc: "Demo your project to judges" },
+      { time: "3:00 PM", event: "Closing Ceremony & Lunch", desc: "Winners announced and farewell" },
     ],
   },
 ]
