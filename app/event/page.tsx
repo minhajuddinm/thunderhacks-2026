@@ -98,8 +98,8 @@ export default function EventPage() {
               <CardContent className="pt-6">
                 <Clock className="h-10 w-10 text-primary mx-auto mb-3" />
                 <h3 className="font-semibold text-foreground mb-1">Hours</h3>
-                <p className="text-muted-foreground">8 AM - 10 PM</p>
-                <p className="text-sm text-muted-foreground">Both days (no overnight)</p>
+                <p className="text-muted-foreground">11 AM - 6 PM</p>
+                <p className="text-sm text-muted-foreground">Both days</p>
               </CardContent>
             </Card>
           </div>

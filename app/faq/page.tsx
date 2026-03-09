@@ -35,7 +35,7 @@ const faqs = [
       },
       {
         q: "When and where is ThunderHacks 2026?",
-        a: "ThunderHacks 2026 takes place on March 14-15, 2026 at Algoma University, 24 Queen St E, Brampton, ON. The venue is open from 8 AM to 10 PM both days (no overnight stay).",
+        a: "ThunderHacks 2026 takes place on March 14-15, 2026 at Algoma University, 24 Queen St E, Brampton, ON. The venue is open from 11 AM to 6 PM both days.",
       },
     ],
   },
@@ -81,7 +81,7 @@ const faqs = [
       },
       {
         q: "Is this an overnight hackathon?",
-        a: "No, ThunderHacks is NOT an overnight event. The venue is open from 8 AM to 10 PM on both days. You'll need to leave at 10 PM on Saturday and return on Sunday morning to continue working.",
+        a: "No, ThunderHacks is NOT an overnight event. The venue is open from 11 AM to 6 PM on both days. You'll need to leave at 6 PM on Saturday and return on Sunday to continue working.",
       },
     ],
   },
