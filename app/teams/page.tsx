@@ -94,7 +94,7 @@ export default async function TeamsPage() {
                       <p className="text-sm text-muted-foreground mb-2">{person.school}</p>
                       {person.skills && (
                         <div className="flex flex-wrap gap-1">
-                          {person.skills.split(",").slice(0, 3).map((skill) => (
+                          {person.skills.split(",").slice(0, 3).map((skill: string) => (
                             <Badge
                               key={skill}
                               variant="outline"

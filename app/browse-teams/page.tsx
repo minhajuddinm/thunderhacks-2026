@@ -101,7 +101,7 @@ export default function BrowseTeamsPage() {
       if (teamsData) {
         // Get member counts for each team
         const teamsWithCounts = await Promise.all(
-          teamsData.map(async (team) => {
+          teamsData.map(async (team: { id: string; team_name: string; team_code: string; looking_for_members: boolean }) => {
             const { count } = await supabase
               .from("profiles")
               .select("*", { count: "exact", head: true })
@@ -121,7 +121,7 @@ export default function BrowseTeamsPage() {
         .eq("status", "pending")
 
       if (requests) {
-        setPendingRequests(requests.map(r => r.team_id))
+        setPendingRequests(requests.map((r: { team_id: string }) => r.team_id))
       }
 
       setInitialLoading(false)

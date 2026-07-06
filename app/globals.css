@@ -130,4 +130,133 @@
   body {
     @apply bg-background text-foreground;
   }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Animation utilities for ThunderHacks II
+   (Aurora background, infinite marquee, shimmer, border beam)
+   All are gated behind prefers-reduced-motion at the bottom of this file.
+--------------------------------------------------------------------------- */
+
+@keyframes th-aurora {
+  0% {
+    background-position: 0% 50%;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    background-position: 100% 50%;
+    transform: translate3d(0, -1%, 0) scale(1.05);
+  }
+  100% {
+    background-position: 0% 50%;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.th-aurora {
+  background-image:
+    radial-gradient(40% 60% at 20% 30%, rgba(112, 0, 255, 0.35) 0%, transparent 60%),
+    radial-gradient(35% 55% at 80% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 60%),
+    radial-gradient(45% 65% at 60% 80%, rgba(255, 234, 0, 0.14) 0%, transparent 60%),
+    radial-gradient(40% 60% at 30% 75%, rgba(112, 0, 255, 0.25) 0%, transparent 60%);
+  background-size: 200% 200%;
+  animation: th-aurora 18s ease-in-out infinite;
+  will-change: transform, background-position;
+}
+
+@keyframes th-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+.th-marquee {
+  animation: th-marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+.th-marquee-paused:hover .th-marquee {
+  animation-play-state: paused;
+}
+
+@keyframes th-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.th-shimmer {
+  background-image: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(255, 234, 0, 0.55) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: th-shimmer 3.5s linear infinite;
+}
+
+/* Rotating conic-gradient border ("border beam"). Widely supported: a large
+   conic gradient spins behind the card, masked to a thin border by ::after. */
+@keyframes th-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.th-beam {
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.th-beam::before {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  z-index: -2;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0 62%,
+    rgba(255, 234, 0, 0.9) 76%,
+    rgba(112, 0, 255, 0.95) 90%,
+    transparent 100%
+  );
+  animation: th-spin 6s linear infinite;
+  will-change: transform;
+}
+
+.th-beam::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--card);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .th-aurora,
+  .th-marquee,
+  .th-shimmer,
+  .th-beam::before,
+  .animate-pulse {
+    animation: none !important;
+  }
+  /* Keep a static gold edge so the Gold tier still reads as premium. */
+  .th-beam::before {
+    background: linear-gradient(135deg, rgba(255, 234, 0, 0.7), rgba(112, 0, 255, 0.7));
+  }
 }

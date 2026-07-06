@@ -28,7 +28,7 @@ export default function LoginPage() {
 
   // Check if already logged in
   React.useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    supabase.auth.getUser().then(({ data: { user } }: { data: { user: { id: string } | null } }) => {
       if (user) {
         router.push("/dashboard")
       } else {

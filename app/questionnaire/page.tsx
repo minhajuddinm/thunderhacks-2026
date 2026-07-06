@@ -184,7 +184,7 @@ export default function QuestionnairePage() {
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">Complete Your Profile</CardTitle>
             <CardDescription>
-              Tell us a bit more about yourself to help us make ThunderHacks 2026 amazing for you!
+              Tell us a bit more about yourself to help us make ThunderHacks II amazing for you!
             </CardDescription>
           </CardHeader>
           

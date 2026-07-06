@@ -1,125 +1,141 @@
 "use client"
 
-import Link from "next/link"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
+import { motion, useReducedMotion, type Variants } from "motion/react"
 import { Calendar, MapPin, Zap } from "lucide-react"
+import { AuroraBackground } from "@/components/ui/aurora-background"
+import { Countdown } from "@/components/countdown"
+import { EVENT } from "@/lib/content"
 
 function LightningBolt({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      className={className}
-    >
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
       <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
     </svg>
   )
 }
 
-function ParticleBackground() {
-  return (
-    <div className="absolute inset-0 overflow-hidden">
-      {/* Animated particles */}
-      {Array.from({ length: 20 }).map((_, i) => (
-        <div
-          key={i}
-          className="absolute w-1 h-1 bg-[#7000FF]/40 rounded-full animate-pulse"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 2}s`,
-            animationDuration: `${2 + Math.random() * 3}s`,
-          }}
-        />
-      ))}
-      {/* Larger glowing orbs */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#7000FF]/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#9333ea]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
-      <div className="absolute top-1/2 right-1/3 w-48 h-48 bg-[#FFEA00]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "0.5s" }} />
-    </div>
-  )
-}
-
 export function HeroSection() {
-  return (
-    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#7000FF]/10 via-[#0B0E14] to-[#FFEA00]/5" />
-      
-      {/* Particle background */}
-      <ParticleBackground />
-      
-      {/* Animated grid pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(112,0,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(112,0,255,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
+  const reduce = useReducedMotion()
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+  const container: Variants = {
+    hidden: {},
+    visible: {
+      transition: { staggerChildren: reduce ? 0 : 0.12, delayChildren: 0.05 },
+    },
+  }
+
+  const item: Variants = reduce
+    ? { hidden: { opacity: 0 }, visible: { opacity: 1 } }
+    : {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+        },
+      }
+
+  return (
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden pt-16">
+      <AuroraBackground />
+
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="visible"
+        className="relative z-10 mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8"
+      >
         {/* Logo */}
-        <div className="flex justify-center mb-6">
+        <motion.div variants={item} className="mb-6 flex justify-center">
           <Image
             src="/images/th-logo.png"
-            alt="ThunderHacks"
-            width={180}
-            height={180}
+            alt="ThunderHacks II"
+            width={160}
+            height={160}
             className="drop-shadow-2xl"
             priority
           />
-        </div>
+        </motion.div>
 
-        {/* Main Title - THUNDER HACKS 2026 */}
-        <div className="flex justify-center items-center gap-3 mb-2">
-          <LightningBolt className="w-8 h-8 sm:w-10 sm:h-10 text-[#FFEA00] animate-pulse" />
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-foreground uppercase">
+        {/* Title */}
+        <motion.div variants={item} className="mb-2 flex items-center justify-center gap-3">
+          <LightningBolt className="h-8 w-8 text-[#FFEA00] sm:h-10 sm:w-10" />
+          <h1 className="text-4xl font-black uppercase tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             ThunderHacks
           </h1>
-          <LightningBolt className="w-8 h-8 sm:w-10 sm:h-10 text-[#FFEA00] animate-pulse" />
-        </div>
-        
-        {/* Year */}
-        <div className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight mb-4 bg-gradient-to-r from-[#7000FF] via-[#9333ea] to-[#FFEA00] bg-clip-text text-transparent">
-          2026
-        </div>
+          <LightningBolt className="h-8 w-8 text-[#FFEA00] sm:h-10 sm:w-10" />
+        </motion.div>
 
-        {/* Tagline - smaller */}
-        <p className="text-lg sm:text-xl lg:text-2xl font-medium text-muted-foreground mb-6 tracking-wide">
-          Spark Innovation. Strike Fast.
-        </p>
+        <motion.div
+          variants={item}
+          className="mb-4 bg-gradient-to-r from-[#7000FF] via-[#9333ea] to-[#FFEA00] bg-clip-text text-6xl font-black tracking-tight text-transparent sm:text-7xl lg:text-8xl"
+        >
+          II
+        </motion.div>
 
-        <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-10">
-          Join Algoma University&apos;s premier hackathon. Build. Collaborate. Compete.
-        </p>
+        {/* Subtitle */}
+        <motion.p
+          variants={item}
+          className="mx-auto mb-3 max-w-2xl text-base font-medium text-muted-foreground sm:text-lg lg:text-xl"
+        >
+          {EVENT.subtitle}
+        </motion.p>
 
-        {/* Key Details */}
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-10">
-          <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm px-4 py-2 rounded-full border border-[#7000FF]/30">
+        {/* Format tagline */}
+        <motion.p
+          variants={item}
+          className="mb-8 text-xl font-black uppercase tracking-wide text-[#FFEA00] sm:text-2xl lg:text-3xl"
+        >
+          {EVENT.tagline}
+        </motion.p>
+
+        {/* Key details */}
+        <motion.div variants={item} className="mb-8 flex flex-wrap justify-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-2 rounded-full border border-[#7000FF]/30 bg-card/50 px-4 py-2 backdrop-blur-sm">
             <Calendar className="h-5 w-5 text-[#9333ea]" />
-            <span className="text-foreground font-medium">March 14-15, 2026</span>
+            <span className="font-medium text-foreground">{EVENT.datesLabel}</span>
           </div>
-          <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm px-4 py-2 rounded-full border border-[#7000FF]/30">
-            <MapPin className="h-5 w-5 text-[#9333ea]" />
-            <span className="text-foreground font-medium">Brampton, ON</span>
-          </div>
-          <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm px-4 py-2 rounded-full border border-[#FFEA00]/30">
-            <Zap className="h-5 w-5 text-[#FFEA00]" />
-            <span className="text-foreground font-medium">$1,250 in Prizes</span>
-          </div>
-        </div>
-
-        {/* Stats with electric styling */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto">
-          {[
-            { value: "2", label: "Days" },
-            { value: "$1.2K+", label: "In Prizes" },
-            { value: "100+", label: "Hackers" },
-            { value: "20+", label: "Projects" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center p-4 rounded-xl bg-card/30 backdrop-blur-sm border border-border/50">
-              <div className="text-3xl sm:text-4xl font-black text-[#FFEA00]">{stat.value}</div>
-              <div className="text-muted-foreground text-sm">{stat.label}</div>
+          {EVENT.campuses.map((campus) => (
+            <div
+              key={campus.name}
+              className="flex items-center gap-2 rounded-full border border-[#7000FF]/30 bg-card/50 px-4 py-2 backdrop-blur-sm"
+            >
+              <MapPin className="h-5 w-5 text-[#9333ea]" />
+              <span className="font-medium text-foreground">
+                {campus.name} <span className="text-muted-foreground">({campus.region})</span>
+              </span>
             </div>
           ))}
-        </div>
-      </div>
+        </motion.div>
+
+        {/* Countdown */}
+        <motion.div variants={item} className="mb-10">
+          <p className="mb-4 flex items-center justify-center gap-2 text-sm font-medium uppercase tracking-wider text-muted-foreground">
+            <Zap className="h-4 w-4 text-[#FFEA00]" />
+            Hacking starts in
+          </p>
+          <Countdown targetISO={EVENT.startsAtISO} />
+        </motion.div>
+
+        {/* CTAs */}
+        <motion.div variants={item} className="flex flex-col justify-center gap-4 sm:flex-row">
+          <a
+            href={EVENT.registerUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-lg bg-accent px-8 py-4 font-bold text-accent-foreground shadow-lg shadow-accent/30 transition-colors hover:bg-accent/90"
+          >
+            Register Now
+          </a>
+          <a
+            href="#sponsors"
+            className="inline-flex items-center justify-center rounded-lg border border-[#7000FF]/40 bg-primary/10 px-8 py-4 font-semibold text-foreground transition-colors hover:bg-primary/20"
+          >
+            View Sponsor Packages
+          </a>
+        </motion.div>
+      </motion.div>
     </section>
   )
 }

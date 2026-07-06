@@ -29,7 +29,7 @@ export default function SignupPage() {
 
   // Check if already logged in
   React.useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    supabase.auth.getUser().then(({ data: { user } }: { data: { user: { id: string } | null } }) => {
       if (user) {
         window.location.href = "/dashboard"
       } else {
@@ -144,7 +144,7 @@ export default function SignupPage() {
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">Create Account</CardTitle>
             <CardDescription>
-              Join ThunderHacks 2026 at Algoma University
+              Join ThunderHacks II at Algoma University
             </CardDescription>
           </CardHeader>
           

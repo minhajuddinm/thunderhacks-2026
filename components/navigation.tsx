@@ -32,9 +32,11 @@ export function Navigation() {
 
     getUser()
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ? { email: session.user.email || "" } : null)
-    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event: string, session: { user: { email: string | null } | null } | null) => {
+        setUser(session?.user ? { email: session.user.email || "" } : null)
+      }
+    )
 
     return () => subscription.unsubscribe()
   }, [supabase])

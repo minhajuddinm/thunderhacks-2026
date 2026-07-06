@@ -194,7 +194,7 @@ export function DashboardContent({ profile, team, teamMembers, joinRequests }: D
                   <Users className="h-5 w-5 text-primary" />
                   {team.team_name}
                 </CardTitle>
-                <CardDescription>Your team for ThunderHacks 2026</CardDescription>
+                <CardDescription>Your team for ThunderHacks II</CardDescription>
               </div>
               {team.looking_for_members && (
                 <Badge className="bg-accent text-accent-foreground">Looking for Members</Badge>

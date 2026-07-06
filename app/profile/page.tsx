@@ -193,7 +193,7 @@ export default function ProfilePage() {
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-foreground">Edit Profile</CardTitle>
               <CardDescription>
-                Update your profile information for ThunderHacks 2026
+                Update your profile information for ThunderHacks II
               </CardDescription>
             </CardHeader>
             
