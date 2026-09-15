@@ -1,103 +1,175 @@
 /**
  * Central content module for ThunderHacks II (Fall 2026).
- * All user-facing marketing copy lives here so every section renders one source of truth.
- * Copy avoids decorative em-dashes per brand guidelines (commas/periods/hyphen ranges only).
+ * Every page reads from here so there is one source of truth for copy,
+ * figures and dates. Copy uses commas, periods and hyphen ranges only.
  */
 
 export const EVENT = {
   name: "ThunderHacks II",
-  subtitle: "Algoma University's Flagship Hackathon, Fall 2026 Edition",
-  tagline: "3 Days. 2 Campuses. 1 Competition.",
+  edition: "II",
+  presentedBy: "Powered by OLG",
+  subtitle: "Algoma University's flagship hackathon",
+  tagline: "Two campuses. One competition.",
   datesLabel: "October 14-16, 2026",
-  hoursLabel: "9:00 AM to 8:00 PM daily",
-  /** Countdown target: Oct 14, 2026, 9:00 AM ET (EDT, UTC-4). */
-  startsAtISO: "2026-10-14T09:00:00-04:00",
+  hoursLabel: "Daytime format, venue closes each evening after dinner",
+  /** Countdown target: Oct 14, 2026, 2:00 PM ET (EDT, UTC-4). */
+  startsAtISO: "2026-10-14T14:00:00-04:00",
+  countdownLabel: "Ready to bring the thunder in",
   registerUrl: "https://thunderhacks.devpost.com",
+  registrationOpensLabel: "Registration opens September 21",
   campuses: [
-    { name: "Brampton Campus", region: "GTA" },
-    { name: "Sault Ste. Marie Campus", region: "Northern Ontario" },
+    {
+      key: "brampton",
+      name: "Brampton",
+      full: "Brampton Campus",
+      region: "Greater Toronto Area",
+      blurb:
+        "The GTA campus, and where the first ThunderHacks ran in March 2026.",
+    },
+    {
+      key: "sault",
+      name: "Sault Ste. Marie",
+      full: "Sault Ste. Marie Campus",
+      region: "Northern Ontario",
+      blurb:
+        "Algoma's home campus, open to Algoma and Sault College students.",
+    },
   ],
-  metaTitle: "ThunderHacks II | Fall 2026 | Algoma University Hackathon",
+  metaTitle: "ThunderHacks II | October 14-16, 2026 | Algoma University",
   metaDescription:
-    "ThunderHacks II is Algoma University's flagship hackathon, running October 14-16, 2026 across two campuses: Brampton (GTA) and Sault Ste. Marie (Northern Ontario). 3 Days. 2 Campuses. 1 Competition.",
+    "ThunderHacks II is Algoma University's flagship hackathon, running October 14-16, 2026 on two campuses at once: Brampton and Sault Ste. Marie. Powered by OLG.",
 } as const
 
 export const ABOUT = {
-  heading: "The Second Edition, Scaled Up",
+  heading: "One competition, running in two places",
   intro:
-    "ThunderHacks II is the bigger, bolder second edition of Algoma University's flagship hackathon. What began as a single-campus, single-day competition returns as a three-day event running simultaneously across two campuses.",
+    "ThunderHacks II is the second edition of Algoma University's flagship hackathon. The first ran for a single day on one campus. This one runs for three days on two, with judging combined into a single competition so every team is measured against the same bar.",
   blocks: [
     {
-      title: "Open Across Two Campuses",
-      body: "Open to Algoma University students at both the Brampton and Sault Ste. Marie campuses, plus Sault College students at the Sault Ste. Marie campus.",
+      title: "Who can enter",
+      body: "Algoma University students at both campuses, plus Sault College students at the Sault Ste. Marie campus.",
     },
     {
-      title: "A Three-Day Daytime Format",
-      body: "A three-day daytime hackathon running 9:00 AM to 8:00 PM each day. Build during the day, rest at night, and come back sharp.",
+      title: "How it runs",
+      body: "Three days, daytime hours. Build during the day, go home at night, come back sharp. The venue closes each evening after dinner.",
     },
     {
-      title: "Built for 50 to 60 Hackers",
-      body: "We are projecting 50 to 60 participants across both campuses, bringing together builders from Northern Ontario and the GTA.",
+      title: "How big",
+      body: "We are planning for 50 to 60 hackers across the two campuses.",
     },
     {
-      title: "One Unified Competition",
-      body: "Judging is combined across both campuses into one unified competition, with virtual coordination on the final day so every team competes on equal footing.",
+      title: "How it is judged",
+      body: "Both campuses stream to each other, and submissions are judged together on the final day by one panel.",
     },
   ],
 } as const
 
 export const RECAP = {
-  heading: "Where It All Started",
-  subheading: "The Inaugural ThunderHacks, March 2026",
+  heading: "Where it started",
+  subheading: "The first ThunderHacks, March 2026, Brampton",
   intro:
-    "The first ThunderHacks brought 36 participants across 12 teams together for a single-day competition at our Brampton campus. It set the standard we are building on this fall.",
+    "Thirty-six people, twelve teams, one day, one campus. ThunderHacks II is built on what that weekend proved.",
   stats: [
-    { value: "36", label: "Participants" },
+    { value: "36", label: "Hackers" },
     { value: "12", label: "Teams" },
     { value: "1", label: "Day" },
-    { value: "Brampton", label: "Campus" },
+    { value: "1", label: "Campus" },
   ],
   winners: [
     {
-      place: "1st Place",
+      place: "1st",
       members: ["Bidhan Thapa", "Harris Adedeji", "Pratikshya Thapa", "Vikas Saahil"],
     },
+    { place: "2nd", members: ["Joel Saji Varghese", "Niya Jose"] },
     {
-      place: "2nd Place",
-      members: ["Joel Saji Varghese", "Niya Jose"],
-    },
-    {
-      place: "3rd Place",
+      place: "3rd",
       members: ["Masir Javed", "Raafay Sheikh", "Tarang Rana", "Rachit Ranabhat"],
     },
   ],
-  pastSponsors: [
-    { name: "Shield Identity" },
-    { name: "Digital Move" },
-    { name: "Food Quotient" },
-  ],
+  pastSponsors: ["Shield Identity", "Digital Move", "Food Quotient"],
 } as const
 
 export const PRIZES = {
-  poolLabel: "$3,000 in main prizes, plus additional sponsor track prizes",
+  heading: "Prizes",
+  poolLabel: "$4,500 total",
+  intro:
+    "Three overall placements, plus a prize on each sponsored challenge track.",
   main: [
-    { place: "1st Place", amount: "$1,250", description: "Grand prize for the best project overall." },
-    { place: "2nd Place", amount: "$1,000", description: "Runner-up for outstanding innovation." },
-    { place: "3rd Place", amount: "$750", description: "Third place for exceptional work." },
+    {
+      place: "1st",
+      amount: "$1,750",
+      description: "Best project overall, judged across both campuses.",
+    },
+    {
+      place: "2nd",
+      amount: "$750",
+      description: "Runner-up.",
+    },
+    {
+      place: "3rd",
+      amount: "$500",
+      description: "Third place.",
+    },
   ],
   sponsorTrack: [
     {
-      tier: "Gold Sponsor Track",
-      amount: "$750",
-      description: "Awarded to the winner of each Gold-sponsored problem statement.",
+      tier: "Gold track",
+      sponsor: "OLG",
+      amount: "$1,000",
+      description: "Awarded to the best submission against OLG's challenge.",
     },
     {
-      tier: "Silver Sponsor Track",
+      tier: "Silver track",
+      sponsor: "Canadian Bank Note",
       amount: "$500",
-      description: "Awarded to the winner of each Silver-sponsored problem statement.",
+      description:
+        "Awarded to the best submission against the Canadian Bank Note challenge.",
     },
   ],
 } as const
+
+export type Sponsor = {
+  name: string
+  tier: "Gold" | "Silver" | "Bronze"
+  tierLabel: string
+  /** Drop a file in /public/images/sponsors and put the path here. */
+  logo: string | null
+  blurb: string
+  url?: string
+}
+
+export const SPONSORS: Sponsor[] = [
+  {
+    name: "OLG",
+    tier: "Gold",
+    tierLabel: "Gold, title sponsor",
+    logo: null,
+    blurb:
+      "Title sponsor of ThunderHacks II, setting a challenge track and joining the judging panel.",
+  },
+  {
+    name: "Canadian Bank Note",
+    tier: "Silver",
+    tierLabel: "Silver",
+    logo: null,
+    blurb:
+      "Silver sponsor, running a challenge track, a workshop, and sitting on the judging panel.",
+  },
+  {
+    name: "Pollard Banknote",
+    tier: "Bronze",
+    tierLabel: "Bronze",
+    logo: null,
+    blurb: "Bronze sponsor.",
+  },
+  {
+    name: "Gateway Casinos",
+    tier: "Bronze",
+    tierLabel: "Bronze",
+    logo: null,
+    blurb: "Bronze sponsor.",
+  },
+]
 
 export type SponsorTier = {
   name: string
@@ -113,12 +185,12 @@ export const SPONSOR_TIERS: SponsorTier[] = [
     name: "Bronze",
     price: "$1,000",
     benefits: [
-      "Logo on event website and registration page",
-      "Logo on event T-shirts and printed materials",
+      "Logo on the event website and registration page",
+      "Logo on event shirts and printed materials",
       "Logo on screens at both campuses during the event",
-      "Recognition in opening and closing ceremonies",
-      "Thank-you posts on ALCOMS social media (Instagram, LinkedIn)",
-      "Option to distribute swag to participants",
+      "Named in the opening and closing ceremonies",
+      "Thank-you posts on ALCOMS social media",
+      "Option to hand out swag to participants",
     ],
   },
   {
@@ -126,37 +198,141 @@ export const SPONSOR_TIERS: SponsorTier[] = [
     price: "$2,000",
     inherits: "Everything in Bronze, plus",
     benefits: [
-      "Sponsored problem statement (dedicated challenge track, named prize category)",
-      "$500 sponsor track prize awarded in your name",
-      "Seat on the combined judging panel for your track",
-      "Host a workshop or tech talk (in person at one campus, streamed to the other)",
-      "Access to participant resume book (opt-in)",
+      "Your own challenge track with a named prize category",
+      "$500 track prize awarded in your name",
+      "A seat on the judging panel for your track",
+      "Host a workshop at one campus, streamed to the other",
+      "Access to the participant resume book, opt-in",
       "Larger logo placement across all materials",
-      "Verbal recognition at ceremonies at both campuses",
     ],
   },
   {
     name: "Gold",
     price: "$3,000",
-    highlight: "Title Sponsor",
+    highlight: "Title sponsor",
     featured: true,
     inherits: "Everything in Silver, plus",
     benefits: [
-      "First pick of problem statement theme",
-      "$750 sponsor track prize awarded in your name",
-      'Event co-branding: "ThunderHacks II, presented in partnership with [Your Company]"',
-      "Speaking slot at opening ceremony (broadcast to both campuses)",
-      "Recruiting table at both campuses",
-      "Top logo placement on website header, materials, and stage backdrop",
-      "Priority access to participant resume book",
-      "Sponsor spotlight post and feature in post-event recap",
-      "Priority consideration for title sponsorship of the next edition",
+      "First pick of challenge theme",
+      "$1,000 track prize awarded in your name",
+      "Event co-branding as the title sponsor",
+      "Speaking slot at the opening ceremony, broadcast to both campuses",
+      "A recruiting table at both campuses",
+      "Top logo placement on the site, materials and stage backdrop",
+      "Priority access to the participant resume book",
+      "First refusal on title sponsorship of the next edition",
     ],
   },
 ]
 
 export const SPONSOR_NOTE =
-  "Multiple sponsors welcome at each tier. Custom and in-kind sponsorship also available."
+  "Multiple sponsors are welcome at each tier. Custom and in-kind sponsorship is also available."
+
+export type ScheduleItem = { time: string; title: string; detail?: string }
+export type ScheduleDay = {
+  key: string
+  date: string
+  weekday: string
+  label: string
+  items: ScheduleItem[]
+}
+
+export const SCHEDULE_NOTE =
+  "This is the preliminary plan. Exact times are still being confirmed and will be posted here before the event."
+
+export const SCHEDULE: ScheduleDay[] = [
+  {
+    key: "day-1",
+    date: "October 14",
+    weekday: "Tuesday",
+    label: "Opening",
+    items: [
+      { time: "4:00 PM", title: "Opening ceremony", detail: "Broadcast to both campuses." },
+      { time: "Evening", title: "Dinner" },
+      { time: "Evening", title: "Hacking begins" },
+    ],
+  },
+  {
+    key: "day-2",
+    date: "October 15",
+    weekday: "Wednesday",
+    label: "Build day",
+    items: [
+      { time: "Morning", title: "Breakfast" },
+      { time: "Morning", title: "Workshop one" },
+      { time: "Midday", title: "Lunch" },
+      { time: "Afternoon", title: "Workshop two" },
+      { time: "Afternoon", title: "Gaming competition" },
+      { time: "Evening", title: "Dinner" },
+    ],
+  },
+  {
+    key: "day-3",
+    date: "October 16",
+    weekday: "Thursday",
+    label: "Judging",
+    items: [
+      { time: "Morning", title: "Breakfast" },
+      { time: "Morning", title: "Submissions close" },
+      { time: "Midday", title: "Presentations and judging", detail: "One panel, both campuses." },
+      { time: "Afternoon", title: "Closing ceremony and prizes" },
+      { time: "Afternoon", title: "Lunch" },
+    ],
+  },
+]
+
+export type Faq = { q: string; a: string }
+
+export const FAQS: Faq[] = [
+  {
+    q: "Who can take part?",
+    a: "Algoma University students at either campus, and Sault College students at the Sault Ste. Marie campus. Every skill level is welcome, including people who have never been to a hackathon.",
+  },
+  {
+    q: "What does it cost?",
+    a: "Nothing. Entry, food and wifi are all covered.",
+  },
+  {
+    q: "Do I need a team?",
+    a: "No. Come on your own and we will help you find a team at the opening ceremony, or bring up to three others and enter together.",
+  },
+  {
+    q: "How big can a team be?",
+    a: "Up to four people. Teams have to be from the same campus.",
+  },
+  {
+    q: "Is food provided?",
+    a: "Yes. Dinner on the first day, breakfast, lunch and dinner on the second, breakfast and lunch on the third.",
+  },
+  {
+    q: "Is there wifi?",
+    a: "Yes, on both campuses, for the whole event.",
+  },
+  {
+    q: "Do I have to stay overnight?",
+    a: "No. This is a daytime event. The venue closes each evening after dinner and opens again the next morning.",
+  },
+  {
+    q: "What should I bring?",
+    a: "Your laptop and charger, student ID, headphones, a water bottle, and anything you need to be comfortable for a long day. Bring the vibes.",
+  },
+  {
+    q: "Can I start building before the event?",
+    a: "No. Everything you submit has to be built during the event. Open-source libraries, frameworks and public APIs are all fine.",
+  },
+  {
+    q: "How is it judged?",
+    a: "Submissions from both campuses go to one panel on the final day. Sponsored challenge tracks are judged by that sponsor alongside the overall placements.",
+  },
+  {
+    q: "What if I am at the other campus?",
+    a: "Both campuses run the same schedule and stream to each other, so opening, workshops and closing are shared. You compete against everyone, not just your own campus.",
+  },
+  {
+    q: "How do I sign up?",
+    a: "Registration opens on September 21 through this site.",
+  },
+]
 
 export const CONTACT = {
   org: "ALCOMS",

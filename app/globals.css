@@ -40,6 +40,12 @@
   --sidebar-accent-foreground: #F8F9FA;
   --sidebar-border: #2d2640;
   --sidebar-ring: #7000FF;
+  /* Campus identity: the two sites of the one competition. */
+  --brampton: #8B3BFF;
+  --sault: #FFE500;
+  --bolt: #FFE500;
+  --rule: #23283a;
+  --raised: #12161f;
 }
 
 .dark {
@@ -80,11 +86,20 @@
   --sidebar-accent-foreground: #F8F9FA;
   --sidebar-border: #2d2640;
   --sidebar-ring: #7000FF;
+  /* Campus identity: the two sites of the one competition. */
+  --brampton: #8B3BFF;
+  --sault: #FFE500;
+  --bolt: #FFE500;
+  --rule: #23283a;
+  --raised: #12161f;
 }
 
 @theme inline {
-  --font-sans: 'Geist', 'Geist Fallback';
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --font-sans: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-brampton: var(--brampton);
+  --color-sault: var(--sault);
+  --color-bolt: var(--bolt);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -258,5 +273,44 @@
   /* Keep a static gold edge so the Gold tier still reads as premium. */
   .th-beam::before {
     background: linear-gradient(135deg, rgba(255, 234, 0, 0.7), rgba(112, 0, 255, 0.7));
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   ThunderHacks II display type.
+   Archivo is a variable font with a width axis. Display text runs expanded and
+   heavy, body text stays at normal width. The width contrast is the type idea,
+   so headlines are set in sentence case rather than all caps.
+--------------------------------------------------------------------------- */
+
+.th-display {
+  font-variation-settings: "wdth" 112;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+.th-display-tight {
+  font-variation-settings: "wdth" 96;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* A hairline that carries the two campus colours, used to divide major bands. */
+.th-rule {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--brampton) 0%,
+    var(--brampton) 50%,
+    var(--sault) 50%,
+    var(--sault) 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .th-display,
+  .th-display-tight {
+    font-variation-settings: "wdth" 100;
   }
 }
