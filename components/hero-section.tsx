@@ -4,6 +4,7 @@ import Image from "next/image"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 import { CalendarDays, MapPin } from "lucide-react"
 import { Countdown } from "@/components/countdown"
+import { StormField } from "@/components/ui/storm-field"
 import { EVENT } from "@/lib/content"
 
 /**
@@ -30,15 +31,8 @@ export function HeroSection() {
       }
 
   return (
-    <section className="relative overflow-hidden border-b border-[var(--rule)] pt-16">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.45]"
-        style={{
-          background:
-            "radial-gradient(70% 55% at 50% 0%, rgba(139,59,255,0.20) 0%, transparent 70%)",
-        }}
-      />
+    <section id="top" className="relative overflow-hidden border-b border-[var(--rule)] pt-16">
+      <StormField />
 
       <motion.div
         variants={container}

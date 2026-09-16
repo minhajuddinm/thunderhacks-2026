@@ -40,6 +40,38 @@ export const EVENT = {
     "ThunderHacks II is Algoma University's flagship hackathon, running October 14-16, 2026 on two campuses at once: Brampton and Sault Ste. Marie. Powered by OLG.",
 } as const
 
+/** Single-page sections, in document order. The nav and the scroll spy both read this. */
+export const SECTIONS = [
+  { id: "top", label: "Home" },
+  { id: "prizes", label: "Prizes" },
+  { id: "sponsors", label: "Sponsors" },
+  { id: "event", label: "Event" },
+  { id: "faq", label: "FAQ" },
+] as const
+
+/**
+ * Photos from the first ThunderHacks. Drop files in /public/images/recap and add
+ * them here. Until then each entry renders as a sized slot so the layout does
+ * not move when the real images land.
+ */
+export type Photo = { src: string | null; alt: string }
+
+export const RECAP_PHOTOS: Photo[] = [
+  { src: null, alt: "Teams building at ThunderHacks, March 2026" },
+  { src: null, alt: "Judging at ThunderHacks, March 2026" },
+  { src: null, alt: "The winning team at ThunderHacks, March 2026" },
+]
+
+export const TICKER = [
+  "October 14-16, 2026",
+  "$4,500 in prizes",
+  "Brampton and Sault Ste. Marie",
+  "Powered by OLG",
+  "Free entry, food and wifi",
+  "Teams up to four",
+  "Registration opens September 21",
+] as const
+
 export const ABOUT = {
   heading: "One competition, running in two places",
   intro:

@@ -1,5 +1,5 @@
 import { Section } from "@/components/section"
-import { RECAP } from "@/lib/content"
+import { RECAP, RECAP_PHOTOS } from "@/lib/content"
 
 export function RecapSection() {
   return (
@@ -8,22 +8,41 @@ export function RecapSection() {
         {RECAP.subheading}
       </p>
 
-      <ul className="mt-6 grid grid-cols-2 gap-px border border-[var(--rule)] bg-[var(--rule)] sm:grid-cols-4">
+      {/* Photos from the first edition. Sized slots until the files land. */}
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {RECAP_PHOTOS.map((photo, i) =>
+          photo.src ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={photo.src}
+              src={photo.src}
+              alt={photo.alt}
+              className="aspect-[4/3] w-full rounded object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div
+              key={`slot-${i}`}
+              className="flex aspect-[4/3] w-full items-center justify-center rounded border border-dashed border-[var(--rule)] px-4 text-center text-sm text-muted-foreground"
+            >
+              Photo to come
+            </div>
+          )
+        )}
+      </div>
+
+      <ul className="mt-10 grid grid-cols-2 gap-px border border-[var(--rule)] bg-[var(--rule)] sm:grid-cols-4">
         {RECAP.stats.map((stat) => (
           <li key={stat.label} className="bg-background px-5 py-6">
             <div className="th-display text-3xl text-foreground sm:text-4xl">
               {stat.value}
             </div>
-            <div className="mt-1 text-sm text-muted-foreground">
-              {stat.label}
-            </div>
+            <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
           </li>
         ))}
       </ul>
 
-      <h3 className="th-display-tight mt-12 text-lg text-foreground">
-        Who won
-      </h3>
+      <h3 className="th-display-tight mt-12 text-lg text-foreground">Who won</h3>
       <ol className="mt-4 max-w-2xl">
         {RECAP.winners.map((winner) => (
           <li

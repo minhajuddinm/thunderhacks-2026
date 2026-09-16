@@ -3,7 +3,7 @@ import { PRIZES } from "@/lib/content"
 
 export function PrizesSection() {
   return (
-    <Section id="prizes" title={PRIZES.heading} lead={PRIZES.intro}>
+    <Section id="prizes" tone="bolt" title={PRIZES.heading} lead={PRIZES.intro}>
       <p className="th-display text-4xl text-[var(--bolt)] sm:text-5xl">
         {PRIZES.poolLabel}
       </p>

@@ -1,7 +1,7 @@
 import { Section } from "@/components/section"
 import { SCHEDULE, SCHEDULE_NOTE } from "@/lib/content"
 
-export function ScheduleSection({ id = "schedule" }: { id?: string }) {
+export function ScheduleSection({ id = "event" }: { id?: string }) {
   return (
     <Section id={id} title="Schedule" lead={SCHEDULE_NOTE}>
       <div className="grid grid-cols-1 gap-px bg-[var(--rule)] md:grid-cols-3">
