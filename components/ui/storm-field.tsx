@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import { playThunder } from "@/lib/thunder"
 
 type Bolt = { pts: [number, number][]; born: number; life: number }
 
@@ -67,12 +68,14 @@ export function StormField() {
       return { pts, born: performance.now(), life: 420 }
     }
 
-    const strike = (x?: number, y?: number) => {
+    const strike = (x?: number, y?: number, near = false) => {
       const ex = x ?? Math.random() * w
       const ey = y ?? h * (0.55 + Math.random() * 0.4)
       const sx = ex + (Math.random() - 0.5) * w * 0.3
       bolts.push(makeBolt(sx, -20, ex, ey))
       if (bolts.length > 4) bolts.shift()
+      // Silent unless the reader has turned thunder on.
+      playThunder(near)
     }
 
     const draw = (now: number) => {
@@ -140,7 +143,7 @@ export function StormField() {
 
     const onPointerDown = (e: PointerEvent) => {
       const rect = canvas.getBoundingClientRect()
-      strike(e.clientX - rect.left, e.clientY - rect.top)
+      strike(e.clientX - rect.left, e.clientY - rect.top, true)
     }
 
     const onVisibility = () => {

@@ -11,6 +11,7 @@ import { FaqSection } from "@/components/sections/faq-section"
 import { Footer } from "@/components/footer"
 import { EVENT, CONTACT, TICKER } from "@/lib/content"
 import { Ticker } from "@/components/ui/ticker"
+import { SoundToggle } from "@/components/ui/sound-toggle"
 
 export default function HomePage() {
   return (
@@ -55,6 +56,7 @@ export default function HomePage() {
         </section>
       </main>
       <Footer />
+      <SoundToggle />
     </div>
   )
 }
