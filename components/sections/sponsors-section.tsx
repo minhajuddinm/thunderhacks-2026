@@ -1,6 +1,35 @@
-import type { ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 import { Section } from "@/components/section"
 import { SPONSORS, type Sponsor } from "@/lib/content"
+
+/**
+ * Each tier wears its own metal, on the rule across the top of the card and on
+ * the tier label. Chosen against the dark ground rather than by eye: contrast
+ * is 11.2:1 for gold, 11.5:1 for silver, 7.2:1 for bronze. The gold is a warm
+ * metallic, deliberately not the site's electric yellow, so it reads as a medal
+ * instead of just the house accent.
+ *
+ * Applied through a --tier custom property so one set of static utility classes
+ * covers all three; Tailwind cannot see class names built at runtime.
+ */
+const TIER_COLOUR: Record<Sponsor["tier"], string> = {
+  Gold: "#F5C542",
+  Silver: "#C8CFDA",
+  Bronze: "#D89552",
+}
+
+function tierStyle(sponsor: Sponsor): CSSProperties {
+  return { ["--tier" as string]: TIER_COLOUR[sponsor.tier] }
+}
+
+function TierBar() {
+  return (
+    <span
+      aria-hidden="true"
+      className="absolute inset-x-0 top-0 h-1 bg-[var(--tier)]"
+    />
+  )
+}
 
 /**
  * Sponsor marks are shown as supplied. Reverse assets sit straight on the dark
@@ -62,12 +91,17 @@ function SponsorCard({
   className: string
   children: ReactNode
 }) {
+  const style = tierStyle(sponsor)
   const shared =
     "block transition duration-200 ease-out motion-reduce:transition-none " +
-    "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--bolt)]"
+    "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--tier)]"
 
   if (!sponsor.url) {
-    return <div className={className}>{children}</div>
+    return (
+      <div className={className} style={style}>
+        {children}
+      </div>
+    )
   }
 
   return (
@@ -75,7 +109,8 @@ function SponsorCard({
       href={sponsor.url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`${className} ${shared} hover:-translate-y-1 hover:border-[var(--bolt)] hover:shadow-lg hover:shadow-black/40 focus-visible:-translate-y-1 motion-reduce:hover:translate-y-0 motion-reduce:focus-visible:translate-y-0`}
+      style={style}
+      className={`${className} ${shared} hover:-translate-y-1 hover:border-[var(--tier)] hover:shadow-lg hover:shadow-black/40 focus-visible:-translate-y-1 motion-reduce:hover:translate-y-0 motion-reduce:focus-visible:translate-y-0`}
     >
       {children}
       <span className="sr-only"> (opens in a new tab)</span>
@@ -101,11 +136,8 @@ export function SponsorsSection() {
           sponsor={sponsor}
           className="relative mx-auto max-w-3xl border border-[var(--rule)] bg-background p-8 text-center sm:p-12"
         >
-          <span
-            aria-hidden="true"
-            className="absolute inset-x-0 top-0 h-1 bg-[var(--bolt)]"
-          />
-          <span className="block text-sm text-[var(--bolt)]">
+          <TierBar />
+          <span className="block text-sm text-[var(--tier)]">
             {sponsor.tierLabel}
           </span>
           <h3 className="th-display mt-2 text-[clamp(1.75rem,5vw,2.5rem)] text-foreground">
@@ -124,9 +156,10 @@ export function SponsorsSection() {
         <SponsorCard
           key={sponsor.name}
           sponsor={sponsor}
-          className="mx-auto mt-8 max-w-2xl border border-[var(--rule)] p-8 text-center"
+          className="relative mx-auto mt-8 max-w-2xl border border-[var(--rule)] p-8 text-center"
         >
-          <span className="block text-sm text-muted-foreground">
+          <TierBar />
+          <span className="block text-sm text-[var(--tier)]">
             {sponsor.tierLabel}
           </span>
           <h3 className="th-display mt-2 text-[clamp(1.4rem,3.6vw,2rem)] text-foreground">
@@ -146,9 +179,10 @@ export function SponsorsSection() {
           <SponsorCard
             key={sponsor.name}
             sponsor={sponsor}
-            className="border border-[var(--rule)] p-7 text-center"
+            className="relative border border-[var(--rule)] p-7 text-center"
           >
-            <span className="block text-sm text-muted-foreground">
+            <TierBar />
+            <span className="block text-sm text-[var(--tier)]">
               {sponsor.tierLabel}
             </span>
             <h3 className="th-display-tight mt-2 text-xl text-foreground">
