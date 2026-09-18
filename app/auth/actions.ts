@@ -133,7 +133,7 @@ export async function requestPasswordResetAction(
   const supabase = await getSupabaseServerClient()
 
   await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/auth/callback?next=/reset-password`,
+    redirectTo: `${origin}/auth/reset-callback`,
   })
 
   redirect("/forgot-password?sent=1")
