@@ -94,7 +94,7 @@ export const TICKER = [
 export const ABOUT = {
   heading: "One competition, running in two places",
   intro:
-    "ThunderHacks II is the second edition of Algoma University's flagship hackathon. The first ran for a single day on one campus. This one runs for three days on two, with judging combined into a single competition so every team is measured against the same bar.",
+    "ThunderHacks II is the second edition of Algoma University's flagship hackathon. The first ran on one campus. This one runs across two at the same time, with judging combined into a single competition so every team is measured against the same bar.",
   blocks: [
     {
       title: "Who can enter",
@@ -119,11 +119,11 @@ export const RECAP = {
   heading: "Where it started",
   subheading: "The first ThunderHacks, March 2026, Brampton",
   intro:
-    "Thirty-six people, twelve teams, one day, one campus. ThunderHacks II is built on what that weekend proved.",
+    "Thirty-six people, twelve teams, three days, one campus. ThunderHacks II is built on what that weekend proved.",
   stats: [
     { value: "36", label: "Hackers" },
     { value: "12", label: "Teams" },
-    { value: "1", label: "Day" },
+    { value: "3", label: "Days" },
     { value: "1", label: "Campus" },
   ],
   winners: [
@@ -183,8 +183,14 @@ export type Sponsor = {
   name: string
   tier: "Gold" | "Silver" | "Bronze"
   tierLabel: string
-  /** Drop a file in /public/images/sponsors and put the path here. */
   logo: string | null
+  /**
+   * True when the supplied asset is the reverse (white) version of the mark.
+   * Those sit directly on the dark page. Everything else gets a white plate,
+   * because these are the standard positive logos and recolouring a sponsor's
+   * mark is not ours to do.
+   */
+  onDark?: boolean
   blurb: string
   url?: string
 }
@@ -194,7 +200,8 @@ export const SPONSORS: Sponsor[] = [
     name: "OLG",
     tier: "Gold",
     tierLabel: "Gold, title sponsor",
-    logo: null,
+    logo: "/images/sponsors/olg.png",
+    onDark: true,
     blurb:
       "Title sponsor of ThunderHacks II, setting a challenge track and joining the judging panel.",
   },
@@ -202,7 +209,7 @@ export const SPONSORS: Sponsor[] = [
     name: "Canadian Bank Note",
     tier: "Silver",
     tierLabel: "Silver",
-    logo: null,
+    logo: "/images/sponsors/cbn.png",
     blurb:
       "Silver sponsor, running a challenge track, a workshop, and sitting on the judging panel.",
   },
@@ -210,14 +217,14 @@ export const SPONSORS: Sponsor[] = [
     name: "Pollard Banknote",
     tier: "Bronze",
     tierLabel: "Bronze",
-    logo: null,
+    logo: "/images/sponsors/pollard.png",
     blurb: "Bronze sponsor.",
   },
   {
     name: "Gateway Casinos",
     tier: "Bronze",
     tierLabel: "Bronze",
-    logo: null,
+    logo: "/images/sponsors/gateway.png",
     blurb: "Bronze sponsor.",
   },
 ]

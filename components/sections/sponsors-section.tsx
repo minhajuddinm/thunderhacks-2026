@@ -2,28 +2,42 @@ import { Section } from "@/components/section"
 import { SPONSORS, type Sponsor } from "@/lib/content"
 
 /**
- * Logos are not in yet. Each sponsor renders a slot at the size its logo will
- * occupy, so nothing moves when the files land in /public/images/sponsors and
- * the logo path is set in content.ts.
+ * Sponsor marks are shown as supplied. Reverse assets sit straight on the dark
+ * page; the standard positive logos get a white plate, because they are navy
+ * and near-black and would otherwise disappear. Recolouring a sponsor's mark to
+ * suit our background is not something we do.
  */
 function LogoSlot({ sponsor, tall }: { sponsor: Sponsor; tall?: boolean }) {
-  if (sponsor.logo) {
+  const h = tall ? "h-24 sm:h-28" : "h-14 sm:h-16"
+
+  if (!sponsor.logo) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={sponsor.logo}
-        alt={sponsor.name}
-        className={`${tall ? "max-h-28" : "max-h-16"} w-auto object-contain`}
-      />
+      <div
+        className={`flex ${h} w-full ${
+          tall ? "max-w-sm" : "max-w-[240px]"
+        } items-center justify-center rounded border border-dashed border-[var(--rule)] text-sm text-muted-foreground`}
+      >
+        Logo to come
+      </div>
     )
   }
+
+  const img = (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={sponsor.logo}
+      alt={`${sponsor.name} logo`}
+      className={`${h} w-auto max-w-full object-contain`}
+      loading="lazy"
+      decoding="async"
+    />
+  )
+
+  if (sponsor.onDark) return img
+
   return (
-    <div
-      className={`flex ${
-        tall ? "h-28" : "h-16"
-      } w-full ${tall ? "max-w-sm" : "max-w-[240px]"} items-center justify-center rounded border border-dashed border-[var(--rule)] text-sm text-muted-foreground`}
-    >
-      Logo to come
+    <div className={`inline-flex items-center justify-center rounded-lg bg-white ${tall ? "px-7 py-5" : "px-5 py-4"}`}>
+      {img}
     </div>
   )
 }
