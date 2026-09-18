@@ -1,8 +1,7 @@
 "use client"
 
-import Link from "next/link"
-
 import Image from "next/image"
+import { AuthButtons } from "@/components/auth/auth-buttons"
 import { motion, useReducedMotion, type Variants } from "motion/react"
 import { CalendarDays, MapPin } from "lucide-react"
 import { Countdown } from "@/components/countdown"
@@ -117,23 +116,7 @@ export function HeroSection() {
         </motion.div>
 
         <motion.div variants={item} className="mt-9">
-          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              href="/signup"
-              className="w-full rounded-md border border-[var(--bolt)]/40 bg-[var(--bolt)]/10 px-7 py-3 text-center font-semibold text-[var(--bolt)] transition-colors hover:bg-[var(--bolt)]/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--bolt)] sm:w-auto"
-            >
-              Register
-            </Link>
-            <Link
-              href="/login"
-              className="w-full rounded-md border border-[var(--rule)] px-7 py-3 text-center font-semibold text-foreground transition-colors hover:border-[var(--bolt)] hover:text-[var(--bolt)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--bolt)] sm:w-auto"
-            >
-              Log in
-            </Link>
-          </div>
-          <p className="mt-3 text-sm text-muted-foreground">
-            {EVENT.registrationOpensLabel}
-          </p>
+          <AuthButtons variant="hero" />
         </motion.div>
       </motion.div>
     </section>

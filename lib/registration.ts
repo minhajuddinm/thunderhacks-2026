@@ -1,5 +1,5 @@
 /**
- * Registration opens 8:00am Eastern on Sunday 21 September 2026.
+ * Registration opens 8:00am Eastern on Monday 21 September 2026.
  *
  * The database holds the authoritative value in event_settings and
  * complete_registration() refuses before it, so this constant is only for

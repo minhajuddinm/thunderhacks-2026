@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { redirect } from "next/navigation"
 import { AuthShell } from "@/components/auth/auth-shell"
 import { LoginForm } from "@/components/auth/login-form"
@@ -20,18 +21,27 @@ export default async function LoginPage() {
 
   if (user) redirect("/dashboard")
 
-  const open = await isRegistrationOpen()
+  // Nobody has an account before registration opens, so there is nothing to
+  // log in to. Showing a live form would only invite failed attempts.
+  if (!(await isRegistrationOpen())) {
+    return (
+      <AuthShell
+        title="Not open yet"
+        lead={`Accounts open at ${REGISTRATION_OPENS_LABEL}. Register then and you can log in straight away.`}
+      >
+        <Link
+          href="/"
+          className="inline-block rounded-md border border-[var(--rule)] px-6 py-3 font-semibold text-foreground transition-colors hover:border-[var(--bolt)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--bolt)]"
+        >
+          Back to the event
+        </Link>
+      </AuthShell>
+    )
+  }
 
   return (
-    <AuthShell
-      title="Log in"
-      lead={
-        open
-          ? undefined
-          : `Registration for ThunderHacks II opens at ${REGISTRATION_OPENS_LABEL}.`
-      }
-    >
-      <LoginForm canSignUp={open} />
+    <AuthShell title="Log in">
+      <LoginForm canSignUp />
     </AuthShell>
   )
 }

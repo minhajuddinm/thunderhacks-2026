@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
+import { AuthButtons } from "@/components/auth/auth-buttons"
 import { useEffect, useState } from "react"
 import { Menu, X } from "lucide-react"
 import { EVENT, SECTIONS } from "@/lib/content"
@@ -124,12 +125,5 @@ export function Navigation() {
 }
 
 function LoginButton({ className = "" }: { className?: string }) {
-  return (
-    <Link
-      href="/login"
-      className={`inline-flex items-center justify-center rounded-md border border-[#23283a] px-4 py-2 text-[15px] text-[#F8F9FA] transition-colors hover:border-[#FFE500] hover:text-[#FFE500] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFE500] ${className}`}
-    >
-      Log in
-    </Link>
-  )
+  return <AuthButtons variant="nav" className={className} />
 }

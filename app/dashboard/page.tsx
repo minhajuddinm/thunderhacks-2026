@@ -24,6 +24,28 @@ export const metadata: Metadata = { title: "Dashboard | ThunderHacks II" }
 
 type Search = { searchParams: Promise<{ error?: string }> }
 
+/**
+ * PostgREST returns an embedded to-one relation as an object, but returns an
+ * array whenever it cannot prove the relation is unique. Both shapes are
+ * legal, so normalise rather than assume; guessing wrong here silently
+ * renders "Unknown" instead of somebody's name.
+ */
+function one<T>(value: T | T[] | null | undefined): T | null {
+  if (Array.isArray(value)) return value[0] ?? null
+  return value ?? null
+}
+
+type PersonRow = {
+  full_name: string
+  program: string
+  year_of_study: number
+  school: string
+}
+type TeamRow = { id: string; name: string; leader_id: string }
+type MemberRow = { profile_id: string; joined_at: string; profiles: PersonRow | PersonRow[] | null }
+type RequestRow = { id: string; profile_id: string; profiles: PersonRow | PersonRow[] | null }
+type ThreadRow = { id: string; kind: string; team_id: string; teams: { name: string } | { name: string }[] | null }
+
 export default async function DashboardPage({ searchParams }: Search) {
   const { error: errorMessage } = await searchParams
   const supabase = await getSupabaseServerClient()
@@ -86,9 +108,9 @@ export default async function DashboardPage({ searchParams }: Search) {
     supabase.from("participants").select("*").order("full_name"),
   ])
 
-  let myTeam: { id: string; name: string; leader_id: string } | null = null
-  let members: { profile_id: string; joined_at: string; profiles: { full_name: string; program: string; year_of_study: number; school: string } | null }[] = []
-  let incoming: { id: string; profile_id: string; profiles: { full_name: string; program: string; year_of_study: number; school: string } | null }[] = []
+  let myTeam: TeamRow | null = null
+  let members: MemberRow[] = []
+  let incoming: RequestRow[] = []
 
   if (teamId) {
     const [{ data: t }, { data: m }] = await Promise.all([
@@ -99,8 +121,8 @@ export default async function DashboardPage({ searchParams }: Search) {
         .eq("team_id", teamId)
         .order("joined_at"),
     ])
-    myTeam = t as typeof myTeam
-    members = (m ?? []) as typeof members
+    myTeam = (t as unknown as TeamRow | null) ?? null
+    members = (m ?? []) as unknown as MemberRow[]
 
     if (myTeam && myTeam.leader_id === user.id) {
       const { data: reqs } = await supabase
@@ -109,7 +131,7 @@ export default async function DashboardPage({ searchParams }: Search) {
         .eq("team_id", teamId)
         .eq("kind", "request")
         .eq("status", "pending")
-      incoming = (reqs ?? []) as typeof incoming
+      incoming = (reqs ?? []) as unknown as RequestRow[]
     }
   }
 
@@ -120,10 +142,12 @@ export default async function DashboardPage({ searchParams }: Search) {
     .eq("profile_id", user.id)
     .eq("status", "pending")
 
-  const invites = (myThreads ?? []).filter((t) => t.kind === "invite")
-  const sent = (myThreads ?? []).filter((t) => t.kind === "request")
+  const threads = (myThreads ?? []) as unknown as ThreadRow[]
+  const invites = threads.filter((t) => t.kind === "invite")
+  const sent = threads.filter((t) => t.kind === "request")
 
-  const isLeader = myTeam?.leader_id === user.id
+  const leaderId = myTeam?.leader_id ?? null
+  const isLeader = leaderId === user.id
   const maxSize = teams?.[0]?.max_team_size ?? 4
   const teamFull = members.length >= maxSize
   const unteamed = (participants ?? []).filter((p) => !p.team_id && p.id !== user.id)
@@ -184,11 +208,11 @@ export default async function DashboardPage({ searchParams }: Search) {
                   {members.map((m) => (
                     <li key={m.profile_id} className="border-t border-[var(--rule)] pt-3">
                       <PersonLine
-                        name={m.profiles?.full_name ?? "Unknown"}
-                        program={m.profiles?.program ?? ""}
-                        year={m.profiles?.year_of_study ?? 0}
-                        school={schoolLabel(m.profiles?.school ?? "")}
-                        badge={m.profile_id === myTeam.leader_id ? "Leader" : undefined}
+                        name={one(m.profiles)?.full_name ?? "Unknown"}
+                        program={one(m.profiles)?.program ?? ""}
+                        year={one(m.profiles)?.year_of_study ?? 0}
+                        school={schoolLabel(one(m.profiles)?.school ?? "")}
+                        badge={m.profile_id === leaderId ? "Leader" : undefined}
                       />
                     </li>
                   ))}
@@ -211,10 +235,10 @@ export default async function DashboardPage({ searchParams }: Search) {
                             className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--rule)] pt-3"
                           >
                             <PersonLine
-                              name={r.profiles?.full_name ?? "Unknown"}
-                              program={r.profiles?.program ?? ""}
-                              year={r.profiles?.year_of_study ?? 0}
-                              school={schoolLabel(r.profiles?.school ?? "")}
+                              name={one(r.profiles)?.full_name ?? "Unknown"}
+                              program={one(r.profiles)?.program ?? ""}
+                              year={one(r.profiles)?.year_of_study ?? 0}
+                              school={schoolLabel(one(r.profiles)?.school ?? "")}
                             />
                             <span className="flex gap-2">
                               <form action={respondAction}>
@@ -269,7 +293,7 @@ export default async function DashboardPage({ searchParams }: Search) {
                           className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--rule)] pt-3"
                         >
                           <span className="th-display-tight text-[15px] text-foreground">
-                            {t.teams?.name ?? "A team"}
+                            {one(t.teams)?.name ?? "A team"}
                           </span>
                           <span className="flex gap-2">
                             <form action={respondAction}>
@@ -301,7 +325,7 @@ export default async function DashboardPage({ searchParams }: Search) {
                           className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--rule)] pt-3"
                         >
                           <span className="text-[15px] text-muted-foreground">
-                            Waiting on {t.teams?.name ?? "a team"}
+                            Waiting on {one(t.teams)?.name ?? "a team"}
                           </span>
                           <form action={cancelRequestAction}>
                             <input type="hidden" name="request_id" value={t.id} />

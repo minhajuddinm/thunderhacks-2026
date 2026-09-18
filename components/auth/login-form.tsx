@@ -37,6 +37,15 @@ export function LoginForm({ canSignUp }: { canSignUp: boolean }) {
 
       <SubmitButton pending={pending}>Log in</SubmitButton>
 
+      <p className="text-[15px] text-muted-foreground">
+        <Link
+          href="/forgot-password"
+          className="text-[var(--bolt)] underline underline-offset-4"
+        >
+          Forgotten your password?
+        </Link>
+      </p>
+
       {canSignUp ? (
         <p className="text-[15px] text-muted-foreground">
           No account yet?{" "}
