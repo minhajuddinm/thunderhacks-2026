@@ -1,34 +1,42 @@
+/* eslint-disable @next/next/no-img-element */
 import { Section } from "@/components/section"
 import { RECAP, RECAP_PHOTOS } from "@/lib/content"
 
 export function RecapSection() {
+  const wide = RECAP_PHOTOS.find((p) => p.wide)
+  const rest = RECAP_PHOTOS.filter((p) => !p.wide)
+
   return (
     <Section id="recap" title={RECAP.heading} lead={RECAP.intro}>
       <p className="th-display-tight text-lg text-foreground">
         {RECAP.subheading}
       </p>
 
-      {/* Photos from the first edition. Sized slots until the files land. */}
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {RECAP_PHOTOS.map((photo, i) =>
-          photo.src ? (
-            // eslint-disable-next-line @next/next/no-img-element
+      {/* Photos from the first edition. The group shot keeps its own wide row
+          so nobody gets cropped out of the edges. */}
+      <div className="mt-8 space-y-4">
+        {wide ? (
+          <img
+            src={wide.src}
+            alt={wide.alt}
+            className="aspect-[16/9] w-full rounded object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        ) : null}
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {rest.map((photo) => (
             <img
               key={photo.src}
               src={photo.src}
               alt={photo.alt}
               className="aspect-[4/3] w-full rounded object-cover"
               loading="lazy"
+              decoding="async"
             />
-          ) : (
-            <div
-              key={`slot-${i}`}
-              className="flex aspect-[4/3] w-full items-center justify-center rounded border border-dashed border-[var(--rule)] px-4 text-center text-sm text-muted-foreground"
-            >
-              Photo to come
-            </div>
-          )
-        )}
+          ))}
+        </div>
       </div>
 
       <ul className="mt-10 grid grid-cols-2 gap-px border border-[var(--rule)] bg-[var(--rule)] sm:grid-cols-4">

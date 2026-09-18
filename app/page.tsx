@@ -12,6 +12,7 @@ import { Footer } from "@/components/footer"
 import { EVENT, CONTACT, TICKER } from "@/lib/content"
 import { Ticker } from "@/components/ui/ticker"
 import { SoundToggle } from "@/components/ui/sound-toggle"
+import { ClickLightning } from "@/components/ui/click-lightning"
 
 export default function HomePage() {
   return (
@@ -56,6 +57,7 @@ export default function HomePage() {
         </section>
       </main>
       <Footer />
+      <ClickLightning />
       <SoundToggle />
     </div>
   )

@@ -54,12 +54,27 @@ export const SECTIONS = [
  * them here. Until then each entry renders as a sized slot so the layout does
  * not move when the real images land.
  */
-export type Photo = { src: string | null; alt: string }
+export type Photo = { src: string; alt: string; wide?: boolean }
 
+/** Photos from the first ThunderHacks, March 2026, Brampton. */
 export const RECAP_PHOTOS: Photo[] = [
-  { src: null, alt: "Teams building at ThunderHacks, March 2026" },
-  { src: null, alt: "Judging at ThunderHacks, March 2026" },
-  { src: null, alt: "The winning team at ThunderHacks, March 2026" },
+  {
+    src: "/images/recap/th1-team.jpg",
+    alt: "The ALCOMS organising team with faculty in front of the sponsor thank-you screen at ThunderHacks, March 2026",
+    wide: true,
+  },
+  {
+    src: "/images/recap/th1-presenting.jpg",
+    alt: "Three hackers presenting their project at the podium at ThunderHacks, March 2026",
+  },
+  {
+    src: "/images/recap/th1-judging.jpg",
+    alt: "A team pitching to the judging panel at ThunderHacks, March 2026",
+  },
+  {
+    src: "/images/recap/th1-vr.jpg",
+    alt: "A participant trying a VR headset at ThunderHacks, March 2026",
+  },
 ]
 
 export const TICKER = [

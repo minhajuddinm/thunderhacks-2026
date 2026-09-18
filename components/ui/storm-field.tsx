@@ -141,11 +141,6 @@ export function StormField() {
       target.y = (e.clientY - rect.top) / rect.height
     }
 
-    const onPointerDown = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect()
-      strike(e.clientX - rect.left, e.clientY - rect.top, true)
-    }
-
     const onVisibility = () => {
       visible = !document.hidden
     }
@@ -163,7 +158,6 @@ export function StormField() {
 
     window.addEventListener("resize", resize)
     window.addEventListener("pointermove", onPointerMove, { passive: true })
-    canvas.addEventListener("pointerdown", onPointerDown)
     document.addEventListener("visibilitychange", onVisibility)
 
     return () => {
@@ -172,7 +166,6 @@ export function StormField() {
       io.disconnect()
       window.removeEventListener("resize", resize)
       window.removeEventListener("pointermove", onPointerMove)
-      canvas.removeEventListener("pointerdown", onPointerDown)
       document.removeEventListener("visibilitychange", onVisibility)
     }
   }, [])
