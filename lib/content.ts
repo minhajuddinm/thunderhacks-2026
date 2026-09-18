@@ -202,6 +202,7 @@ export const SPONSORS: Sponsor[] = [
     tierLabel: "Gold, title sponsor",
     logo: "/images/sponsors/olg.png",
     onDark: true,
+    url: "https://about.olg.ca/",
     blurb:
       "Title sponsor of ThunderHacks II, setting a challenge track and joining the judging panel.",
   },
@@ -210,6 +211,7 @@ export const SPONSORS: Sponsor[] = [
     tier: "Silver",
     tierLabel: "Silver",
     logo: "/images/sponsors/cbn.png",
+    url: "https://www.cbnco.com/",
     blurb:
       "Silver sponsor, running a challenge track, a workshop, and sitting on the judging panel.",
   },
@@ -218,6 +220,7 @@ export const SPONSORS: Sponsor[] = [
     tier: "Bronze",
     tierLabel: "Bronze",
     logo: "/images/sponsors/pollard.png",
+    url: "https://www.pollardbanknote.com/",
     blurb: "Bronze sponsor.",
   },
   {
@@ -225,6 +228,7 @@ export const SPONSORS: Sponsor[] = [
     tier: "Bronze",
     tierLabel: "Bronze",
     logo: "/images/sponsors/gateway.png",
+    url: "https://www.gatewaycasinos.com/",
     blurb: "Bronze sponsor.",
   },
 ]
