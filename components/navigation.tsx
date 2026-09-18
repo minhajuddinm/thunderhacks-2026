@@ -125,18 +125,11 @@ export function Navigation() {
 
 function LoginButton({ className = "" }: { className?: string }) {
   return (
-    <span className={`inline-flex flex-col items-center ${className}`}>
-      <button
-        type="button"
-        disabled
-        aria-describedby="login-availability"
-        className="w-full cursor-not-allowed rounded-md border border-[#23283a] px-4 py-2 text-[15px] text-[#9ca3af]"
-      >
-        Log in
-      </button>
-      <span id="login-availability" className="sr-only">
-        {EVENT.registrationOpensLabel}
-      </span>
-    </span>
+    <Link
+      href="/login"
+      className={`inline-flex items-center justify-center rounded-md border border-[#23283a] px-4 py-2 text-[15px] text-[#F8F9FA] transition-colors hover:border-[#FFE500] hover:text-[#FFE500] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFE500] ${className}`}
+    >
+      Log in
+    </Link>
   )
 }
