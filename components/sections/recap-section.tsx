@@ -12,20 +12,21 @@ export function RecapSection() {
         {RECAP.subheading}
       </p>
 
-      {/* Photos from the first edition. The group shot keeps its own wide row
-          so nobody gets cropped out of the edges. */}
+      {/* Photos from the first edition. The winners shot leads at 3:2, which
+          crops a 4:3 original far less than 16:9 would, then four smaller
+          frames underneath. */}
       <div className="mt-8 space-y-4">
         {wide ? (
           <img
             src={wide.src}
             alt={wide.alt}
-            className="aspect-[16/9] w-full rounded object-cover"
+            className="aspect-[3/2] w-full rounded object-cover object-center"
             loading="lazy"
             decoding="async"
           />
         ) : null}
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {rest.map((photo) => (
             <img
               key={photo.src}

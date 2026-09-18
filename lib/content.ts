@@ -59,9 +59,13 @@ export type Photo = { src: string; alt: string; wide?: boolean }
 /** Photos from the first ThunderHacks, March 2026, Brampton. */
 export const RECAP_PHOTOS: Photo[] = [
   {
+    src: "/images/recap/th1-winners.jpg",
+    alt: "A winning team holding an oversized prize cheque in front of the hackathon winners screen at ThunderHacks, March 2026",
+    wide: true,
+  },
+  {
     src: "/images/recap/th1-team.jpg",
     alt: "The ALCOMS organising team with faculty in front of the sponsor thank-you screen at ThunderHacks, March 2026",
-    wide: true,
   },
   {
     src: "/images/recap/th1-presenting.jpg",
