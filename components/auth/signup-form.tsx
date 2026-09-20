@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState } from "react"
+import { useActionState, useState } from "react"
 import Link from "next/link"
 import { signUpAction, type ActionState } from "@/app/auth/actions"
 import { SCHOOLS, YEARS, yearLabel } from "@/lib/registration"
@@ -11,6 +11,7 @@ export function SignupForm() {
     signUpAction,
     null
   )
+  const [school, setSchool] = useState("")
 
   return (
     <form action={action} className="space-y-5">
@@ -54,7 +55,13 @@ export function SignupForm() {
         </Field>
 
         <Field label="School">
-          <select name="school" required defaultValue="" className={inputClass}>
+          <select
+            name="school"
+            required
+            value={school}
+            onChange={(e) => setSchool(e.target.value)}
+            className={inputClass}
+          >
             <option value="" disabled>
               Choose
             </option>
@@ -66,6 +73,20 @@ export function SignupForm() {
           </select>
         </Field>
       </div>
+
+      {school === "other" ? (
+        <Field label="Which school?" hint="The name you would put on a form">
+          <input
+            name="school_other"
+            type="text"
+            required
+            minLength={2}
+            maxLength={80}
+            autoComplete="organization"
+            className={inputClass}
+          />
+        </Field>
+      ) : null}
 
       <Field label="Email">
         <input

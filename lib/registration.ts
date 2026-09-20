@@ -18,11 +18,17 @@ export const SCHOOLS = [
   { value: "algoma", label: "Algoma University" },
   { value: "sault_college", label: "Sault College" },
   { value: "both", label: "Both" },
+  { value: "other", label: "Another school" },
 ] as const
 
 export type SchoolValue = (typeof SCHOOLS)[number]["value"]
 
-export function schoolLabel(value: string): string {
+/**
+ * Somebody who picked "Another school" typed their own, so show that instead
+ * of a label that tells the organisers nothing.
+ */
+export function schoolLabel(value: string, other?: string | null): string {
+  if (value === "other") return other?.trim() || "Another school"
   return SCHOOLS.find((s) => s.value === value)?.label ?? value
 }
 

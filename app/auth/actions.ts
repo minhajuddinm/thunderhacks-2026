@@ -25,6 +25,7 @@ function readForm(formData: FormData) {
     program: String(formData.get("program") ?? "").trim(),
     year: Number(formData.get("year_of_study") ?? 0),
     school: String(formData.get("school") ?? ""),
+    schoolOther: String(formData.get("school_other") ?? "").trim(),
   }
 }
 
@@ -45,8 +46,11 @@ export async function signUpAction(
   if (!Number.isInteger(f.year) || f.year < 1 || f.year > 7) {
     return { error: "Choose your year of study." }
   }
-  if (!["algoma", "sault_college", "both"].includes(f.school)) {
+  if (!["algoma", "sault_college", "both", "other"].includes(f.school)) {
     return { error: "Choose your school." }
+  }
+  if (f.school === "other" && f.schoolOther.length < 2) {
+    return { error: "Tell us which school you are at." }
   }
   if (f.password.length < 8) {
     return { error: "Use a password of at least 8 characters." }
@@ -81,6 +85,7 @@ export async function signUpAction(
     p_program: f.program,
     p_year: f.year,
     p_school: f.school,
+    p_school_other: f.school === "other" ? f.schoolOther : null,
   })
 
   if (rpcError) return { error: rpcError.message }

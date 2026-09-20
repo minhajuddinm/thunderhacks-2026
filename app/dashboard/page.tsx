@@ -40,6 +40,7 @@ type PersonRow = {
   program: string
   year_of_study: number
   school: string
+  school_other: string | null
 }
 type TeamRow = { id: string; name: string; leader_id: string }
 type MemberRow = { profile_id: string; joined_at: string; profiles: PersonRow | PersonRow[] | null }
@@ -117,7 +118,7 @@ export default async function DashboardPage({ searchParams }: Search) {
       supabase.from("teams").select("id, name, leader_id").eq("id", teamId).maybeSingle(),
       supabase
         .from("team_members")
-        .select("profile_id, joined_at, profiles(full_name, program, year_of_study, school)")
+        .select("profile_id, joined_at, profiles(full_name, program, year_of_study, school, school_other)")
         .eq("team_id", teamId)
         .order("joined_at"),
     ])
@@ -127,7 +128,7 @@ export default async function DashboardPage({ searchParams }: Search) {
     if (myTeam && myTeam.leader_id === user.id) {
       const { data: reqs } = await supabase
         .from("team_requests")
-        .select("id, profile_id, profiles(full_name, program, year_of_study, school)")
+        .select("id, profile_id, profiles(full_name, program, year_of_study, school, school_other)")
         .eq("team_id", teamId)
         .eq("kind", "request")
         .eq("status", "pending")
@@ -188,7 +189,8 @@ export default async function DashboardPage({ searchParams }: Search) {
           {profile.full_name.split(" ")[0]}, you are registered
         </h1>
         <p className="mt-3 text-[17px] text-muted-foreground">
-          {profile.program} · Year {profile.year_of_study} · {schoolLabel(profile.school)}
+          {profile.program} · Year {profile.year_of_study} ·{" "}
+          {schoolLabel(profile.school, profile.school_other)}
         </p>
 
         <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -211,7 +213,7 @@ export default async function DashboardPage({ searchParams }: Search) {
                         name={one(m.profiles)?.full_name ?? "Unknown"}
                         program={one(m.profiles)?.program ?? ""}
                         year={one(m.profiles)?.year_of_study ?? 0}
-                        school={schoolLabel(one(m.profiles)?.school ?? "")}
+                        school={schoolLabel(one(m.profiles)?.school ?? "", one(m.profiles)?.school_other)}
                         badge={m.profile_id === leaderId ? "Leader" : undefined}
                       />
                     </li>
@@ -238,7 +240,7 @@ export default async function DashboardPage({ searchParams }: Search) {
                               name={one(r.profiles)?.full_name ?? "Unknown"}
                               program={one(r.profiles)?.program ?? ""}
                               year={one(r.profiles)?.year_of_study ?? 0}
-                              school={schoolLabel(one(r.profiles)?.school ?? "")}
+                              school={schoolLabel(one(r.profiles)?.school ?? "", one(r.profiles)?.school_other)}
                             />
                             <span className="flex gap-2">
                               <form action={respondAction}>
@@ -391,7 +393,7 @@ export default async function DashboardPage({ searchParams }: Search) {
                       name={p.full_name}
                       program={p.program}
                       year={p.year_of_study}
-                      school={schoolLabel(p.school)}
+                      school={schoolLabel(p.school, p.school_other)}
                       badge={p.team_name ?? undefined}
                     />
                     {isLeader && !teamFull && !p.team_id && p.id !== user.id ? (
