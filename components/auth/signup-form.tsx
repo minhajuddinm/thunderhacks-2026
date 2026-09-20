@@ -1,10 +1,16 @@
 "use client"
 
 import { useActionState, useState } from "react"
-import Link from "next/link"
 import { signUpAction, type ActionState } from "@/app/auth/actions"
 import { SCHOOLS, YEARS, yearLabel } from "@/lib/registration"
-import { Field, FormError, SubmitButton, inputClass } from "./auth-shell"
+import {
+  AltAction,
+  ErrorLink,
+  Field,
+  FormError,
+  SubmitButton,
+  inputClass,
+} from "./auth-shell"
 
 export function SignupForm() {
   const [state, action, pending] = useActionState<ActionState, FormData>(
@@ -14,8 +20,22 @@ export function SignupForm() {
   const [school, setSchool] = useState("")
 
   return (
-    <form action={action} className="space-y-5">
-      <FormError message={state?.error} />
+    <div className="space-y-8">
+      <form action={action} className="space-y-5">
+      {/*
+        Someone who already registered lands here by habit, so the error
+        carries the two things they might actually want.
+      */}
+      <FormError message={state?.error}>
+        {state?.code === "email_taken" ? (
+          <>
+            <ErrorLink href="/login">Log in</ErrorLink>
+            {", or "}
+            <ErrorLink href="/forgot-password">reset your password</ErrorLink>
+            {" if you have forgotten it."}
+          </>
+        ) : null}
+      </FormError>
 
       <Field label="Full name">
         <input
@@ -111,12 +131,13 @@ export function SignupForm() {
 
       <SubmitButton pending={pending}>Create account</SubmitButton>
 
-      <p className="text-[15px] text-muted-foreground">
-        Already registered?{" "}
-        <Link href="/login" className="text-[var(--bolt)] underline underline-offset-4">
-          Log in
-        </Link>
-      </p>
-    </form>
+      </form>
+
+      <AltAction
+        lead="Already registered?"
+        href="/login"
+        label="Log in"
+      />
+    </div>
   )
 }

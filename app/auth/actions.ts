@@ -6,7 +6,9 @@ import { revalidatePath } from "next/cache"
 import { getSupabaseServerClient } from "@/lib/supabase/server"
 import { isRegistrationOpen } from "@/lib/registration-server"
 
-export type ActionState = { error: string } | null
+export type ActionState =
+  | { error: string; code?: "email_taken" | "bad_credentials" }
+  | null
 
 /** Where the reset link should come back to, when the request carries no origin. */
 function siteOrigin() {
@@ -64,8 +66,16 @@ export async function signUpAction(
   })
 
   if (error) {
-    if (error.message.toLowerCase().includes("already registered")) {
-      return { error: "That email already has an account. Log in instead." }
+    // Supabase answers 422 user_already_exists whether or not the password
+    // matches, so this is the same message either way.
+    const already =
+      error.message.toLowerCase().includes("already registered") ||
+      (error as { code?: string }).code === "user_already_exists"
+    if (already) {
+      return {
+        error: "That email already has an account.",
+        code: "email_taken",
+      }
     }
     return { error: error.message }
   }
@@ -106,7 +116,14 @@ export async function signInAction(
     password: f.password,
   })
 
-  if (error) return { error: "That email and password do not match." }
+  // Supabase returns the same invalid_credentials for a wrong password and
+  // for an address with no account, so the message cannot claim to know which.
+  if (error) {
+    return {
+      error: "That email and password do not match.",
+      code: "bad_credentials",
+    }
+  }
 
   revalidatePath("/dashboard")
   redirect("/dashboard")
