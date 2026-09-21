@@ -12,7 +12,7 @@ import {
   inputClass,
 } from "./auth-shell"
 
-export function SignupForm() {
+export function SignupForm({ allowOther = false }: { allowOther?: boolean }) {
   const [state, action, pending] = useActionState<ActionState, FormData>(
     signUpAction,
     null
@@ -85,7 +85,7 @@ export function SignupForm() {
             <option value="" disabled>
               Choose
             </option>
-            {SCHOOLS.map((s) => (
+            {SCHOOLS.filter((s) => allowOther || s.value !== "other").map((s) => (
               <option key={s.value} value={s.value}>
                 {s.label}
               </option>

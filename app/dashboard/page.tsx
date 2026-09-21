@@ -152,6 +152,7 @@ export default async function DashboardPage({ searchParams }: Search) {
   const maxSize = teams?.[0]?.max_team_size ?? 4
   const teamFull = members.length >= maxSize
   const unteamed = (participants ?? []).filter((p) => !p.team_id && p.id !== user.id)
+  const { data: isAdmin } = await supabase.rpc("is_admin")
 
   return (
     <div className="min-h-screen bg-background">
@@ -167,6 +168,14 @@ export default async function DashboardPage({ searchParams }: Search) {
             <span className="hidden text-sm text-muted-foreground sm:inline">
               {profile.full_name}
             </span>
+            {isAdmin === true ? (
+              <Link
+                href="/admin"
+                className="rounded-md border border-[var(--bolt)] px-4 py-2 text-[15px] text-[var(--bolt)] transition-colors hover:bg-[var(--bolt)]/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--bolt)]"
+              >
+                Admin
+              </Link>
+            ) : null}
             <form action={signOutAction}>
               <QuietButton>Log out</QuietButton>
             </form>

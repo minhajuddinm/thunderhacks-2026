@@ -32,7 +32,7 @@ export const EVENT = {
       full: "Sault Ste. Marie Campus",
       region: "Northern Ontario",
       blurb:
-        "Algoma's home campus, in Northern Ontario.",
+        "Algoma's home campus, open to Algoma and Sault College students.",
     },
   ],
   metaTitle: "ThunderHacks II | October 14-16, 2026 | Algoma University",
@@ -98,7 +98,7 @@ export const ABOUT = {
   blocks: [
     {
       title: "Who can enter",
-      body: "Students from any college or university, at either campus.",
+      body: "Algoma University students at both campuses, plus Sault College students at the Sault Ste. Marie campus.",
     },
     {
       title: "How it runs",
@@ -364,7 +364,7 @@ export type Faq = { q: string; a: string }
 export const FAQS: Faq[] = [
   {
     q: "Who can take part?",
-    a: "Any college or university student, at either campus. Every skill level is welcome, including people who have never been to a hackathon.",
+    a: "Algoma University students at either campus, and Sault College students at the Sault Ste. Marie campus. Every skill level is welcome, including people who have never been to a hackathon.",
   },
   {
     q: "What does it cost?",

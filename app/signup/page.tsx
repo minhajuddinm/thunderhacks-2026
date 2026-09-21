@@ -48,12 +48,16 @@ export default async function SignupPage() {
     )
   }
 
+  // The form only offers "Another school" while an admin has it switched on.
+  // The database enforces the same rule, so this is presentation only.
+  const { data: allowOther } = await supabase.rpc("other_schools_allowed")
+
   return (
     <AuthShell
       title="Register"
       lead="One account per person. You can create or join a team afterwards."
     >
-      <SignupForm />
+      <SignupForm allowOther={allowOther === true} />
     </AuthShell>
   )
 }

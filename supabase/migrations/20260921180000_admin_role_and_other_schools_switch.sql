@@ -1,0 +1,17 @@
+-- Applied to the live project on 2026-09-21. See the database for the full
+-- function bodies; summary of what this migration introduced:
+--
+--   event_settings.allow_other_schools  boolean, default false
+--   public.admins                       admin user ids (no API access)
+--   public.removed_participants         record of every admin removal
+--   public.is_admin()                   true for the signed-in admin
+--   public.other_schools_allowed()      read by the signup form
+--   public.complete_registration(...)   now refuses 'other' while closed
+--   public.admin_list_participants()    everyone, with email, admins only
+--   public.admin_update_participant()   edit a profile, admins only
+--   public.admin_remove_participant()   log, hand over leadership, delete
+--   public.admin_set_other_schools()    open or close other schools
+--   public.admin_list_removed()         the removal record
+--
+-- Every admin_* function checks is_admin() itself, so the /admin page being
+-- hidden is not what protects the data.
