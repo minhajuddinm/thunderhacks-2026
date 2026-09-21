@@ -59,11 +59,20 @@ export function HeroSection() {
           ThunderHacks {EVENT.edition}
         </motion.h1>
 
+        {/* The OLG mark alone, without the tagline, reads as a sponsor credit. */}
         <motion.p
           variants={item}
-          className="mt-4 inline-flex items-center gap-2.5 border-t-2 border-[var(--bolt)] pt-2.5 text-sm text-foreground sm:text-base"
+          className="mt-4 inline-flex items-center gap-3 border-t-2 border-[var(--bolt)] pt-3 text-sm uppercase tracking-[0.14em] text-muted-foreground sm:text-[15px]"
         >
-          {EVENT.presentedBy}
+          <span>Powered by</span>
+          <Image
+            src="/images/sponsors/olg-mark.png"
+            alt="OLG"
+            width={184}
+            height={150}
+            priority
+            className="h-9 w-auto sm:h-11"
+          />
         </motion.p>
 
         <motion.p

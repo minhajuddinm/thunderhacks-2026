@@ -306,7 +306,7 @@ export const SCHEDULE: ScheduleDay[] = [
   {
     key: "day-1",
     date: "October 14",
-    weekday: "Tuesday",
+    weekday: "Wednesday",
     label: "Opening",
     items: [
       { time: "4:00 PM", title: "Opening ceremony", detail: "Broadcast to both campuses." },
@@ -317,7 +317,7 @@ export const SCHEDULE: ScheduleDay[] = [
   {
     key: "day-2",
     date: "October 15",
-    weekday: "Wednesday",
+    weekday: "Thursday",
     label: "Build day",
     items: [
       { time: "Morning", title: "Breakfast" },
@@ -331,7 +331,7 @@ export const SCHEDULE: ScheduleDay[] = [
   {
     key: "day-3",
     date: "October 16",
-    weekday: "Thursday",
+    weekday: "Friday",
     label: "Judging",
     items: [
       { time: "Morning", title: "Breakfast" },
