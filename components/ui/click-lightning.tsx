@@ -6,7 +6,7 @@ import { playThunder } from "@/lib/thunder"
 type Bolt = { pts: [number, number][]; born: number; life: number }
 
 /**
- * Click anywhere on the page and lightning strikes where you clicked.
+ * Click in the hero and lightning strikes where you clicked.
  *
  * Sits over the whole viewport but never intercepts anything: the canvas is
  * pointer-events-none and the listener is passive, so buttons, links and the
@@ -100,6 +100,10 @@ export function ClickLightning() {
     }
 
     const onDown = (e: PointerEvent) => {
+      // Only the hero strikes. Further down the page a flash over the text
+      // makes it hard to read, so clicks there do nothing.
+      const hero = document.getElementById("top")
+      if (!hero || !(e.target instanceof Node) || !hero.contains(e.target)) return
       bolts.push(makeBolt(e.clientX, e.clientY))
       if (bolts.length > 3) bolts.shift()
       playThunder(true)

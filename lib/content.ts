@@ -231,6 +231,22 @@ export const SPONSORS: Sponsor[] = [
     url: "https://www.gatewaycasinos.com/",
     blurb: "Bronze sponsor.",
   },
+  {
+    name: "Digital Move",
+    tier: "Bronze",
+    tierLabel: "Bronze",
+    logo: "/images/sponsors/digital-move.png",
+    url: "https://digital-move.com/",
+    blurb: "Bronze sponsor.",
+  },
+  {
+    name: "Shield Identity",
+    tier: "Bronze",
+    tierLabel: "Bronze",
+    logo: null,
+    url: "https://shield-identity.com/",
+    blurb: "Bronze sponsor.",
+  },
 ]
 
 export type SponsorTier = {
