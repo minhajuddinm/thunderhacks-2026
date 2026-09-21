@@ -45,10 +45,10 @@ export async function signUpAction(
 
   if (f.fullName.length < 2) return { error: "Enter your full name." }
   if (f.program.length < 2) return { error: "Enter your programme." }
-  if (!Number.isInteger(f.year) || f.year < 1 || f.year > 7) {
+  if (!Number.isInteger(f.year) || f.year < 1 || f.year > 4) {
     return { error: "Choose your year of study." }
   }
-  if (!["algoma", "sault_college", "both", "other"].includes(f.school)) {
+  if (!["algoma", "sault_college", "other"].includes(f.school)) {
     return { error: "Choose your school." }
   }
   if (f.school === "other" && f.schoolOther.length < 2) {

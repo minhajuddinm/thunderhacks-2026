@@ -17,7 +17,6 @@ export const REGISTRATION_OPENS_LABEL = "8:00am on Monday 21 September"
 export const SCHOOLS = [
   { value: "algoma", label: "Algoma University" },
   { value: "sault_college", label: "Sault College" },
-  { value: "both", label: "Both" },
   { value: "other", label: "Another school" },
 ] as const
 
@@ -32,9 +31,8 @@ export function schoolLabel(value: string, other?: string | null): string {
   return SCHOOLS.find((s) => s.value === value)?.label ?? value
 }
 
-export const YEARS = [1, 2, 3, 4, 5, 6, 7] as const
+export const YEARS = [1, 2, 3, 4] as const
 
 export function yearLabel(year: number): string {
-  if (year >= 5) return `Year ${year}+`
   return `Year ${year}`
 }
