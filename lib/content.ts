@@ -243,7 +243,7 @@ export const SPONSORS: Sponsor[] = [
     name: "Shield Identity",
     tier: "Bronze",
     tierLabel: "Bronze",
-    logo: null,
+    logo: "/images/sponsors/shield-identity.png",
     url: "https://shield-identity.com/",
     blurb: "Bronze sponsor.",
   },
