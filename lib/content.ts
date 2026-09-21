@@ -16,7 +16,7 @@ export const EVENT = {
   startsAtISO: "2026-10-14T14:00:00-04:00",
   countdownLabel: "Ready to bring the thunder in",
   registerUrl: "https://thunderhacks.devpost.com",
-  registrationOpensLabel: "Registration opens September 21",
+  registrationOpensLabel: "Registration is open",
   campuses: [
     {
       key: "brampton",
@@ -32,7 +32,7 @@ export const EVENT = {
       full: "Sault Ste. Marie Campus",
       region: "Northern Ontario",
       blurb:
-        "Algoma's home campus, open to Algoma and Sault College students.",
+        "Algoma's home campus, in Northern Ontario.",
     },
   ],
   metaTitle: "ThunderHacks II | October 14-16, 2026 | Algoma University",
@@ -88,7 +88,7 @@ export const TICKER = [
   "Powered by OLG",
   "Free entry, food and wifi",
   "Teams up to four",
-  "Registration opens September 21",
+  "Registration is open",
 ] as const
 
 export const ABOUT = {
@@ -98,7 +98,7 @@ export const ABOUT = {
   blocks: [
     {
       title: "Who can enter",
-      body: "Algoma University students at both campuses, plus Sault College students at the Sault Ste. Marie campus.",
+      body: "Students from any college or university, at either campus.",
     },
     {
       title: "How it runs",
@@ -348,7 +348,7 @@ export type Faq = { q: string; a: string }
 export const FAQS: Faq[] = [
   {
     q: "Who can take part?",
-    a: "Algoma University students at either campus, and Sault College students at the Sault Ste. Marie campus. Every skill level is welcome, including people who have never been to a hackathon.",
+    a: "Any college or university student, at either campus. Every skill level is welcome, including people who have never been to a hackathon.",
   },
   {
     q: "What does it cost?",
@@ -392,7 +392,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: "How do I sign up?",
-    a: "Registration opens on September 21 through this site.",
+    a: "Register on this site, then create a team or join one from your dashboard. You can also register alone and find a team later.",
   },
 ]
 

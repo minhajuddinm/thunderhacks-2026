@@ -36,15 +36,15 @@ export default function HomePage() {
               Three days, two campuses, one competition.
             </h2>
             <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-muted-foreground">
-              {EVENT.registrationOpensLabel} through this site. Until then, read
-              the challenge tracks and work out who you want on your team.
+              Registration is open. Sign up in a minute, then create a team or
+              join one from your dashboard.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <a
-                href="#prizes"
+                href="/signup"
                 className="rounded-md bg-[var(--bolt)] px-6 py-3 font-semibold text-black transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--bolt)]"
               >
-                See the prizes
+                Register
               </a>
               <Link
                 href={`mailto:${CONTACT.email}`}
