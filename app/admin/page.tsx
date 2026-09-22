@@ -10,7 +10,9 @@ import { Empty, Panel, PrimaryButton, QuietButton } from "@/components/dashboard
 import { CopyEmails } from "@/components/admin/copy-emails"
 import {
   removeParticipantAction,
+  setCapacityAction,
   setOtherSchoolsAction,
+  setStatusAction,
   updateParticipantAction,
 } from "./actions"
 
@@ -35,6 +37,8 @@ type Row = {
   registered_at: string
   campus: string | null
   media_consent_at: string | null
+  status: string
+  is_admin: boolean
 }
 
 type Removed = {
@@ -70,11 +74,13 @@ export default async function AdminPage({ searchParams }: Search) {
   const { data: isAdmin } = await supabase.rpc("is_admin")
   if (isAdmin !== true) redirect("/dashboard")
 
-  const [{ data: rows }, { data: removed }, { data: othersOpen }] = await Promise.all([
-    supabase.rpc("admin_list_participants"),
-    supabase.rpc("admin_list_removed"),
-    supabase.rpc("other_schools_allowed"),
-  ])
+  const [{ data: rows }, { data: removed }, { data: othersOpen }, { data: capacity }] =
+    await Promise.all([
+      supabase.rpc("admin_list_participants"),
+      supabase.rpc("admin_list_removed"),
+      supabase.rpc("other_schools_allowed"),
+      supabase.rpc("capacity_state"),
+    ])
 
   const people = (rows ?? []) as unknown as Row[]
   const gone = (removed ?? []) as unknown as Removed[]
@@ -83,6 +89,10 @@ export default async function AdminPage({ searchParams }: Search) {
   const emails = people.map((p) => p.email).filter(Boolean)
   const byCampus = (c: string) => people.filter((p) => p.campus === c).length
   const unanswered = people.filter((p) => !p.campus || !p.media_consent_at)
+  const waiting = people.filter((p) => p.status === "waitlist")
+  const cap = (Array.isArray(capacity) ? capacity[0] : capacity) as
+    | { capacity: number; taken: number; spots_left: number; is_full: boolean }
+    | null
 
   return (
     <div className="min-h-screen bg-background">
@@ -127,6 +137,9 @@ export default async function AdminPage({ searchParams }: Search) {
         <dl className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
             ["Registered", people.length],
+            ["Spots taken", cap ? `${cap.taken} of ${cap.capacity}` : "-"],
+            ["Spots left", cap ? cap.spots_left : "-"],
+            ["Waitlist", waiting.length],
             ["Algoma", bySchool("algoma")],
             ["Sault College", bySchool("sault_college")],
             ["Other schools", bySchool("other")],
@@ -143,6 +156,30 @@ export default async function AdminPage({ searchParams }: Search) {
         </dl>
 
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <Panel
+            title="How many spots"
+            lead={
+              cap
+                ? `${cap.taken} of ${cap.capacity} spots taken. Anyone who registers once they are gone lands on the waitlist. Admins do not count against the cap.`
+                : "Set how many people can hold a spot."
+            }
+          >
+            <form action={setCapacityAction} className="flex flex-wrap items-end gap-3">
+              <label className="block">
+                <span className="text-sm text-muted-foreground">Cap</span>
+                <input
+                  name="capacity"
+                  type="number"
+                  min={1}
+                  max={2000}
+                  defaultValue={cap?.capacity ?? 65}
+                  className={`mt-1 w-28 ${inputClass}`}
+                />
+              </label>
+              <PrimaryButton>Save cap</PrimaryButton>
+            </form>
+          </Panel>
+
           <Panel
             title="Other schools"
             lead={
@@ -185,6 +222,27 @@ export default async function AdminPage({ searchParams }: Search) {
               <Empty>Everyone has answered.</Empty>
             )}
           </Panel>
+
+          <Panel
+            title="Waitlist"
+            lead="In the order they registered. Give someone a spot from their card below when one comes free. Moving a confirmed person to the waitlist also takes them out of their team."
+          >
+            {waiting.length ? (
+              <div className="space-y-3">
+                <CopyEmails emails={waiting.map((p) => p.email).filter(Boolean)} />
+                <ol className="space-y-1 text-[15px] text-muted-foreground">
+                  {waiting.map((p, i) => (
+                    <li key={p.id}>
+                      {i + 1}. <span className="text-foreground">{p.full_name}</span> ·{" "}
+                      <a href={`mailto:${p.email}`} className="break-all underline underline-offset-4">{p.email}</a>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ) : (
+              <Empty>Nobody is waiting.</Empty>
+            )}
+          </Panel>
         </div>
 
         <section className="mt-10">
@@ -204,6 +262,16 @@ export default async function AdminPage({ searchParams }: Search) {
                         <p className="th-display-tight text-[17px] text-foreground">
                           {p.full_name}
                           {isMe ? <span className="ml-2 text-sm text-muted-foreground">(you)</span> : null}
+                          {p.status === "waitlist" ? (
+                            <span className="ml-2 rounded border border-[#92400e] px-1.5 py-0.5 align-middle text-xs text-[#fbbf24]">
+                              Waitlist
+                            </span>
+                          ) : null}
+                          {p.is_admin ? (
+                            <span className="ml-2 rounded border border-[var(--rule)] px-1.5 py-0.5 align-middle text-xs text-muted-foreground">
+                              Admin
+                            </span>
+                          ) : null}
                           {p.school === "other" ? (
                             <span className="ml-2 rounded border border-[#92400e] px-1.5 py-0.5 align-middle text-xs text-[#fbbf24]">
                               Other school
@@ -230,6 +298,22 @@ export default async function AdminPage({ searchParams }: Search) {
                     </div>
 
                     <div className="mt-4 flex flex-wrap gap-3">
+                      {p.is_admin ? null : (
+                        <form action={setStatusAction}>
+                          <input type="hidden" name="profile_id" value={p.id} />
+                          <input type="hidden" name="full_name" value={p.full_name} />
+                          <input
+                            type="hidden"
+                            name="status"
+                            value={p.status === "waitlist" ? "confirmed" : "waitlist"}
+                          />
+                          {p.status === "waitlist" ? (
+                            <PrimaryButton>Give a spot</PrimaryButton>
+                          ) : (
+                            <QuietButton>Move to waitlist</QuietButton>
+                          )}
+                        </form>
+                      )}
                       <details className="group w-full sm:w-auto">
                         <summary className="cursor-pointer list-none rounded-md border border-[var(--rule)] px-4 py-2 text-[15px] text-foreground hover:border-[var(--bolt)]">
                           Edit

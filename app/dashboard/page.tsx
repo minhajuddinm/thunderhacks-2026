@@ -154,7 +154,11 @@ export default async function DashboardPage({ searchParams }: Search) {
   const isLeader = leaderId === user.id
   const maxSize = teams?.[0]?.max_team_size ?? 4
   const teamFull = members.length >= maxSize
-  const unteamed = (participants ?? []).filter((p) => !p.team_id && p.id !== user.id)
+  // A waitlist place is not a spot at the event, so those people are not in
+  // the roster others build teams from.
+  const waitlisted = profile.status === "waitlist"
+  const roster = (participants ?? []).filter((p) => p.status !== "waitlist")
+  const unteamed = roster.filter((p) => !p.team_id && p.id !== user.id)
   const { data: isAdmin } = await supabase.rpc("is_admin")
 
   return (
@@ -198,12 +202,26 @@ export default async function DashboardPage({ searchParams }: Search) {
 
         <div className="th-rule mb-5 w-12" aria-hidden="true" />
         <h1 className="th-display text-[clamp(1.75rem,5vw,2.75rem)] text-foreground">
-          {profile.full_name.split(" ")[0]}, you are registered
+          {profile.full_name.split(" ")[0]},{" "}
+          {waitlisted ? "you are on the waitlist" : "you are registered"}
         </h1>
         <p className="mt-3 text-[17px] text-muted-foreground">
           {profile.program} · Year {profile.year_of_study} ·{" "}
           {schoolLabel(profile.school, profile.school_other)} · {campusLabel(profile.campus)} campus
         </p>
+
+        {waitlisted ? (
+          <div className="mt-6 border border-[#92400e] bg-[#2a1f0f] px-5 py-4">
+            <p className="th-display-tight text-[16px] text-[#fbbf24]">
+              Every spot is taken right now
+            </p>
+            <p className="mt-2 text-[15px] leading-relaxed text-[#fde68a]">
+              Your details are saved and you are in line in the order you registered. We
+              email you at {user.email} if a place comes free, and team building opens for
+              you then. Nothing else to do for now.
+            </p>
+          </div>
+        ) : null}
 
         <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* ---------------------------------------------------- my team -- */}
@@ -216,7 +234,9 @@ export default async function DashboardPage({ searchParams }: Search) {
             }
             className="lg:row-span-2"
           >
-            {myTeam ? (
+            {waitlisted ? (
+              <Empty>Team building opens once you have a spot.</Empty>
+            ) : myTeam ? (
               <>
                 <ul className="space-y-3">
                   {members.map((m) => (
@@ -371,7 +391,7 @@ export default async function DashboardPage({ searchParams }: Search) {
                         Led by {t.leader_name} · {t.member_count} of {t.max_team_size}
                       </div>
                     </div>
-                    {!teamId && t.has_space ? (
+                    {!teamId && !waitlisted && t.has_space ? (
                       <form action={requestToJoinAction}>
                         <input type="hidden" name="team_id" value={t.id} />
                         <QuietButton>Ask to join</QuietButton>
@@ -388,15 +408,15 @@ export default async function DashboardPage({ searchParams }: Search) {
           {/* ---------------------------------------------- participants -- */}
           <Panel
             title="Participants"
-            lead={`${participants?.length ?? 0} registered.${
+            lead={`${roster.length} with a spot.${
               isLeader && !teamFull ? " Invite anyone without a team." : ""
             }`}
           >
-            {!participants || participants.length === 0 ? (
+            {roster.length === 0 ? (
               <Empty>Nobody has registered yet.</Empty>
             ) : (
               <ul className="max-h-96 space-y-3 overflow-y-auto pr-1">
-                {participants.map((p) => (
+                {roster.map((p) => (
                   <li
                     key={p.id}
                     className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--rule)] pt-3"

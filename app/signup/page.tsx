@@ -50,12 +50,22 @@ export default async function SignupPage() {
 
   // The form only offers "Another school" while an admin has it switched on.
   // The database enforces the same rule, so this is presentation only.
-  const { data: allowOther } = await supabase.rpc("other_schools_allowed")
+  const [{ data: allowOther }, { data: capacity }] = await Promise.all([
+    supabase.rpc("other_schools_allowed"),
+    supabase.rpc("capacity_state"),
+  ])
+  const cap = (Array.isArray(capacity) ? capacity[0] : capacity) as
+    | { capacity: number; taken: number; spots_left: number; is_full: boolean }
+    | null
 
   return (
     <AuthShell
       title="Register"
-      lead="One account per person. You can create or join a team afterwards."
+      lead={
+        cap?.is_full
+          ? `All ${cap.capacity} spots are taken. You can still sign up and we hold your place on the waitlist, in the order people register.`
+          : "One account per person. You can create or join a team afterwards."
+      }
     >
       <SignupForm allowOther={allowOther === true} />
     </AuthShell>

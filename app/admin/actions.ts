@@ -49,6 +49,21 @@ export async function removeParticipantAction(formData: FormData) {
   )
 }
 
+export async function setStatusAction(formData: FormData) {
+  const status = String(formData.get("status") ?? "")
+  const name = String(formData.get("full_name") ?? "that person")
+  await run(
+    "admin_set_status",
+    { p_profile_id: String(formData.get("profile_id")), p_status: status },
+    status === "confirmed" ? `${name} has a spot.` : `${name} moved to the waitlist.`
+  )
+}
+
+export async function setCapacityAction(formData: FormData) {
+  const capacity = Number(formData.get("capacity"))
+  await run("admin_set_capacity", { p_capacity: capacity }, `Cap set to ${capacity}.`)
+}
+
 export async function setOtherSchoolsAction(formData: FormData) {
   const allow = String(formData.get("allow")) === "true"
   await run(
