@@ -48,6 +48,19 @@ export function PrizesSection() {
           </li>
         ))}
       </ul>
+
+      <h3 className="th-display-tight mt-14 text-lg text-foreground">
+        {PRIZES.gameJam.heading}
+      </h3>
+      <ul className="mt-4 max-w-3xl">
+        <li className="grid grid-cols-1 items-baseline gap-x-5 gap-y-1 border-t border-[var(--rule)] py-6 sm:grid-cols-[10rem_8rem_1fr]">
+          <span className="text-[15px] text-muted-foreground">{PRIZES.gameJam.tier}</span>
+          <span className="th-display text-2xl text-foreground">{PRIZES.gameJam.amount}</span>
+          <span className="text-[15px] leading-relaxed text-muted-foreground">
+            {PRIZES.gameJam.description}
+          </span>
+        </li>
+      </ul>
     </Section>
   )
 }

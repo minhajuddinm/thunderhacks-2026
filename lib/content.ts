@@ -83,7 +83,7 @@ export const RECAP_PHOTOS: Photo[] = [
 
 export const TICKER = [
   "October 14-16, 2026",
-  "$4,500 in prizes",
+  "$5,000 in prizes",
   "Brampton and Sault Ste. Marie",
   "Powered by OLG",
   "Free entry, food and wifi",
@@ -142,9 +142,9 @@ export const RECAP = {
 
 export const PRIZES = {
   heading: "Prizes",
-  poolLabel: "$4,500 total",
+  poolLabel: "$5,000 total",
   intro:
-    "Three overall placements, plus a prize on each sponsored challenge track.",
+    "Three overall placements, a prize on each sponsored challenge track, and a prize for the game jam.",
   main: [
     {
       place: "1st",
@@ -177,6 +177,12 @@ export const PRIZES = {
         "Awarded to the best submission against the Canadian Bank Note challenge.",
     },
   ],
+  gameJam: {
+    heading: "Game jam",
+    tier: "Algoma game jam",
+    amount: "$500",
+    description: "Awarded to the winners of the Algoma game jam.",
+  },
 } as const
 
 export type Sponsor = {
@@ -230,6 +236,15 @@ export const SPONSORS: Sponsor[] = [
     logo: "/images/sponsors/gateway.png",
     url: "https://www.gatewaycasinos.com/",
     blurb: "Bronze sponsor.",
+  },
+  {
+    name: "Algoma University",
+    tier: "Bronze",
+    tierLabel: "Bronze",
+    logo: "/images/sponsors/algoma-cst.png",
+    url: "https://algomau.ca/",
+    blurb:
+      "Bronze sponsor, through the Faculty of Computer Science and Technology, which also backs the game jam prize.",
   },
   {
     name: "Digital Move",
