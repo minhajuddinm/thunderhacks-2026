@@ -28,6 +28,7 @@ export async function updateParticipantAction(formData: FormData) {
       p_year: Number(formData.get("year_of_study")),
       p_school: school,
       p_school_other: school === "other" ? String(formData.get("school_other") ?? "").trim() : null,
+      p_campus: String(formData.get("campus") ?? "") || null,
     },
     `Saved ${String(formData.get("full_name") ?? "").trim()}.`
   )

@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react"
 import { signUpAction, type ActionState } from "@/app/auth/actions"
 import { SCHOOLS, YEARS, yearLabel } from "@/lib/registration"
+import { EventFields } from "./event-fields"
 import {
   AltAction,
   ErrorLink,
@@ -18,6 +19,7 @@ export function SignupForm({ allowOther = false }: { allowOther?: boolean }) {
     null
   )
   const [school, setSchool] = useState("")
+  const [campus, setCampus] = useState("")
 
   return (
     <div className="space-y-8">
@@ -107,6 +109,8 @@ export function SignupForm({ allowOther = false }: { allowOther?: boolean }) {
           />
         </Field>
       ) : null}
+
+      <EventFields school={school} campus={campus} onCampus={setCampus} />
 
       <Field label="Email">
         <input

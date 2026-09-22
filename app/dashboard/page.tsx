@@ -3,7 +3,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { redirect } from "next/navigation"
 import { getSupabaseServerClient } from "@/lib/supabase/server"
-import { schoolLabel, REGISTRATION_OPENS_LABEL } from "@/lib/registration"
+import { campusLabel, schoolLabel, REGISTRATION_OPENS_LABEL } from "@/lib/registration"
 import { isRegistrationOpen } from "@/lib/registration-server"
 import { SCHEDULE, SCHEDULE_NOTE, EVENT } from "@/lib/content"
 import { signOutAction } from "@/app/auth/actions"
@@ -95,6 +95,9 @@ export default async function DashboardPage({ searchParams }: Search) {
       </main>
     )
   }
+  // Registered before campus and photo consent were asked: answer first.
+  if (!profile.campus || !profile.media_consent_at) redirect("/event-details")
+
 
   const { data: membership } = await supabase
     .from("team_members")
@@ -199,7 +202,7 @@ export default async function DashboardPage({ searchParams }: Search) {
         </h1>
         <p className="mt-3 text-[17px] text-muted-foreground">
           {profile.program} · Year {profile.year_of_study} ·{" "}
-          {schoolLabel(profile.school, profile.school_other)}
+          {schoolLabel(profile.school, profile.school_other)} · {campusLabel(profile.campus)} campus
         </p>
 
         <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">

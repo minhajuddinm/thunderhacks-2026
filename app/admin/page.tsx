@@ -3,7 +3,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { redirect } from "next/navigation"
 import { getSupabaseServerClient } from "@/lib/supabase/server"
-import { SCHOOLS, YEARS, schoolLabel, yearLabel } from "@/lib/registration"
+import { CAMPUSES, SCHOOLS, YEARS, campusLabel, schoolLabel, yearLabel } from "@/lib/registration"
 import { signOutAction } from "@/app/auth/actions"
 import { inputClass } from "@/components/auth/auth-shell"
 import { Empty, Panel, PrimaryButton, QuietButton } from "@/components/dashboard/ui"
@@ -33,6 +33,8 @@ type Row = {
   team_name: string | null
   is_leader: boolean
   registered_at: string
+  campus: string | null
+  media_consent_at: string | null
 }
 
 type Removed = {
@@ -79,6 +81,8 @@ export default async function AdminPage({ searchParams }: Search) {
   const bySchool = (s: string) => people.filter((p) => p.school === s).length
   const teams = new Set(people.map((p) => p.team_id).filter(Boolean)).size
   const emails = people.map((p) => p.email).filter(Boolean)
+  const byCampus = (c: string) => people.filter((p) => p.campus === c).length
+  const unanswered = people.filter((p) => !p.campus || !p.media_consent_at)
 
   return (
     <div className="min-h-screen bg-background">
@@ -120,12 +124,15 @@ export default async function AdminPage({ searchParams }: Search) {
         <div className="th-rule mb-5 w-12" aria-hidden="true" />
         <h1 className="th-display text-[clamp(1.75rem,5vw,2.75rem)] text-foreground">Participants</h1>
 
-        <dl className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
+        <dl className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
             ["Registered", people.length],
             ["Algoma", bySchool("algoma")],
             ["Sault College", bySchool("sault_college")],
             ["Other schools", bySchool("other")],
+            ["Brampton", byCampus("brampton")],
+            ["Sault Ste. Marie", byCampus("sault_ste_marie")],
+            ["Still to answer", unanswered.length],
             ["Teams", teams],
           ].map(([label, n]) => (
             <div key={label} className="border border-[var(--rule)] bg-[var(--raised)] px-4 py-3">
@@ -156,6 +163,27 @@ export default async function AdminPage({ searchParams }: Search) {
 
           <Panel title="Email" lead="Click an address below to email one person. To email everyone, copy all and paste into Bcc so nobody sees the others.">
             {emails.length ? <CopyEmails emails={emails} /> : <Empty>No one to email yet.</Empty>}
+          </Panel>
+
+          <Panel
+            title="Still to answer campus and photo consent"
+            lead="These people registered before the two questions were added. They are asked the next time they open the dashboard."
+          >
+            {unanswered.length ? (
+              <div className="space-y-3">
+                <CopyEmails emails={unanswered.map((p) => p.email).filter(Boolean)} />
+                <ul className="space-y-1 text-[15px] text-muted-foreground">
+                  {unanswered.map((p) => (
+                    <li key={p.id}>
+                      <span className="text-foreground">{p.full_name}</span> ·{" "}
+                      <a href={`mailto:${p.email}`} className="break-all underline underline-offset-4">{p.email}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <Empty>Everyone has answered.</Empty>
+            )}
           </Panel>
         </div>
 
@@ -191,6 +219,10 @@ export default async function AdminPage({ searchParams }: Search) {
                         <p className="mt-1 text-[15px] text-muted-foreground">
                           {p.program} · {yearLabel(p.year_of_study)} · {schoolLabel(p.school, p.school_other)}
                         </p>
+                        <p className="mt-1 text-[15px] text-muted-foreground">
+                          Campus: {campusLabel(p.campus)} · Photo consent:{" "}
+                          {p.media_consent_at ? `yes, ${when(p.media_consent_at)}` : <span className="text-[#fbbf24]">not yet</span>}
+                        </p>
                         <p className="mt-1 text-sm text-muted-foreground">
                           {p.team_name ? `${p.is_leader ? "Leads" : "In"} ${p.team_name}` : "No team"} · registered {when(p.registered_at)}
                         </p>
@@ -225,6 +257,15 @@ export default async function AdminPage({ searchParams }: Search) {
                             <select name="school" defaultValue={p.school} className={`mt-1 ${inputClass}`}>
                               {SCHOOLS.map((s) => (
                                 <option key={s.value} value={s.value}>{s.label}</option>
+                              ))}
+                            </select>
+                          </label>
+                          <label className="block">
+                            <span className="text-sm text-muted-foreground">Campus</span>
+                            <select name="campus" defaultValue={p.campus ?? ""} className={`mt-1 ${inputClass}`}>
+                              <option value="">{p.campus ? "Keep current" : "Not given"}</option>
+                              {CAMPUSES.map((c) => (
+                                <option key={c.value} value={c.value}>{c.label}</option>
                               ))}
                             </select>
                           </label>

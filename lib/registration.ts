@@ -36,3 +36,20 @@ export const YEARS = [1, 2, 3, 4] as const
 export function yearLabel(year: number): string {
   return `Year ${year}`
 }
+
+export const CAMPUSES = [
+  { value: "brampton", label: "Brampton" },
+  { value: "sault_ste_marie", label: "Sault Ste. Marie" },
+] as const
+
+export function campusLabel(value: string | null | undefined): string {
+  return CAMPUSES.find((c) => c.value === value)?.label ?? "Not given"
+}
+
+/** Shown beside the tick box. Kept here so the signup form and the
+ * two-question page always show the same words. */
+export const MEDIA_CONSENT_TEXT =
+  "I agree that ALCOMS may photograph and film me during ThunderHacks II, and that ALCOMS, Algoma University and the event's sponsors may use those photos and videos online, on social media and in promotional material."
+
+export const MEDIA_CONSENT_NOTE =
+  "If you want a particular photo of you taken down afterwards, email alcoms@algomau.ca."

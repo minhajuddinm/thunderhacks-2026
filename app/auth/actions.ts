@@ -28,6 +28,8 @@ function readForm(formData: FormData) {
     year: Number(formData.get("year_of_study") ?? 0),
     school: String(formData.get("school") ?? ""),
     schoolOther: String(formData.get("school_other") ?? "").trim(),
+    campus: String(formData.get("campus") ?? ""),
+    mediaConsent: String(formData.get("media_consent") ?? "") === "yes",
   }
 }
 
@@ -53,6 +55,13 @@ export async function signUpAction(
   }
   if (f.school === "other" && f.schoolOther.length < 2) {
     return { error: "Tell us which school you are at." }
+  }
+  if (f.school === "sault_college") f.campus = "sault_ste_marie"
+  if (!["brampton", "sault_ste_marie"].includes(f.campus)) {
+    return { error: "Choose the campus you will attend." }
+  }
+  if (!f.mediaConsent) {
+    return { error: "You need to agree to photos and video to take part." }
   }
   if (f.password.length < 8) {
     return { error: "Use a password of at least 8 characters." }
@@ -96,6 +105,8 @@ export async function signUpAction(
     p_year: f.year,
     p_school: f.school,
     p_school_other: f.school === "other" ? f.schoolOther : null,
+    p_campus: f.campus,
+    p_media_consent: true,
   })
 
   if (rpcError) return { error: rpcError.message }
@@ -159,6 +170,29 @@ export async function requestPasswordResetAction(
   })
 
   redirect("/forgot-password?sent=1")
+}
+
+/** The two questions existing registrants answer once. */
+export async function completeEventDetailsAction(
+  _prev: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  const campus = String(formData.get("campus") ?? "")
+  const consent = String(formData.get("media_consent") ?? "") === "yes"
+  if (!["brampton", "sault_ste_marie"].includes(campus)) {
+    return { error: "Choose the campus you will attend." }
+  }
+  if (!consent) {
+    return { error: "You need to agree to photos and video to take part." }
+  }
+  const supabase = await getSupabaseServerClient()
+  const { error } = await supabase.rpc("complete_event_details", {
+    p_campus: campus,
+    p_media_consent: true,
+  })
+  if (error) return { error: error.message }
+  revalidatePath("/dashboard")
+  redirect("/dashboard")
 }
 
 /**
