@@ -19,6 +19,21 @@ function siteOrigin() {
   return "https://thunderhacks.algomau.ca"
 }
 
+/**
+ * The same shapes the database accepts: ten digits for Canada and the US, or
+ * + and a country code. Checked here only so the form can say so politely.
+ */
+function phoneError(phone: string): string | null {
+  const v = phone.trim()
+  if (!v) return "Give us a phone number."
+  const digits = v.replace(/[^0-9]/g, "")
+  if (v.startsWith("+")) {
+    return digits.length >= 8 && digits.length <= 15 ? null : "That phone number does not look right."
+  }
+  const local = digits.length === 11 && digits.startsWith("1") ? digits.slice(1) : digits
+  return local.length === 10 ? null : "Enter a 10 digit phone number, or + and the country code."
+}
+
 function readForm(formData: FormData) {
   return {
     email: String(formData.get("email") ?? "").trim().toLowerCase(),
@@ -30,6 +45,7 @@ function readForm(formData: FormData) {
     schoolOther: String(formData.get("school_other") ?? "").trim(),
     campus: String(formData.get("campus") ?? ""),
     mediaConsent: String(formData.get("media_consent") ?? "") === "yes",
+    phone: String(formData.get("phone") ?? "").trim(),
   }
 }
 
@@ -63,6 +79,7 @@ export async function signUpAction(
   if (!f.mediaConsent) {
     return { error: "You need to agree to photos and video to take part." }
   }
+  if (phoneError(f.phone)) return { error: phoneError(f.phone) as string }
   if (f.password.length < 8) {
     return { error: "Use a password of at least 8 characters." }
   }
@@ -107,6 +124,7 @@ export async function signUpAction(
     p_school_other: f.school === "other" ? f.schoolOther : null,
     p_campus: f.campus,
     p_media_consent: true,
+    p_phone: f.phone,
   })
 
   if (rpcError) return { error: rpcError.message }
@@ -179,16 +197,19 @@ export async function completeEventDetailsAction(
 ): Promise<ActionState> {
   const campus = String(formData.get("campus") ?? "")
   const consent = String(formData.get("media_consent") ?? "") === "yes"
+  const phone = String(formData.get("phone") ?? "").trim()
   if (!["brampton", "sault_ste_marie"].includes(campus)) {
     return { error: "Choose the campus you will attend." }
   }
   if (!consent) {
     return { error: "You need to agree to photos and video to take part." }
   }
+  if (phoneError(phone)) return { error: phoneError(phone) as string }
   const supabase = await getSupabaseServerClient()
   const { error } = await supabase.rpc("complete_event_details", {
     p_campus: campus,
     p_media_consent: true,
+    p_phone: phone,
   })
   if (error) return { error: error.message }
   revalidatePath("/dashboard")

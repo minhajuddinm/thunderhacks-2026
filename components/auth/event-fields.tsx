@@ -1,6 +1,6 @@
 "use client"
 
-import { CAMPUSES, MEDIA_CONSENT_NOTE, MEDIA_CONSENT_TEXT } from "@/lib/registration"
+import { CAMPUSES, MEDIA_CONSENT_NOTE, MEDIA_CONSENT_TEXT, PHONE_HINT } from "@/lib/registration"
 import { Field, inputClass } from "./auth-shell"
 
 /**
@@ -12,10 +12,12 @@ export function EventFields({
   school,
   campus,
   onCampus,
+  phone,
 }: {
   school: string
   campus: string
   onCampus: (v: string) => void
+  phone?: string
 }) {
   const saultOnly = school === "sault_college"
   const value = saultOnly ? "sault_ste_marie" : campus
@@ -42,6 +44,19 @@ export function EventFields({
             </option>
           ))}
         </select>
+      </Field>
+
+      <Field label="Phone number" hint={PHONE_HINT}>
+        <input
+          name="phone"
+          type="tel"
+          required
+          defaultValue={phone ?? ""}
+          autoComplete="tel"
+          maxLength={20}
+          placeholder="(647) 740-6963"
+          className={inputClass}
+        />
       </Field>
 
       <div className="rounded-md border border-[var(--rule)] bg-[var(--raised)] p-4">

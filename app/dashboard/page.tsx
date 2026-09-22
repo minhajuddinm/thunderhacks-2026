@@ -3,7 +3,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { redirect } from "next/navigation"
 import { getSupabaseServerClient } from "@/lib/supabase/server"
-import { campusLabel, schoolLabel, REGISTRATION_OPENS_LABEL } from "@/lib/registration"
+import { campusLabel, phoneLabel, schoolLabel, REGISTRATION_OPENS_LABEL } from "@/lib/registration"
 import { isRegistrationOpen } from "@/lib/registration-server"
 import { SCHEDULE, SCHEDULE_NOTE, EVENT } from "@/lib/content"
 import { signOutAction } from "@/app/auth/actions"
@@ -14,6 +14,7 @@ import {
   requestToJoinAction,
   respondAction,
   cancelRequestAction,
+  deregisterAction,
 } from "./actions"
 import { Empty, Panel, PersonLine, PrimaryButton, QuietButton } from "@/components/dashboard/ui"
 import { inputClass } from "@/components/auth/auth-shell"
@@ -95,8 +96,10 @@ export default async function DashboardPage({ searchParams }: Search) {
       </main>
     )
   }
-  // Registered before campus and photo consent were asked: answer first.
-  if (!profile.campus || !profile.media_consent_at) redirect("/event-details")
+  // Registered before campus, phone and photo consent were asked: answer first.
+  if (!profile.campus || !profile.media_consent_at || !profile.phone) {
+    redirect("/event-details")
+  }
 
 
   const { data: membership } = await supabase
@@ -207,7 +210,8 @@ export default async function DashboardPage({ searchParams }: Search) {
         </h1>
         <p className="mt-3 text-[17px] text-muted-foreground">
           {profile.program} · Year {profile.year_of_study} ·{" "}
-          {schoolLabel(profile.school, profile.school_other)} · {campusLabel(profile.campus)} campus
+          {schoolLabel(profile.school, profile.school_other)} · {campusLabel(profile.campus)} campus ·{" "}
+          {phoneLabel(profile.phone)}
         </p>
 
         {waitlisted ? (
@@ -445,6 +449,46 @@ export default async function DashboardPage({ searchParams }: Search) {
             ) : null}
           </Panel>
         </div>
+
+        {/* --------------------------------------------------- give it up -- */}
+        <section className="mt-10 border border-[var(--rule)] bg-[var(--raised)] p-6 sm:p-7">
+          <h2 className="th-display text-xl text-foreground sm:text-2xl">
+            Cannot make it?
+          </h2>
+          <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+            Spots are limited and people are waiting, so let us know instead of
+            leaving your place unused. Cancelling deletes your account and takes you
+            out of your team, and the next person in line gets your spot. You can also
+            email alcoms@algomau.ca and we will do it for you.
+          </p>
+          <details className="mt-5">
+            <summary className="inline-block cursor-pointer list-none rounded-md border border-[#7f1d1d] px-4 py-2 text-[15px] text-[#fca5a5] hover:border-[#b91c1c]">
+              Cancel my registration
+            </summary>
+            <form action={deregisterAction} className="mt-4 max-w-xl space-y-3">
+              <p className="text-[15px] text-muted-foreground">
+                This cannot be undone. If you change your mind later you can register
+                again, as long as a spot is still open.
+              </p>
+              <label className="block">
+                <span className="text-sm text-muted-foreground">
+                  Why, if you do not mind saying (optional)
+                </span>
+                <input
+                  name="reason"
+                  maxLength={200}
+                  className={`mt-1 ${inputClass}`}
+                  placeholder="e.g. Clashes with a midterm"
+                />
+              </label>
+              <label className="flex items-center gap-2 text-[15px] text-foreground">
+                <input type="checkbox" name="confirm" value="yes" required className="h-4 w-4" />
+                Yes, cancel my registration and delete my account
+              </label>
+              <QuietButton danger>Cancel registration</QuietButton>
+            </form>
+          </details>
+        </section>
 
         {/* ------------------------------------------------------ timeline -- */}
         <section className="mt-10 border border-[var(--rule)] bg-[var(--raised)] p-6 sm:p-7">

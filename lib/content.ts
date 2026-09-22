@@ -87,6 +87,7 @@ export const TICKER = [
   "Brampton and Sault Ste. Marie",
   "Powered by OLG",
   "Free entry, food and wifi",
+  "65 spots",
   "Teams up to four",
   "Registration is open",
 ] as const
@@ -106,7 +107,7 @@ export const ABOUT = {
     },
     {
       title: "How big",
-      body: "We are planning for 50 to 60 hackers across the two campuses.",
+      body: "65 spots across the two campuses. Register after they are taken and you go on the waitlist, in the order people sign up.",
     },
     {
       title: "How it is judged",
@@ -420,6 +421,14 @@ export const FAQS: Faq[] = [
   {
     q: "What if I am at the other campus?",
     a: "Both campuses run the same schedule and stream to each other, so opening, workshops and closing are shared. You compete against everyone, not just your own campus.",
+  },
+  {
+    q: "How many spots are there?",
+    a: "65 across both campuses. Registration stays open after that, and anyone who signs up later joins a waitlist in the order they register. We move people up as spots come free.",
+  },
+  {
+    q: "What if I cannot make it any more?",
+    a: "Cancel your registration from your dashboard, or email alcoms@algomau.ca and we will do it for you. Spots are limited and people are waiting, so tell us as early as you can instead of leaving a place unused.",
   },
   {
     q: "How do I sign up?",

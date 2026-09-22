@@ -3,7 +3,15 @@ import Link from "next/link"
 import Image from "next/image"
 import { redirect } from "next/navigation"
 import { getSupabaseServerClient } from "@/lib/supabase/server"
-import { CAMPUSES, SCHOOLS, YEARS, campusLabel, schoolLabel, yearLabel } from "@/lib/registration"
+import {
+  CAMPUSES,
+  SCHOOLS,
+  YEARS,
+  campusLabel,
+  phoneLabel,
+  schoolLabel,
+  yearLabel,
+} from "@/lib/registration"
 import { signOutAction } from "@/app/auth/actions"
 import { inputClass } from "@/components/auth/auth-shell"
 import { Empty, Panel, PrimaryButton, QuietButton } from "@/components/dashboard/ui"
@@ -27,6 +35,7 @@ type Row = {
   id: string
   full_name: string
   email: string
+  phone: string | null
   program: string
   year_of_study: number
   school: string
@@ -288,6 +297,9 @@ export default async function AdminPage({ searchParams }: Search) {
                           {p.program} · {yearLabel(p.year_of_study)} · {schoolLabel(p.school, p.school_other)}
                         </p>
                         <p className="mt-1 text-[15px] text-muted-foreground">
+                          {phoneLabel(p.phone)}
+                        </p>
+                        <p className="mt-1 text-[15px] text-muted-foreground">
                           Campus: {campusLabel(p.campus)} · Photo consent:{" "}
                           {p.media_consent_at ? `yes, ${when(p.media_consent_at)}` : <span className="text-[#fbbf24]">not yet</span>}
                         </p>
@@ -352,6 +364,18 @@ export default async function AdminPage({ searchParams }: Search) {
                                 <option key={c.value} value={c.value}>{c.label}</option>
                               ))}
                             </select>
+                          </label>
+                          <label className="block sm:col-span-2">
+                            <span className="text-sm text-muted-foreground">
+                              Phone (leave blank to keep what is there)
+                            </span>
+                            <input
+                              name="phone"
+                              type="tel"
+                              maxLength={20}
+                              placeholder={phoneLabel(p.phone)}
+                              className={`mt-1 ${inputClass}`}
+                            />
                           </label>
                           <label className="block sm:col-span-2">
                             <span className="text-sm text-muted-foreground">School name (only used for Another school)</span>

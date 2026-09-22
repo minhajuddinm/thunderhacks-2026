@@ -13,7 +13,10 @@ export const metadata: Metadata = {
   title: "Log in | ThunderHacks II",
 }
 
-export default async function LoginPage() {
+type Search = { searchParams: Promise<{ left?: string }> }
+
+export default async function LoginPage({ searchParams }: Search) {
+  const { left } = await searchParams
   const supabase = await getSupabaseServerClient()
   const {
     data: { user },
@@ -40,7 +43,14 @@ export default async function LoginPage() {
   }
 
   return (
-    <AuthShell title="Log in">
+    <AuthShell
+      title="Log in"
+      lead={
+        left
+          ? "Your registration is cancelled and your account is gone. If a spot is still open you are welcome to register again."
+          : undefined
+      }
+    >
       <LoginForm canSignUp />
     </AuthShell>
   )

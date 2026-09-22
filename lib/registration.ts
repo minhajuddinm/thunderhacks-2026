@@ -53,3 +53,16 @@ export const MEDIA_CONSENT_TEXT =
 
 export const MEDIA_CONSENT_NOTE =
   "If you want a particular photo of you taken down afterwards, email alcoms@algomau.ca."
+
+export const PHONE_HINT = "A number we can reach you on during the event, e.g. (647) 740-6963."
+
+/**
+ * Numbers are stored as ten digits, or + and the country code for anyone
+ * outside Canada and the US. Shown back in the shape people expect.
+ */
+export function phoneLabel(value: string | null | undefined): string {
+  const v = (value ?? "").trim()
+  if (!v) return "Not given"
+  if (/^[0-9]{10}$/.test(v)) return `(${v.slice(0, 3)}) ${v.slice(3, 6)}-${v.slice(6)}`
+  return v
+}

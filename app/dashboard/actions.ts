@@ -55,3 +55,30 @@ export async function cancelRequestAction(formData: FormData) {
 export async function leaveTeamAction() {
   await run("leave_team", {})
 }
+
+/**
+ * Giving up your own spot. The database writes the person to the removed list,
+ * hands their team on, deletes the account and moves the waitlist up. The
+ * session is dead once the account is gone, so sign out and land on the login
+ * page with a word about what happened.
+ */
+export async function deregisterAction(formData: FormData) {
+  if (String(formData.get("confirm") ?? "") !== "yes") {
+    redirect(
+      `/dashboard?error=${encodeURIComponent("Tick the box to confirm you are cancelling.")}`
+    )
+  }
+  const reason = String(formData.get("reason") ?? "").trim()
+  const supabase = await getSupabaseServerClient()
+  const { error } = await supabase.rpc("deregister", { p_reason: reason || null })
+  if (error) {
+    redirect(`/dashboard?error=${encodeURIComponent(error.message)}`)
+  }
+  try {
+    await supabase.auth.signOut()
+  } catch {
+    // The account is already gone, so a failed sign-out changes nothing.
+  }
+  revalidatePath("/dashboard")
+  redirect("/login?left=1")
+}
