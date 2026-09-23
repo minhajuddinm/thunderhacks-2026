@@ -7,7 +7,8 @@ import { SPONSORS, type Sponsor } from "@/lib/content"
  * the tier label. Chosen against the dark ground rather than by eye: contrast
  * is 11.2:1 for gold, 11.5:1 for silver, 7.2:1 for bronze. The gold is a warm
  * metallic, deliberately not the site's electric yellow, so it reads as a medal
- * instead of just the house accent.
+ * instead of just the house accent. In-kind support is not a medal, so it takes
+ * a cool teal that sits apart from the three.
  *
  * Applied through a --tier custom property so one set of static utility classes
  * covers all three; Tailwind cannot see class names built at runtime.
@@ -16,6 +17,7 @@ const TIER_COLOUR: Record<Sponsor["tier"], string> = {
   Gold: "#F5C542",
   Silver: "#C8CFDA",
   Bronze: "#D89552",
+  "In-kind": "#7FC7B8",
 }
 
 function tierStyle(sponsor: Sponsor): CSSProperties {
@@ -122,13 +124,14 @@ export function SponsorsSection() {
   const gold = SPONSORS.filter((s) => s.tier === "Gold")
   const silver = SPONSORS.filter((s) => s.tier === "Silver")
   const bronze = SPONSORS.filter((s) => s.tier === "Bronze")
+  const inKind = SPONSORS.filter((s) => s.tier === "In-kind")
 
   return (
     <Section
       id="sponsors"
       tone="raised"
       title="Sponsors"
-      lead="ThunderHacks II runs because these organisations pay for it."
+      lead="ThunderHacks II runs because these organisations back it, with money, with prizes, and with their people."
     >
       {gold.map((sponsor) => (
         <SponsorCard
@@ -194,6 +197,33 @@ export function SponsorsSection() {
           </SponsorCard>
         ))}
       </div>
+
+      {inKind.length > 0 ? (
+        <>
+          <h3 className="th-display-tight mx-auto mt-14 max-w-3xl text-lg text-foreground">
+            In-kind support
+          </h3>
+          <p className="mx-auto mt-2 max-w-3xl text-[15px] leading-relaxed text-muted-foreground">
+            Backing ThunderHacks II with people, programming and resources instead of cash.
+          </p>
+          <div className="mx-auto mt-6 grid max-w-3xl grid-cols-1 gap-8 sm:grid-cols-2">
+            {inKind.map((sponsor) => (
+              <SponsorCard
+                key={sponsor.name}
+                sponsor={sponsor}
+                className="relative border border-[var(--rule)] p-7 text-center"
+              >
+                <TierBar />
+                <span className="block text-sm text-[var(--tier)]">{sponsor.tierLabel}</span>
+                <h3 className="th-display-tight mt-2 text-xl text-foreground">{sponsor.name}</h3>
+                <span className="mt-6 flex justify-center">
+                  <LogoSlot sponsor={sponsor} />
+                </span>
+              </SponsorCard>
+            ))}
+          </div>
+        </>
+      ) : null}
     </Section>
   )
 }

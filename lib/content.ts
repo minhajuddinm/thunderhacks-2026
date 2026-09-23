@@ -188,7 +188,7 @@ export const PRIZES = {
 
 export type Sponsor = {
   name: string
-  tier: "Gold" | "Silver" | "Bronze"
+  tier: "Gold" | "Silver" | "Bronze" | "In-kind"
   tierLabel: string
   logo: string | null
   /**
@@ -262,6 +262,22 @@ export const SPONSORS: Sponsor[] = [
     logo: "/images/sponsors/shield-identity.png",
     url: "https://shield-identity.com/",
     blurb: "Bronze sponsor.",
+  },
+  {
+    name: "Brampton Venture Zone",
+    tier: "In-kind",
+    tierLabel: "In-kind",
+    logo: "/images/sponsors/bvz-tmu.png",
+    url: "https://www.torontomu.ca/zone-learning/venture-zone-brampton/",
+    blurb: "In-kind sponsor. Brampton Venture Zone by Toronto Metropolitan University.",
+  },
+  {
+    name: "Mitacs",
+    tier: "In-kind",
+    tierLabel: "In-kind",
+    logo: "/images/sponsors/mitacs.png",
+    url: "https://www.mitacs.ca/",
+    blurb: "In-kind sponsor.",
   },
 ]
 
