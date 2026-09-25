@@ -358,6 +358,11 @@ export const SCHEDULE: ScheduleDay[] = [
     label: "Opening",
     items: [
       { time: "4:00 PM", title: "Opening ceremony", detail: "Broadcast to both campuses." },
+      {
+        time: "5:30 PM",
+        title: "Anti-money laundering workshop",
+        detail: "Run by OLG, 5:30 to 6:30 PM.",
+      },
       { time: "Evening", title: "Dinner" },
       { time: "Evening", title: "Hacking begins" },
     ],
@@ -369,7 +374,11 @@ export const SCHEDULE: ScheduleDay[] = [
     label: "Build day",
     items: [
       { time: "Morning", title: "Breakfast" },
-      { time: "Morning", title: "Workshop one" },
+      {
+        time: "11:00 AM",
+        title: "Careers and hiring workshop",
+        detail: "Run by OLG, 11:00 AM to 12:00 PM.",
+      },
       { time: "Midday", title: "Lunch" },
       { time: "Afternoon", title: "Workshop two" },
       { time: "Afternoon", title: "Gaming competition" },
