@@ -40,7 +40,7 @@ function TierBar() {
  * suit our background is not something we do.
  */
 function LogoSlot({ sponsor, tall }: { sponsor: Sponsor; tall?: boolean }) {
-  const h = tall ? "h-24 sm:h-28" : "h-14 sm:h-16"
+  const h = tall ? "h-24 sm:h-28" : sponsor.boxy ? "h-20 sm:h-24" : "h-14 sm:h-16"
 
   if (!sponsor.logo) {
     return (

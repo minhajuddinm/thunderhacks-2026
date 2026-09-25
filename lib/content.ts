@@ -198,6 +198,8 @@ export type Sponsor = {
    * mark is not ours to do.
    */
   onDark?: boolean
+  /** Square or tall marks get a deeper logo slot so they are not left tiny. */
+  boxy?: boolean
   blurb: string
   url?: string
 }
@@ -253,6 +255,14 @@ export const SPONSORS: Sponsor[] = [
     tierLabel: "Bronze",
     logo: "/images/sponsors/digital-move.png",
     url: "https://digital-move.com/",
+    blurb: "Bronze sponsor.",
+  },
+  {
+    name: "Dreamwing Studio",
+    tier: "Bronze",
+    tierLabel: "Bronze",
+    logo: "/images/sponsors/dreamwing.png",
+    boxy: true,
     blurb: "Bronze sponsor.",
   },
   {
