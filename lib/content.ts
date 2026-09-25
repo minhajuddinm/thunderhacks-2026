@@ -279,6 +279,13 @@ export const SPONSORS: Sponsor[] = [
     url: "https://www.mitacs.ca/",
     blurb: "In-kind sponsor.",
   },
+  {
+    name: "Ordino",
+    tier: "In-kind",
+    tierLabel: "In-kind",
+    logo: "/images/sponsors/ordino.png",
+    blurb: "In-kind sponsor.",
+  },
 ]
 
 export type SponsorTier = {
@@ -348,7 +355,7 @@ export type ScheduleDay = {
 }
 
 export const SCHEDULE_NOTE =
-  "This is the preliminary plan. Exact times are still being confirmed and will be posted here before the event."
+  "Times may still shift by a few minutes. Anything that changes is posted here before the event."
 
 export const SCHEDULE: ScheduleDay[] = [
   {
@@ -357,6 +364,7 @@ export const SCHEDULE: ScheduleDay[] = [
     weekday: "Wednesday",
     label: "Opening",
     items: [
+      { time: "3:00 PM", title: "Registration and check-in" },
       { time: "4:00 PM", title: "Opening ceremony", detail: "Broadcast to both campuses." },
       {
         time: "5:30 PM",
@@ -364,7 +372,11 @@ export const SCHEDULE: ScheduleDay[] = [
         detail: "Run by OLG, 5:30 to 6:30 PM.",
       },
       { time: "Evening", title: "Dinner" },
-      { time: "Evening", title: "Hacking begins" },
+      {
+        time: "After dinner",
+        title: "Hacking begins",
+        detail: "Keep building at the venue or head home. Doors close at 10 PM.",
+      },
     ],
   },
   {
@@ -373,16 +385,22 @@ export const SCHEDULE: ScheduleDay[] = [
     weekday: "Thursday",
     label: "Build day",
     items: [
-      { time: "Morning", title: "Breakfast" },
+      { time: "10:00 AM", title: "Breakfast", detail: "10:00 to 11:00 AM." },
       {
         time: "11:00 AM",
         title: "Careers and hiring workshop",
         detail: "Run by OLG, 11:00 AM to 12:00 PM.",
       },
-      { time: "Midday", title: "Lunch" },
-      { time: "Afternoon", title: "Workshop two" },
-      { time: "Afternoon", title: "Gaming competition" },
-      { time: "Evening", title: "Dinner" },
+      { time: "12:00 PM", title: "Gaming competition", detail: "12:00 to 2:00 PM." },
+      { time: "2:00 PM", title: "Lunch", detail: "2:00 to 3:00 PM." },
+      {
+        time: "3:00 PM",
+        title: "Canadian Bank Note workshop",
+        detail: "3:00 to 4:00 PM.",
+      },
+      { time: "4:00 PM", title: "Hacking continues" },
+      { time: "7:00 PM", title: "Dinner" },
+      { time: "10:00 PM", title: "Doors close" },
     ],
   },
   {
@@ -391,11 +409,18 @@ export const SCHEDULE: ScheduleDay[] = [
     weekday: "Friday",
     label: "Judging",
     items: [
-      { time: "Morning", title: "Breakfast" },
-      { time: "Morning", title: "Submissions close" },
-      { time: "Midday", title: "Presentations and judging", detail: "One panel, both campuses." },
-      { time: "Afternoon", title: "Closing ceremony and prizes" },
-      { time: "Afternoon", title: "Lunch" },
+      { time: "10:00 AM", title: "Breakfast" },
+      { time: "12:00 PM", title: "Submissions close" },
+      {
+        time: "12:30 PM",
+        title: "Presentations and judging",
+        detail: "One panel, both campuses. 12:30 to 2:30 PM.",
+      },
+      {
+        time: "2:30 PM",
+        title: "Closing ceremony, lunch and networking",
+        detail: "Prizes announced. Ends at 3:30 PM.",
+      },
     ],
   },
 ]
