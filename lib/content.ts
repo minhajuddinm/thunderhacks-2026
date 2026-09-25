@@ -284,6 +284,7 @@ export const SPONSORS: Sponsor[] = [
     tier: "In-kind",
     tierLabel: "In-kind",
     logo: "/images/sponsors/ordino.png",
+    url: "https://ordino.ca/",
     blurb: "In-kind sponsor.",
   },
 ]
