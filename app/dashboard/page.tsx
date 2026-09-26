@@ -162,6 +162,21 @@ export default async function DashboardPage({ searchParams }: Search) {
   const waitlisted = profile.status === "waitlist"
   const roster = (participants ?? []).filter((p) => p.status !== "waitlist")
   const unteamed = roster.filter((p) => !p.team_id && p.id !== user.id)
+
+  // Who is in each team, leader first, so the list shows the whole team and
+  // not only whoever made it.
+  const membersByTeam = new Map<string, string[]>()
+  for (const t of teams ?? []) {
+    const names = roster
+      .filter((p) => p.team_id === t.id)
+      .map((p) => p.full_name as string)
+      .sort((a, b) => a.localeCompare(b))
+    const leader = t.leader_name as string | null
+    membersByTeam.set(
+      t.id as string,
+      leader ? [leader, ...names.filter((n) => n !== leader)] : names
+    )
+  }
   const { data: isAdmin } = await supabase.rpc("is_admin")
 
   return (
@@ -394,6 +409,14 @@ export default async function DashboardPage({ searchParams }: Search) {
                       <div className="text-sm text-muted-foreground">
                         Led by {t.leader_name} · {t.member_count} of {t.max_team_size}
                       </div>
+                      {(membersByTeam.get(t.id) ?? []).length > 1 ? (
+                        <div className="mt-1 text-sm text-muted-foreground">
+                          With{" "}
+                          {(membersByTeam.get(t.id) ?? [])
+                            .slice(1)
+                            .join(", ")}
+                        </div>
+                      ) : null}
                     </div>
                     {!teamId && !waitlisted && t.has_space ? (
                       <form action={requestToJoinAction}>
