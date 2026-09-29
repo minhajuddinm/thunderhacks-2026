@@ -241,13 +241,13 @@ export const SPONSORS: Sponsor[] = [
     blurb: "Bronze sponsor.",
   },
   {
-    name: "Algoma University",
+    name: "Al Mustafa Canada",
     tier: "Bronze",
     tierLabel: "Bronze",
-    logo: "/images/sponsors/algoma-cst.png",
-    url: "https://algomau.ca/",
-    blurb:
-      "Bronze sponsor, through the Faculty of Computer Science and Technology, which also backs the game jam prize.",
+    logo: "/images/sponsors/al-mustafa.png",
+    onDark: true,
+    url: "https://www.almustafacanada.org/",
+    blurb: "Bronze sponsor.",
   },
   {
     name: "Digital Move",
