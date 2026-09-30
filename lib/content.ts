@@ -502,5 +502,5 @@ export const CONTACT = {
   orgFull: "Algoma University Computer Science Society",
   email: "alcoms@algomau.ca",
   linkedin: "https://www.linkedin.com/company/alcom-au",
-  website: "https://alcoms.ca",
+  website: "https://alcoms.algomau.ca",
 } as const
