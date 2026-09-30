@@ -52,6 +52,12 @@ export async function cancelRequestAction(formData: FormData) {
   await run("cancel_request", { p_request_id: String(formData.get("request_id")) })
 }
 
+export async function removeMemberAction(formData: FormData) {
+  await run("remove_team_member", {
+    p_profile_id: String(formData.get("profile_id")),
+  })
+}
+
 export async function leaveTeamAction() {
   await run("leave_team", {})
 }

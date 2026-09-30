@@ -15,6 +15,7 @@ import {
   respondAction,
   cancelRequestAction,
   deregisterAction,
+  removeMemberAction,
 } from "./actions"
 import { Empty, Panel, PersonLine, PrimaryButton, QuietButton } from "@/components/dashboard/ui"
 import { inputClass } from "@/components/auth/auth-shell"
@@ -259,7 +260,10 @@ export default async function DashboardPage({ searchParams }: Search) {
               <>
                 <ul className="space-y-3">
                   {members.map((m) => (
-                    <li key={m.profile_id} className="border-t border-[var(--rule)] pt-3">
+                    <li
+                      key={m.profile_id}
+                      className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--rule)] pt-3"
+                    >
                       <PersonLine
                         name={one(m.profiles)?.full_name ?? "Unknown"}
                         program={one(m.profiles)?.program ?? ""}
@@ -267,6 +271,12 @@ export default async function DashboardPage({ searchParams }: Search) {
                         school={schoolLabel(one(m.profiles)?.school ?? "", one(m.profiles)?.school_other)}
                         badge={m.profile_id === leaderId ? "Leader" : undefined}
                       />
+                      {isLeader && m.profile_id !== user.id ? (
+                        <form action={removeMemberAction}>
+                          <input type="hidden" name="profile_id" value={m.profile_id} />
+                          <QuietButton danger>Remove</QuietButton>
+                        </form>
+                      ) : null}
                     </li>
                   ))}
                 </ul>
