@@ -380,7 +380,8 @@ export const SCHEDULE: ScheduleDay[] = [
       {
         time: "5:30 PM",
         title: "Anti-money laundering workshop",
-        detail: "Run by OLG, 5:30 to 6:30 PM.",
+        detail:
+          "Run by OLG, 5:30 to 6:30 PM. Presented from Sault Ste. Marie and streamed to Brampton, with OLG experts in the room in Brampton for questions afterwards.",
       },
       { time: "Evening", title: "Dinner" },
       {
@@ -400,7 +401,8 @@ export const SCHEDULE: ScheduleDay[] = [
       {
         time: "11:00 AM",
         title: "Careers and hiring workshop",
-        detail: "Run by OLG, 11:00 AM to 12:00 PM.",
+        detail:
+          "Run by OLG, 11:00 AM to 12:00 PM. Presented from Brampton and streamed to Sault Ste. Marie, with OLG experts in the room in Sault Ste. Marie for questions afterwards.",
       },
       { time: "12:00 PM", title: "Gaming competition", detail: "12:00 to 2:00 PM." },
       { time: "2:00 PM", title: "Lunch", detail: "2:00 to 3:00 PM." },
