@@ -397,21 +397,21 @@ export const SCHEDULE: ScheduleDay[] = [
     weekday: "Thursday",
     label: "Build day",
     items: [
-      { time: "10:00 AM", title: "Breakfast", detail: "10:00 to 11:00 AM." },
       {
         time: "11:00 AM",
         title: "Careers and hiring workshop",
         detail:
           "Run by OLG, 11:00 AM to 12:00 PM. Presented from Brampton and streamed to Sault Ste. Marie, with OLG experts in the room in Sault Ste. Marie for questions afterwards.",
       },
-      { time: "12:00 PM", title: "Gaming competition", detail: "12:00 to 2:00 PM." },
-      { time: "2:00 PM", title: "Lunch", detail: "2:00 to 3:00 PM." },
+      { time: "12:00 PM", title: "Lunch", detail: "12:00 to 1:00 PM." },
       {
-        time: "3:00 PM",
+        time: "1:00 PM",
         title: "Canadian Bank Note workshop",
-        detail: "3:00 to 4:00 PM.",
+        detail:
+          "Run by Canadian Bank Note, 1:00 to 2:00 PM. CBN and Blast Gaming in Sault Ste. Marie on what they do, the Blast game server and how it is built, graphics design for static and animated game art, and a walk through the crash game concept, with questions at the end.",
       },
-      { time: "4:00 PM", title: "Hacking continues" },
+      { time: "2:00 PM", title: "Hacking continues" },
+      { time: "4:00 PM", title: "Gaming competition", detail: "4:00 to 6:00 PM." },
       { time: "7:00 PM", title: "Dinner" },
       { time: "10:00 PM", title: "Doors close" },
     ],
@@ -459,7 +459,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: "Is food provided?",
-    a: "Yes. Dinner on the first day, breakfast, lunch and dinner on the second, breakfast and lunch on the third.",
+    a: "Yes. Dinner on the first day, lunch and dinner on the second, breakfast and lunch on the third.",
   },
   {
     q: "Is there wifi?",
