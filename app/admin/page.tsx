@@ -116,6 +116,12 @@ export default async function AdminPage({ searchParams }: Search) {
           </Link>
           <div className="flex items-center gap-3">
             <Link
+              href="/admin/judging"
+              className="rounded-md border border-[var(--rule)] px-4 py-2 text-[15px] text-foreground transition-colors hover:border-[var(--bolt)]"
+            >
+              Judging
+            </Link>
+            <Link
               href="/dashboard"
               className="rounded-md border border-[var(--rule)] px-4 py-2 text-[15px] text-foreground transition-colors hover:border-[var(--bolt)]"
             >
