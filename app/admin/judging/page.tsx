@@ -7,6 +7,9 @@ import { Empty, Panel, PrimaryButton, QuietButton } from "@/components/dashboard
 import type { Criterion } from "@/lib/judging"
 import {
   addJudgeAction,
+  deleteScoreAction,
+  resetAllAction,
+  resetTeamAction,
   setJudgeActiveAction,
   setJudgingOpenAction,
   setJudgingSettingsAction,
@@ -220,11 +223,23 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
                     <span className="th-display-tight text-[17px] text-foreground">
                       {i + 1}. {t.name}
                     </span>
-                    <span className="th-display text-xl text-[var(--bolt)]">
-                      {t.avg.toFixed(1)}
-                      <span className="ml-2 text-sm text-muted-foreground">
-                        from {t.judges} {t.judges === 1 ? "judge" : "judges"}
+                    <span className="flex flex-wrap items-center gap-4">
+                      <span className="th-display text-xl text-[var(--bolt)]">
+                        {t.avg.toFixed(1)}
+                        <span className="ml-2 text-sm text-muted-foreground">
+                          from {t.judges} {t.judges === 1 ? "judge" : "judges"}
+                        </span>
                       </span>
+                      <form action={resetTeamAction}>
+                        <input type="hidden" name="team_id" value={t.id} />
+                        <input type="hidden" name="team_name" value={t.name} />
+                        <button
+                          type="submit"
+                          className="rounded-md border border-[#7f1d1d] px-3 py-1.5 text-sm text-[#fca5a5] transition-colors hover:border-[#b91c1c]"
+                        >
+                          Reset team
+                        </button>
+                      </form>
                     </span>
                   </div>
 
@@ -250,6 +265,18 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
                             {r.comment}
                           </p>
                         ) : null}
+
+                        <div className="mt-3 flex flex-wrap items-center gap-2">
+                          <form action={deleteScoreAction}>
+                            <input type="hidden" name="score_id" value={r.score_id} />
+                            <button
+                              type="submit"
+                              className="rounded-md border border-[#7f1d1d] px-3 py-1.5 text-sm text-[#fca5a5] transition-colors hover:border-[#b91c1c]"
+                            >
+                              Clear this score
+                            </button>
+                          </form>
+                        </div>
 
                         <details className="mt-3">
                           <summary className="inline-block cursor-pointer list-none rounded-md border border-[var(--rule)] px-3 py-1.5 text-sm text-foreground hover:border-[var(--bolt)]">
@@ -311,6 +338,32 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
               ))}
             </ol>
           )}
+        </section>
+
+        <section className="mt-12 border border-[#7f1d1d] bg-[#1b1012] p-6 sm:p-7">
+          <h2 className="th-display text-xl text-foreground sm:text-2xl">Start over</h2>
+          <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+            Clears every score from every judge, for test runs before the day. Type RESET to
+            confirm. There is no undo.
+          </p>
+          <form action={resetAllAction} className="mt-5 flex flex-wrap items-end gap-3">
+            <label className="block">
+              <span className="text-sm text-muted-foreground">Type RESET</span>
+              <input
+                name="confirm"
+                required
+                autoComplete="off"
+                placeholder="RESET"
+                className={`mt-1 w-40 ${inputClass}`}
+              />
+            </label>
+            <button
+              type="submit"
+              className="rounded-md border border-[#7f1d1d] px-4 py-2 text-[15px] text-[#fca5a5] transition-colors hover:border-[#b91c1c]"
+            >
+              Clear every score
+            </button>
+          </form>
         </section>
       </main>
     </div>

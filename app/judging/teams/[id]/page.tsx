@@ -5,8 +5,10 @@ import { getSupabaseServerClient } from "@/lib/supabase/server"
 import { readJudge, type SavedScore, type Stream, type TeamRow } from "@/lib/judging"
 import { campusLabel } from "@/lib/registration"
 import { inputClass } from "@/components/auth/auth-shell"
-import { PrimaryButton, QuietButton } from "@/components/dashboard/ui"
-import { judgeSignOutAction, saveScoreAction } from "../../actions"
+import { PrimaryButton } from "@/components/dashboard/ui"
+import { JudgingHeader, Pill } from "@/components/judging/judging-chrome"
+import { ScoreFields } from "@/components/judging/score-fields"
+import { saveScoreAction } from "../../actions"
 
 export const dynamic = "force-dynamic"
 
@@ -36,27 +38,7 @@ function ScoreForm({
       <input type="hidden" name="stream_key" value={stream.key} />
       <input type="hidden" name="criteria" value={JSON.stringify(stream.criteria)} />
 
-      <ul className="space-y-3">
-        {stream.criteria.map((c) => (
-          <li key={c.key} className="flex flex-wrap items-center justify-between gap-3">
-            <label htmlFor={`${stream.key}_${c.key}`} className="text-[15px] text-foreground">
-              {c.label}
-              <span className="ml-2 text-sm text-muted-foreground">out of {c.max}</span>
-            </label>
-            <input
-              id={`${stream.key}_${c.key}`}
-              name={`score_${c.key}`}
-              type="number"
-              min={0}
-              max={c.max}
-              step={1}
-              required
-              inputMode="numeric"
-              className={`${inputClass} w-24`}
-            />
-          </li>
-        ))}
-      </ul>
+      <ScoreFields streamKey={stream.key} criteria={stream.criteria} />
 
       <label className="block">
         <span className="text-sm text-muted-foreground">Comments</span>
@@ -69,7 +51,10 @@ function ScoreForm({
         />
       </label>
 
-      <PrimaryButton>{label}</PrimaryButton>
+      <div className="flex flex-wrap items-center gap-3">
+        <PrimaryButton>{label}</PrimaryButton>
+        <span className="text-sm text-muted-foreground">Saved once, so check it first.</span>
+      </div>
     </form>
   )
 }
@@ -78,7 +63,9 @@ function SavedBlock({ s }: { s: SavedScore }) {
   return (
     <div className="border border-[var(--rule)] bg-[var(--raised)] p-5">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h3 className="th-display-tight text-[17px] text-foreground">{s.stream_name}</h3>
+        <h3 className="th-display-tight flex items-center gap-2 text-[17px] text-foreground">
+          {s.stream_name} <Pill tone="done">Saved</Pill>
+        </h3>
         <span className="th-display text-xl text-[var(--bolt)]">
           {s.total} / {s.max_total}
         </span>
@@ -98,7 +85,7 @@ function SavedBlock({ s }: { s: SavedScore }) {
           {s.comment}
         </p>
       ) : null}
-      <p className="mt-3 text-sm text-muted-foreground">Saved.</p>
+
     </div>
   )
 }
@@ -110,7 +97,8 @@ export default async function JudgeTeamPage({ params, searchParams }: Params) {
   if (!judge) redirect("/judging")
 
   const supabase = await getSupabaseServerClient()
-  const [{ data: teamRows }, { data: streamRows }, { data: scoreRows }] = await Promise.all([
+  const [{ data: open }, { data: teamRows }, { data: streamRows }, { data: scoreRows }] = await Promise.all([
+    supabase.rpc("judging_open", { p_judge_id: judge.id, p_code: judge.code }),
     supabase.rpc("judging_teams", { p_judge_id: judge.id, p_code: judge.code }),
     supabase.rpc("judging_streams_list", { p_judge_id: judge.id, p_code: judge.code }),
     supabase.rpc("judging_team_scores", {
@@ -120,6 +108,8 @@ export default async function JudgeTeamPage({ params, searchParams }: Params) {
     }),
   ])
 
+  const me = (Array.isArray(open) ? open[0] : open) as { judge_name: string } | null
+  const judgeName = me?.judge_name ?? null
   const team = ((teamRows ?? []) as unknown as TeamRow[]).find((t) => t.team_id === id)
   if (!team) redirect("/judging/teams")
 
@@ -132,16 +122,7 @@ export default async function JudgeTeamPage({ params, searchParams }: Params) {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-[var(--rule)]">
-        <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
-          <Link href="/judging/teams" className="text-[15px] text-muted-foreground hover:text-foreground">
-            All teams
-          </Link>
-          <form action={judgeSignOutAction}>
-            <QuietButton>Finish</QuietButton>
-          </form>
-        </div>
-      </header>
+      <JudgingHeader judgeName={judgeName} showBack />
 
       <main id="main" className="mx-auto max-w-3xl px-5 py-10 sm:px-8 sm:py-14">
         {error ? (

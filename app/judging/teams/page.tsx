@@ -4,8 +4,8 @@ import { redirect } from "next/navigation"
 import { getSupabaseServerClient } from "@/lib/supabase/server"
 import { readJudge, type TeamRow } from "@/lib/judging"
 import { campusLabel } from "@/lib/registration"
-import { Empty, QuietButton } from "@/components/dashboard/ui"
-import { judgeSignOutAction } from "../actions"
+import { Empty } from "@/components/dashboard/ui"
+import { JudgingHeader, Pill, Progress } from "@/components/judging/judging-chrome"
 
 export const dynamic = "force-dynamic"
 
@@ -33,60 +33,56 @@ export default async function JudgingTeamsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-[var(--rule)]">
-        <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
-          <span className="th-display-tight text-[16px] text-foreground">
-            ThunderHacks <span className="text-[var(--bolt)]">II</span>{" "}
-            <span className="text-muted-foreground">Judging</span>
-          </span>
-          <div className="flex items-center gap-3">
-            <span className="hidden text-sm text-muted-foreground sm:inline">
-              {me?.judge_name}
-            </span>
-            <form action={judgeSignOutAction}>
-              <QuietButton>Finish</QuietButton>
-            </form>
-          </div>
-        </div>
-      </header>
+      <JudgingHeader judgeName={me?.judge_name} />
 
-      <main id="main" className="mx-auto max-w-4xl px-5 py-10 sm:px-8 sm:py-14">
+      <main id="main" className="mx-auto max-w-4xl px-5 py-8 sm:px-8 sm:py-12">
         <div className="th-rule mb-5 w-12" aria-hidden="true" />
         <h1 className="th-display text-[clamp(1.75rem,5vw,2.75rem)] text-foreground">
-          Teams
+          {me?.judge_name ? `${me.judge_name.split(" ")[0]}, here are the teams` : "Teams"}
         </h1>
-        <p className="mt-3 text-[17px] text-muted-foreground">
-          {done} of {teams.length} scored.
-          {me?.is_open === false ? " Judging is closed." : ""}
+        <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
+          Open a team when they present. Score the overall criteria first, then add any sponsor
+          stream they entered.
         </p>
+
+        {me?.is_open === false ? (
+          <p className="mt-5 rounded-md border border-[#92400e] bg-[#2a1f0f] px-4 py-3 text-[15px] text-[#fbbf24]">
+            Judging is closed. Nothing more can be saved.
+          </p>
+        ) : null}
+
+        <Progress done={done} total={teams.length} />
 
         {teams.length === 0 ? (
           <div className="mt-8">
             <Empty>No teams yet.</Empty>
           </div>
         ) : (
-          <ul className="mt-8 space-y-3">
+          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {teams.map((t) => (
               <li key={t.team_id}>
                 <Link
                   href={`/judging/teams/${t.team_id}`}
-                  className="flex flex-wrap items-center justify-between gap-3 border border-[var(--rule)] bg-[var(--raised)] p-5 transition-colors hover:border-[var(--bolt)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--bolt)]"
+                  className={`flex h-full flex-col justify-between gap-3 rounded-lg border bg-[var(--raised)] p-5 transition-all hover:-translate-y-0.5 hover:border-[var(--bolt)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--bolt)] motion-reduce:hover:translate-y-0 ${
+                    t.main_done ? "border-[#14532d]" : "border-[var(--rule)]"
+                  }`}
                 >
-                  <span className="min-w-0">
-                    <span className="th-display-tight block text-[17px] text-foreground">
-                      {t.team_name}
-                    </span>
-                    <span className="mt-1 block text-[15px] text-muted-foreground">
-                      {campusLabel(t.campus)} · {t.members ?? "No members"}
-                    </span>
-                    {t.done_streams ? (
-                      <span className="mt-1 block text-sm text-[var(--bolt)]">
-                        Scored: {t.done_streams}
+                  <span>
+                    <span className="flex flex-wrap items-center gap-2">
+                      <span className="th-display-tight text-[17px] text-foreground">
+                        {t.team_name}
                       </span>
-                    ) : null}
+                      {t.main_done ? <Pill tone="done">Scored</Pill> : <Pill tone="todo">To do</Pill>}
+                    </span>
+                    <span className="mt-2 block text-[15px] leading-relaxed text-muted-foreground">
+                      {t.members ?? "No members"}
+                    </span>
                   </span>
-                  <span className="text-[15px] text-muted-foreground">
-                    {t.main_done ? "Open" : "Score"}
+                  <span className="flex flex-wrap items-center justify-between gap-2 text-sm text-muted-foreground">
+                    <span>{campusLabel(t.campus)}</span>
+                    <span className="text-[var(--bolt)]">
+                      {t.done_streams ? t.done_streams : "Open to score"}
+                    </span>
                   </span>
                 </Link>
               </li>

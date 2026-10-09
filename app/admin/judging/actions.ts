@@ -65,3 +65,28 @@ export async function setJudgeActiveAction(formData: FormData) {
     active ? "Judge turned on." : "Judge turned off."
   )
 }
+
+export async function deleteScoreAction(formData: FormData) {
+  await run(
+    "admin_judging_delete_score",
+    { p_score_id: String(formData.get("score_id")) },
+    "Score cleared."
+  )
+}
+
+export async function resetTeamAction(formData: FormData) {
+  const name = String(formData.get("team_name") ?? "that team")
+  await run(
+    "admin_judging_reset_team",
+    { p_team_id: String(formData.get("team_id")) },
+    `Cleared every score for ${name}.`
+  )
+}
+
+export async function resetAllAction(formData: FormData) {
+  await run(
+    "admin_judging_reset_all",
+    { p_confirm: String(formData.get("confirm") ?? "") },
+    "Every score cleared."
+  )
+}
