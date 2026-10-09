@@ -3,7 +3,7 @@ import { cookies } from "next/headers"
 
 export const JUDGE_COOKIE = "th_judge"
 
-export type Criterion = { key: string; label: string; max: number }
+export type Criterion = { key: string; label: string; max: number; hint?: string }
 export type Stream = {
   id: string
   key: string

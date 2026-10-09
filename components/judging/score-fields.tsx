@@ -1,12 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, type CSSProperties } from "react"
 import type { Criterion } from "@/lib/judging"
 
 /**
  * A slider and a number box for each line, kept in step, with the running
  * total underneath. The slider is there because judging happens on a phone in
- * a noisy room.
+ * a noisy room. The track is drawn by .th-range in globals.css, filled from
+ * --th-range-pct, because appearance-none removes the native one.
  */
 export function ScoreFields({ streamKey, criteria }: { streamKey: string; criteria: Criterion[] }) {
   const [values, setValues] = useState<Record<string, string>>(
@@ -20,10 +21,12 @@ export function ScoreFields({ streamKey, criteria }: { streamKey: string; criter
   const set = (key: string, v: string) => setValues((old) => ({ ...old, [key]: v }))
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {criteria.map((c) => {
         const id = `${streamKey}_${c.key}`
         const v = values[c.key]
+        const n = v === "" ? 0 : Number(v)
+        const pct = c.max > 0 ? Math.min(100, Math.max(0, (n / c.max) * 100)) : 0
         return (
           <div key={c.key}>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -36,17 +39,27 @@ export function ScoreFields({ streamKey, criteria }: { streamKey: string; criter
                 {c.max}
               </span>
             </div>
+            {c.hint ? (
+              <p className="mt-1 text-[13px] leading-snug text-muted-foreground">{c.hint}</p>
+            ) : null}
             <div className="mt-2 flex items-center gap-3">
-              <input
-                type="range"
-                min={0}
-                max={c.max}
-                step={1}
-                value={v === "" ? 0 : Number(v)}
-                onChange={(e) => set(c.key, e.target.value)}
-                aria-label={`${c.label} slider`}
-                className="h-2 w-full cursor-pointer appearance-none rounded-full bg-[var(--raised)] accent-[var(--bolt)]"
-              />
+              <div className="min-w-0 flex-1">
+                <input
+                  type="range"
+                  min={0}
+                  max={c.max}
+                  step={1}
+                  value={n}
+                  onChange={(e) => set(c.key, e.target.value)}
+                  aria-label={`${c.label} slider`}
+                  className="th-range"
+                  style={{ "--th-range-pct": `${pct}%` } as CSSProperties}
+                />
+                <div className="th-range-ticks mt-0.5 text-[11px] text-muted-foreground">
+                  <span>0</span>
+                  <span>{c.max}</span>
+                </div>
+              </div>
               <input
                 id={id}
                 name={`score_${c.key}`}
@@ -58,7 +71,7 @@ export function ScoreFields({ streamKey, criteria }: { streamKey: string; criter
                 inputMode="numeric"
                 value={v}
                 onChange={(e) => set(c.key, e.target.value)}
-                className="w-20 shrink-0 rounded-md border border-[var(--rule)] bg-[var(--raised)] px-3 py-2 text-center text-[15px] text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--bolt)]"
+                className="w-20 shrink-0 self-start rounded-md border border-[var(--rule)] bg-[var(--raised)] px-3 py-2 text-center text-[15px] text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--bolt)]"
               />
             </div>
           </div>
