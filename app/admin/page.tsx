@@ -131,6 +131,12 @@ export default async function AdminPage({ searchParams }: Search) {
               Judging
             </Link>
             <Link
+              href="/alcoms"
+              className="rounded-md border border-[var(--rule)] px-4 py-2 text-[15px] text-foreground transition-colors hover:border-[var(--bolt)]"
+            >
+              ALCOMS view
+            </Link>
+            <Link
               href="/dashboard"
               className="rounded-md border border-[var(--rule)] px-4 py-2 text-[15px] text-foreground transition-colors hover:border-[var(--bolt)]"
             >

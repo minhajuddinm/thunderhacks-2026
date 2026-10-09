@@ -136,6 +136,14 @@ export default async function AlcomsPage() {
             </span>
           </Link>
           <div className="flex items-center gap-3">
+            {role === "admin" ? (
+              <Link
+                href="/admin"
+                className="rounded-md border border-[var(--rule)] px-4 py-2 text-[15px] text-foreground transition-colors hover:border-[var(--bolt)]"
+              >
+                Admin
+              </Link>
+            ) : null}
             <Link
               href="/dashboard"
               className="rounded-md border border-[var(--rule)] px-4 py-2 text-[15px] text-foreground transition-colors hover:border-[var(--bolt)]"
