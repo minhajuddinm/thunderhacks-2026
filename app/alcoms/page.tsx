@@ -34,13 +34,28 @@ type Row = {
   is_admin: boolean
 }
 
+type Removed = {
+  id: number
+  full_name: string | null
+  email: string | null
+  school: string | null
+  school_other: string | null
+  removed_at: string
+  removed_by: string | null
+  reason: string | null
+}
+
 type Standing = {
-  place: number | null
-  team_id: string
-  team_name: string
-  campus: string | null
-  members: string | null
-  scored: boolean
+  s_key: string
+  s_name: string
+  s_sort: number
+  s_main: boolean
+  place: number
+  t_id: string
+  t_name: string
+  t_campus: string | null
+  t_members: string | null
+  t_judges: number
 }
 
 const when = (iso: string) =>
@@ -62,13 +77,22 @@ export default async function AlcomsPage() {
   const { data: role } = await supabase.rpc("staff_role")
   if (role !== "alcoms" && role !== "admin") redirect("/dashboard")
 
-  const [{ data: rows }, { data: board }, { data: capacity }] = await Promise.all([
+  const [
+    { data: rows },
+    { data: board },
+    { data: capacity },
+    { data: removed },
+    { data: othersOpen },
+  ] = await Promise.all([
     supabase.rpc("admin_list_participants"),
     supabase.rpc("staff_leaderboard"),
     supabase.rpc("capacity_state"),
+    supabase.rpc("admin_list_removed"),
+    supabase.rpc("other_schools_allowed"),
   ])
 
   const people = (rows ?? []) as unknown as Row[]
+  const gone = (removed ?? []) as unknown as Removed[]
   const standings = (board ?? []) as unknown as Standing[]
   const bySchool = (s: string) => people.filter((p) => p.school === s).length
   const byCampus = (c: string) => people.filter((p) => p.campus === c).length
@@ -89,8 +113,16 @@ export default async function AlcomsPage() {
     teams.set(p.team_id, t)
   }
   const teamList = [...teams.entries()].sort((a, b) => a[1].name.localeCompare(b[1].name))
-  const ranked = standings.filter((s) => s.scored)
-  const unranked = standings.filter((s) => !s.scored)
+  // One board per stream, in the order the streams are set up.
+  const boards = new Map<string, { name: string; main: boolean; sort: number; rows: Standing[] }>()
+  for (const row of standings) {
+    const b = boards.get(row.s_key) ?? { name: row.s_name, main: row.s_main, sort: row.s_sort, rows: [] }
+    b.rows.push(row)
+    boards.set(row.s_key, b)
+  }
+  const boardList = [...boards.values()].sort((a, b) => a.sort - b.sort)
+  const mainBoard = boardList.find((b) => b.main)
+  const judgedMain = new Set(mainBoard?.rows.map((r) => r.t_id) ?? [])
 
   return (
     <div className="min-h-screen bg-background">
@@ -121,7 +153,8 @@ export default async function AlcomsPage() {
         <div className="th-rule mb-5 w-12" aria-hidden="true" />
         <h1 className="th-display text-[clamp(1.75rem,5vw,2.75rem)] text-foreground">ALCOMS view</h1>
         <p className="mt-3 max-w-2xl text-[15px] text-muted-foreground">
-          Everything here is read only. Registrations, teams and the standing order, kept current.
+          Everything here is read only. Registrations, teams and the final order, kept current.
+          Signup is {othersOpen ? "open to other schools" : "limited to Algoma and Sault College"}.
         </p>
 
         <dl className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -147,41 +180,61 @@ export default async function AlcomsPage() {
         </dl>
 
         <section className="mt-10">
-          <h2 className="th-display text-xl text-foreground sm:text-2xl">Leaderboard</h2>
+          <h2 className="th-display text-xl text-foreground sm:text-2xl">Leaderboards</h2>
           <p className="mt-2 max-w-2xl text-[15px] text-muted-foreground">
-            The standing order on the Overall criteria, from every judge who has scored a team
-            so far. It moves as judging goes on and is final only once every judge is done.
+            One board per stream. A team appears as soon as a judge saves a score for it, and
+            the order is the average of what each judge gave, so a team scored by two judges sits
+            fairly against one scored by six. It keeps moving until every judge is done.
           </p>
-          {ranked.length === 0 ? (
+          {boardList.length === 0 ? (
             <div className="mt-4">
               <Empty>Nothing judged yet.</Empty>
             </div>
           ) : (
-            <ol className="mt-4 space-y-2">
-              {ranked.map((s) => (
-                <li
-                  key={s.team_id}
-                  className="flex items-start gap-4 border border-[var(--rule)] bg-[var(--raised)] px-5 py-4"
-                >
-                  <span className="th-display w-10 shrink-0 text-2xl text-[var(--bolt)]">
-                    {s.place}
-                  </span>
-                  <span className="min-w-0">
-                    <span className="th-display-tight block text-[17px] text-foreground">
-                      {s.team_name}
-                    </span>
-                    <span className="mt-1 block text-[15px] text-muted-foreground">
-                      {s.campus === "mixed" ? "Both campuses" : campusLabel(s.campus)}
-                      {s.members ? ` · ${s.members}` : ""}
-                    </span>
-                  </span>
-                </li>
+            <div className="mt-5 space-y-8">
+              {boardList.map((b) => (
+                <div key={b.name}>
+                  <h3 className="th-display-tight text-[17px] text-foreground">
+                    {b.name}
+                    {b.main ? null : (
+                      <span className="ml-2 text-sm text-muted-foreground">sponsor stream</span>
+                    )}
+                  </h3>
+                  <ol className="mt-3 space-y-2">
+                    {b.rows.map((row) => (
+                      <li
+                        key={row.t_id}
+                        className="flex items-start gap-4 border border-[var(--rule)] bg-[var(--raised)] px-5 py-4"
+                      >
+                        <span className="th-display w-10 shrink-0 text-2xl text-[var(--bolt)]">
+                          {row.place}
+                        </span>
+                        <span className="min-w-0">
+                          <span className="th-display-tight block text-[17px] text-foreground">
+                            {row.t_name}
+                          </span>
+                          <span className="mt-1 block text-[15px] text-muted-foreground">
+                            {row.t_campus === "mixed" ? "Both campuses" : campusLabel(row.t_campus)}
+                            {" \u00b7 "}
+                            {row.t_judges} {row.t_judges === 1 ? "judge" : "judges"} so far
+                            {row.t_members ? ` \u00b7 ${row.t_members}` : ""}
+                          </span>
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
               ))}
-            </ol>
+            </div>
           )}
-          {unranked.length ? (
+          {teamList.some(([id]) => !judgedMain.has(id)) ? (
             <p className="mt-4 text-[15px] text-muted-foreground">
-              Not scored yet: {unranked.map((s) => s.team_name).join(", ")}.
+              Not judged yet:{" "}
+              {teamList
+                .filter(([id]) => !judgedMain.has(id))
+                .map(([, t]) => t.name)
+                .join(", ")}
+              .
             </p>
           ) : null}
         </section>
@@ -311,6 +364,29 @@ export default async function AlcomsPage() {
                     {p.team_name ? `${p.is_leader ? "Leads" : "In"} ${p.team_name}` : "No team"} · registered{" "}
                     {when(p.registered_at)}
                   </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section className="mt-12">
+          <h2 className="th-display text-xl text-foreground sm:text-2xl">Removed</h2>
+          {gone.length === 0 ? (
+            <div className="mt-4">
+              <Empty>Nobody removed.</Empty>
+            </div>
+          ) : (
+            <ul className="mt-4 space-y-2">
+              {gone.map((r) => (
+                <li key={r.id} className="border-t border-[var(--rule)] pt-2 text-[15px] text-muted-foreground">
+                  <span className="text-foreground">{r.full_name ?? "Unknown"}</span>
+                  {r.email ? ` · ${r.email}` : ""}
+                  {" · "}
+                  {r.school ? schoolLabel(r.school, r.school_other) : "No profile"}
+                  {" · removed "}
+                  {when(r.removed_at)}
+                  {r.reason ? ` · ${r.reason}` : ""}
                 </li>
               ))}
             </ul>
