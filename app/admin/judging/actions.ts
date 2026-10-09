@@ -90,3 +90,12 @@ export async function resetAllAction(formData: FormData) {
     "Every score cleared."
   )
 }
+
+export async function deleteJudgeAction(formData: FormData) {
+  const name = String(formData.get("full_name") ?? "that judge")
+  await run(
+    "admin_judging_delete_judge",
+    { p_judge_id: String(formData.get("judge_id")) },
+    `${name} removed.`
+  )
+}

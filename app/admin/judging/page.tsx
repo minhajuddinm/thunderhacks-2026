@@ -7,6 +7,7 @@ import { Empty, Panel, PrimaryButton, QuietButton } from "@/components/dashboard
 import type { Criterion } from "@/lib/judging"
 import {
   addJudgeAction,
+  deleteJudgeAction,
   deleteScoreAction,
   resetAllAction,
   resetTeamAction,
@@ -163,7 +164,10 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
             </form>
           </Panel>
 
-          <Panel title="Judges" lead="Only active judges show on the sign-in page.">
+          <Panel
+            title="Judges"
+            lead="Only active judges show on the sign-in page. Delete works while a judge has no saved scores; otherwise clear their scores first, or turn them off."
+          >
             {judges.length === 0 ? (
               <Empty>No judges yet.</Empty>
             ) : (
@@ -183,11 +187,18 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
                         {j.is_active ? "" : " · off"}
                       </span>
                     </span>
-                    <form action={setJudgeActiveAction}>
-                      <input type="hidden" name="judge_id" value={j.id} />
-                      <input type="hidden" name="active" value={j.is_active ? "false" : "true"} />
-                      <QuietButton>{j.is_active ? "Turn off" : "Turn on"}</QuietButton>
-                    </form>
+                    <span className="flex flex-wrap items-center gap-2">
+                      <form action={setJudgeActiveAction}>
+                        <input type="hidden" name="judge_id" value={j.id} />
+                        <input type="hidden" name="active" value={j.is_active ? "false" : "true"} />
+                        <QuietButton>{j.is_active ? "Turn off" : "Turn on"}</QuietButton>
+                      </form>
+                      <form action={deleteJudgeAction}>
+                        <input type="hidden" name="judge_id" value={j.id} />
+                        <input type="hidden" name="full_name" value={j.full_name} />
+                        <QuietButton danger>Delete</QuietButton>
+                      </form>
+                    </span>
                   </li>
                 ))}
               </ul>
