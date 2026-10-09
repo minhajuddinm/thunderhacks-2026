@@ -73,3 +73,13 @@ export async function setOtherSchoolsAction(formData: FormData) {
     allow ? "Other schools can now register." : "Other schools are closed."
   )
 }
+
+export async function setRoleAction(formData: FormData) {
+  const role = String(formData.get("role") ?? "")
+  const name = String(formData.get("full_name") ?? "that person")
+  await run(
+    "admin_set_role",
+    { p_profile_id: String(formData.get("profile_id")), p_role: role },
+    role === "alcoms" ? `${name} can see the ALCOMS view.` : `${name} no longer sees the ALCOMS view.`
+  )
+}

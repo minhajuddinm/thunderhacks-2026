@@ -178,7 +178,7 @@ export default async function DashboardPage({ searchParams }: Search) {
       leader ? [leader, ...names.filter((n) => n !== leader)] : names
     )
   }
-  const { data: isAdmin } = await supabase.rpc("is_admin")
+  const { data: staffRole } = await supabase.rpc("staff_role")
 
   return (
     <div className="min-h-screen bg-background">
@@ -194,12 +194,12 @@ export default async function DashboardPage({ searchParams }: Search) {
             <span className="hidden text-sm text-muted-foreground sm:inline">
               {profile.full_name}
             </span>
-            {isAdmin === true ? (
+            {staffRole === "admin" || staffRole === "alcoms" ? (
               <Link
-                href="/admin"
+                href={staffRole === "admin" ? "/admin" : "/alcoms"}
                 className="rounded-md border border-[var(--bolt)] px-4 py-2 text-[15px] text-[var(--bolt)] transition-colors hover:bg-[var(--bolt)]/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--bolt)]"
               >
-                Admin
+                {staffRole === "admin" ? "Admin" : "ALCOMS"}
               </Link>
             ) : null}
             <form action={signOutAction}>

@@ -11,7 +11,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/judging", "/admin", "/dashboard", "/event-details", "/profile"],
+        disallow: ["/judging", "/admin", "/alcoms", "/dashboard", "/event-details", "/profile"],
       },
     ],
   }

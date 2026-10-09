@@ -20,6 +20,7 @@ import {
   removeParticipantAction,
   setCapacityAction,
   setOtherSchoolsAction,
+  setRoleAction,
   setStatusAction,
   updateParticipantAction,
 } from "./actions"
@@ -83,15 +84,23 @@ export default async function AdminPage({ searchParams }: Search) {
   const { data: isAdmin } = await supabase.rpc("is_admin")
   if (isAdmin !== true) redirect("/dashboard")
 
-  const [{ data: rows }, { data: removed }, { data: othersOpen }, { data: capacity }] =
-    await Promise.all([
-      supabase.rpc("admin_list_participants"),
-      supabase.rpc("admin_list_removed"),
-      supabase.rpc("other_schools_allowed"),
-      supabase.rpc("capacity_state"),
-    ])
+  const [
+    { data: rows },
+    { data: removed },
+    { data: othersOpen },
+    { data: capacity },
+    { data: alcomsRows },
+  ] = await Promise.all([
+    supabase.rpc("admin_list_participants"),
+    supabase.rpc("admin_list_removed"),
+    supabase.rpc("other_schools_allowed"),
+    supabase.rpc("capacity_state"),
+    supabase.rpc("admin_alcoms_list"),
+  ])
 
   const people = (rows ?? []) as unknown as Row[]
+  const alcoms = (alcomsRows ?? []) as unknown as { user_id: string; full_name: string; email: string }[]
+  const alcomsIds = new Set(alcoms.map((a) => a.user_id))
   const gone = (removed ?? []) as unknown as Removed[]
   const bySchool = (s: string) => people.filter((p) => p.school === s).length
   const teams = new Set(people.map((p) => p.team_id).filter(Boolean)).size
@@ -258,6 +267,50 @@ export default async function AdminPage({ searchParams }: Search) {
               <Empty>Nobody is waiting.</Empty>
             )}
           </Panel>
+
+          <Panel
+            title="ALCOMS view"
+            lead="These people can open /alcoms and read the registrations, the teams and the standing order. They cannot change anything, see scores or touch the judges. They also stop counting against the 65."
+          >
+            <div className="space-y-4">
+              {alcoms.length ? (
+                <ul className="space-y-2">
+                  {alcoms.map((a) => (
+                    <li key={a.user_id} className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="text-[15px] text-muted-foreground">
+                        <span className="text-foreground">{a.full_name}</span> · {a.email}
+                      </span>
+                      <form action={setRoleAction}>
+                        <input type="hidden" name="profile_id" value={a.user_id} />
+                        <input type="hidden" name="full_name" value={a.full_name} />
+                        <input type="hidden" name="role" value="none" />
+                        <QuietButton danger>Take away</QuietButton>
+                      </form>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <Empty>Nobody has it yet.</Empty>
+              )}
+              <form action={setRoleAction} className="flex flex-wrap items-end gap-3">
+                <input type="hidden" name="role" value="alcoms" />
+                <label className="block min-w-0 flex-1">
+                  <span className="text-sm text-muted-foreground">Give it to</span>
+                  <select name="profile_id" required className={`mt-1 ${inputClass}`}>
+                    <option value="">Pick someone</option>
+                    {people
+                      .filter((p) => !p.is_admin)
+                      .map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.full_name} ({p.email})
+                        </option>
+                      ))}
+                  </select>
+                </label>
+                <PrimaryButton>Give access</PrimaryButton>
+              </form>
+            </div>
+          </Panel>
         </div>
 
         <section className="mt-10">
@@ -284,7 +337,7 @@ export default async function AdminPage({ searchParams }: Search) {
                           ) : null}
                           {p.is_admin ? (
                             <span className="ml-2 rounded border border-[var(--rule)] px-1.5 py-0.5 align-middle text-xs text-muted-foreground">
-                              Admin
+                              {alcomsIds.has(p.id) ? "ALCOMS" : "Admin"}
                             </span>
                           ) : null}
                           {p.school === "other" ? (
