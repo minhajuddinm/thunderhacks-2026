@@ -48,6 +48,11 @@ export async function saveScoreAction(formData: FormData) {
     redirect(`${back}?error=${encodeURIComponent((e as Error).message)}`)
   }
 
+  // The CBN entry requirement rides along with the scores and counts for
+  // nothing, because judging_total only adds up the criteria it is given.
+  const mvp = String(formData.get("mvp_ok") ?? "")
+  if (mvp === "yes" || mvp === "no") scores.mvp_ok = mvp === "yes" ? 1 : 0
+
   const supabase = await getSupabaseServerClient()
   const { error } = await supabase.rpc("judging_save", {
     p_judge_id: judge.id,

@@ -190,7 +190,7 @@ export default async function AlcomsPage() {
         <section className="mt-10">
           <h2 className="th-display text-xl text-foreground sm:text-2xl">Leaderboards</h2>
           <p className="mt-2 max-w-2xl text-[15px] text-muted-foreground">
-            One board per stream. A team appears as soon as a judge saves a score for it, and
+            One board per track. A team appears as soon as a judge saves a score for it, and
             the order is the average of what each judge gave, so a team scored by two judges sits
             fairly against one scored by six. It keeps moving until every judge is done.
           </p>
@@ -205,7 +205,7 @@ export default async function AlcomsPage() {
                   <h3 className="th-display-tight text-[17px] text-foreground">
                     {b.name}
                     {b.main ? null : (
-                      <span className="ml-2 text-sm text-muted-foreground">sponsor stream</span>
+                      <span className="ml-2 text-sm text-muted-foreground">sponsor track</span>
                     )}
                   </h3>
                   <ol className="mt-3 space-y-2">

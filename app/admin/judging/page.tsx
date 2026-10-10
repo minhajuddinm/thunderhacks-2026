@@ -271,6 +271,11 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
                             .map((c) => `${c.label} ${r.scores[c.key]}/${c.max}`)
                             .join(" · ")}
                         </p>
+                        {r.scores.mvp_ok === undefined ? null : (
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            Minimum viable product works: {r.scores.mvp_ok ? "yes" : "no"}
+                          </p>
+                        )}
                         {r.comment ? (
                           <p className="mt-2 whitespace-pre-wrap text-[15px] leading-relaxed text-muted-foreground">
                             {r.comment}
@@ -300,6 +305,13 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
                               name="criteria"
                               value={JSON.stringify(r.criteria)}
                             />
+                            {r.scores.mvp_ok === undefined ? null : (
+                              <input
+                                type="hidden"
+                                name="mvp_ok"
+                                value={r.scores.mvp_ok ? "yes" : "no"}
+                              />
+                            )}
                             <ul className="space-y-2">
                               {r.criteria.map((c) => (
                                 <li

@@ -41,8 +41,13 @@ export default async function JudgingTeamsPage() {
           {me?.judge_name ? `${me.judge_name.split(" ")[0]}, here are the teams` : "Teams"}
         </h1>
         <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
-          Open a team when they present. Score the overall criteria first, then add any sponsor
-          stream they entered.
+          Open a team when they present. Score the main track first, then add any other track
+          they entered.
+        </p>
+        <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+          Teams choose which tracks to enter. No track is mandatory. Each track has its own
+          rubric and judges, and tracks are ranked separately, so point totals differ between
+          tracks.
         </p>
 
         {me?.is_open === false ? (

@@ -21,6 +21,9 @@ export async function updateScoreAction(formData: FormData) {
   } catch (e) {
     redirect(`/admin/judging?error=${encodeURIComponent((e as Error).message)}`)
   }
+  // Keep the CBN entry answer the judge gave, which is not a scored line.
+  const mvp = String(formData.get("mvp_ok") ?? "")
+  if (mvp === "yes" || mvp === "no") scores.mvp_ok = mvp === "yes" ? 1 : 0
   await run(
     "admin_judging_update",
     {

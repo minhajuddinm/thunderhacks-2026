@@ -22,6 +22,14 @@ type Params = {
   searchParams: Promise<{ error?: string; saved?: string }>
 }
 
+/**
+ * The CBN track has an entry requirement before any of its criteria apply.
+ * It is asked as a yes or no above the form and saved alongside the scores,
+ * where it counts for no points.
+ */
+const MVP_QUESTION =
+  "Does the minimum viable product work? Bet and cash out controls, display of balance, wager and multiplier, balance tracking, and a random crash point with outcome resolution."
+
 /** One set of criteria, with a comment box, saved in a single go. */
 function ScoreForm({
   teamId,
@@ -37,6 +45,23 @@ function ScoreForm({
       <input type="hidden" name="team_id" value={teamId} />
       <input type="hidden" name="stream_key" value={stream.key} />
       <input type="hidden" name="criteria" value={JSON.stringify(stream.criteria)} />
+
+      {stream.key === "cbn" ? (
+        <fieldset className="rounded-md border border-[var(--rule)] p-4">
+          <legend className="px-1 text-sm text-muted-foreground">Entry requirement</legend>
+          <p className="text-[15px] leading-relaxed text-foreground">{MVP_QUESTION}</p>
+          <div className="mt-3 flex flex-wrap gap-5">
+            <label className="flex items-center gap-2 text-[15px] text-foreground">
+              <input type="radio" name="mvp_ok" value="yes" required className="h-4 w-4" />
+              Yes
+            </label>
+            <label className="flex items-center gap-2 text-[15px] text-foreground">
+              <input type="radio" name="mvp_ok" value="no" required className="h-4 w-4" />
+              No
+            </label>
+          </div>
+        </fieldset>
+      ) : null}
 
       <ScoreFields streamKey={stream.key} criteria={stream.criteria} />
 
@@ -80,6 +105,11 @@ function SavedBlock({ s }: { s: SavedScore }) {
           </li>
         ))}
       </ul>
+      {s.scores.mvp_ok === undefined ? null : (
+        <p className="mt-3 text-[15px] text-muted-foreground">
+          Minimum viable product works: {s.scores.mvp_ok ? "yes" : "no"}
+        </p>
+      )}
       {s.comment ? (
         <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed text-muted-foreground">
           {s.comment}
@@ -143,6 +173,11 @@ export default async function JudgeTeamPage({ params, searchParams }: Params) {
         <p className="mt-3 text-[17px] text-muted-foreground">
           {campusLabel(team.campus)} · {team.members ?? "No members"}
         </p>
+        <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+          Teams choose which tracks to enter. No track is mandatory. Each track has its own
+          rubric and judges, and tracks are ranked separately, so point totals differ between
+          tracks.
+        </p>
 
         {savedScores.length > 0 ? (
           <div className="mt-8 space-y-4">
@@ -167,10 +202,10 @@ export default async function JudgeTeamPage({ params, searchParams }: Params) {
         {mainSaved && extras.length > 0 ? (
           <section className="mt-8">
             <h2 className="th-display text-xl text-foreground sm:text-2xl">
-              Did this team enter a sponsor stream?
+              Did this team enter another track?
             </h2>
             <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
-              Add one for each stream they entered and score it on that stream&apos;s criteria.
+              Add one for each track they entered and score it on that track&apos;s rubric.
             </p>
             <div className="mt-5 space-y-3">
               {extras.map((s) => (
