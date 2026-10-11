@@ -17,7 +17,7 @@ import {
   deregisterAction,
   removeMemberAction,
 } from "./actions"
-import { Empty, Panel, PersonLine, PrimaryButton, QuietButton } from "@/components/dashboard/ui"
+import { CheckLine, Empty, Panel, PersonLine, PrimaryButton, QuietButton } from "@/components/dashboard/ui"
 import { inputClass } from "@/components/auth/auth-shell"
 
 export const dynamic = "force-dynamic"
@@ -229,6 +229,56 @@ export default async function DashboardPage({ searchParams }: Search) {
           {schoolLabel(profile.school, profile.school_other)} · {campusLabel(profile.campus)} campus ·{" "}
           {phoneLabel(profile.phone)}
         </p>
+
+        <section className="mt-6 border border-[var(--rule)] bg-[var(--raised)] px-5 py-4">
+          <h2 className="th-display-tight text-[16px] text-foreground">Your registration</h2>
+          <ul className="mt-3 space-y-2">
+            <CheckLine
+              done
+              doneText={`You have entered your email, ${user.email}`}
+              todoText="You have not entered an email"
+            />
+            <CheckLine
+              done={Boolean(profile.phone)}
+              doneText={`You have entered your phone number, ${phoneLabel(profile.phone)}`}
+              todoText="You have not entered your phone number yet."
+              href="/event-details"
+              hrefLabel="Add it now"
+            />
+            <CheckLine
+              done={Boolean(profile.campus)}
+              doneText={`You have chosen your campus, ${campusLabel(profile.campus)}`}
+              todoText="You have not chosen your campus yet."
+              href="/event-details"
+              hrefLabel="Choose it now"
+            />
+            <CheckLine
+              done={Boolean(profile.media_consent_at)}
+              doneText="You have filled out the consent form for photos and video"
+              todoText="You have not filled out the consent form for photos and video."
+              href="/event-details"
+              hrefLabel="Fill it out now"
+            />
+            <CheckLine
+              done={Boolean(profile.program) && Boolean(profile.year_of_study)}
+              doneText="You have given your programme and year"
+              todoText="Your programme and year are missing."
+              href="/profile"
+              hrefLabel="Add them"
+            />
+            <CheckLine
+              done={members.length >= 3}
+              doneText={`You are in a team of ${members.length}, which is enough to present`}
+              todoText={
+                myTeam
+                  ? `Your team has ${members.length} ${members.length === 1 ? "person" : "people"}. A team needs at least 3 to present.`
+                  : "You are not in a team yet. A team needs at least 3 people to present."
+              }
+              href="/browse-teams"
+              hrefLabel={myTeam ? "Invite more people" : "Find a team"}
+            />
+          </ul>
+        </section>
 
         {waitlisted ? (
           <div className="mt-6 border border-[#92400e] bg-[#2a1f0f] px-5 py-4">
