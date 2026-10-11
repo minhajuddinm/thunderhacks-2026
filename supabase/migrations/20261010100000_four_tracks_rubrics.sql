@@ -57,10 +57,10 @@ where key = 'cbn';
 
 update public.judging_streams
 set name = 'Algoma Game Jam Track',
-    blurb = 'Theme: Four Seasons. Out of 100.',
+    blurb = 'A game built during the jam, on the theme announced at the event. Out of 100.',
     criteria = '[
       {"key":"theme","max":25,"label":"Theme",
-       "hint":"Four Seasons drives the gameplay or story and is not only a backdrop."},
+       "hint":"The jam theme drives the gameplay or story and is not only a backdrop."},
       {"key":"gameplay","max":30,"label":"Gameplay and fun",
        "hint":"Playable loop, clear goal, judges want to keep playing."},
       {"key":"art","max":20,"label":"Art and audio",
