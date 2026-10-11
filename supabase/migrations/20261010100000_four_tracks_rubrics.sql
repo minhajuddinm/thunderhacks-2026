@@ -6,18 +6,18 @@
 
 update public.judging_streams
 set name = 'ALCOMS Main Track',
-    blurb = 'Every team is judged on this. Out of 100.',
+    blurb = 'Version 2.0: pick something broken, outdated or annoying and build its next version. Out of 100.',
     criteria = '[
       {"key":"theme_fit","max":20,"label":"Theme fit and problem",
-       "hint":"Clear user, real problem, and a clear link to the theme."},
+       "hint":"Clear Version 1.0, clear user, and specific problems with what exists today."},
       {"key":"innovation","max":20,"label":"Innovation",
-       "hint":"New idea or a new take on an existing one."},
+       "hint":"A new idea or a new take on an existing one. The Version 2.0 is a real step forward and not a copy."},
       {"key":"technical","max":30,"label":"Technical execution",
        "hint":"Working live demo, sound build, built during the event."},
       {"key":"design","max":20,"label":"Design and user experience",
-       "hint":"Easy to use, clear flow, accessible."},
+       "hint":"Easy to use, clear flow, accessible. The improvement over the old version is visible."},
       {"key":"pitch","max":10,"label":"Pitch and Q and A",
-       "hint":"Clear explanation, direct answers, whole team involved."}
+       "hint":"Clear before and after story, direct answers, whole team involved."}
     ]'::jsonb
 where key = 'overall';
 
@@ -57,10 +57,10 @@ where key = 'cbn';
 
 update public.judging_streams
 set name = 'Algoma Game Jam Track',
-    blurb = 'Theme: Urban vs Rural. Out of 100.',
+    blurb = 'Theme: Four Seasons. Out of 100.',
     criteria = '[
       {"key":"theme","max":25,"label":"Theme",
-       "hint":"Urban vs Rural drives the gameplay or story and is not only a backdrop."},
+       "hint":"Four Seasons drives the gameplay or story and is not only a backdrop."},
       {"key":"gameplay","max":30,"label":"Gameplay and fun",
        "hint":"Playable loop, clear goal, judges want to keep playing."},
       {"key":"art","max":20,"label":"Art and audio",
