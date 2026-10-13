@@ -35,6 +35,15 @@ export async function updateScoreAction(formData: FormData) {
   )
 }
 
+export async function regenerateJudgeCodeAction(formData: FormData) {
+  const name = String(formData.get("full_name") ?? "that judge")
+  await run(
+    "admin_judging_regenerate_code",
+    { p_judge_id: String(formData.get("judge_id")) },
+    `${name} has a new code. Read it off the list and give it to them.`
+  )
+}
+
 export async function setJudgingSettingsAction(formData: FormData) {
   const code = String(formData.get("code") ?? "").trim()
   await run("admin_judging_settings", { p_code: code || null, p_is_open: null }, "Code saved.")

@@ -26,7 +26,7 @@ export default async function JudgingPage() {
   return (
     <AuthShell
       title="Judging"
-      lead="Pick your name and type the code you were given. Scores are saved once, so take your time."
+      lead="Pick your name and type your own code. Each judge has a different one. Scores are saved once, so take your time."
     >
       {judges.length === 0 ? (
         <Empty>No judges set up yet.</Empty>

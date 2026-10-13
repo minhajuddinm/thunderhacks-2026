@@ -11,9 +11,9 @@ import {
   deleteScoreAction,
   resetAllAction,
   resetTeamAction,
+  regenerateJudgeCodeAction,
   setJudgeActiveAction,
   setJudgingOpenAction,
-  setJudgingSettingsAction,
   updateScoreAction,
 } from "./actions"
 
@@ -46,6 +46,7 @@ type Judge = {
   title: string | null
   is_active: boolean
   saved: number
+  access_code?: string | null
 }
 
 const when = (iso: string) =>
@@ -135,26 +136,14 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
 
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
           <Panel
-            title="Code and status"
+            title="Status"
             lead={
               settings?.is_open
-                ? "Judging is open. Judges need this code to start."
+                ? "Judging is open. Each judge signs in with their own code, listed beside their name."
                 : "Judging is closed. Nothing more can be saved."
             }
           >
-            <form action={setJudgingSettingsAction} className="flex flex-wrap items-end gap-3">
-              <label className="block">
-                <span className="text-sm text-muted-foreground">Judging code</span>
-                <input
-                  name="code"
-                  defaultValue={settings?.access_code ?? ""}
-                  maxLength={40}
-                  className={`mt-1 w-48 ${inputClass}`}
-                />
-              </label>
-              <PrimaryButton>Save code</PrimaryButton>
-            </form>
-            <form action={setJudgingOpenAction} className="mt-5">
+            <form action={setJudgingOpenAction}>
               <input type="hidden" name="open" value={settings?.is_open ? "false" : "true"} />
               {settings?.is_open ? (
                 <QuietButton danger>Close judging</QuietButton>
@@ -166,7 +155,7 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
 
           <Panel
             title="Judges"
-            lead="Only active judges show on the sign-in page. Delete works while a judge has no saved scores; otherwise clear their scores first, or turn them off."
+            lead="Each judge has their own code and can only sign in as themselves. Give each person only their own code. Delete works while a judge has no saved scores; otherwise clear their scores first, or turn them off."
           >
             {judges.length === 0 ? (
               <Empty>No judges yet.</Empty>
@@ -186,12 +175,22 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
                         {j.saved} saved
                         {j.is_active ? "" : " · off"}
                       </span>
+                      {j.access_code ? (
+                        <span className="mt-1 inline-block rounded border border-[var(--rule)] px-2 py-0.5 font-mono text-[15px] tracking-widest text-[var(--bolt)]">
+                          {j.access_code}
+                        </span>
+                      ) : null}
                     </span>
                     <span className="flex flex-wrap items-center gap-2">
                       <form action={setJudgeActiveAction}>
                         <input type="hidden" name="judge_id" value={j.id} />
                         <input type="hidden" name="active" value={j.is_active ? "false" : "true"} />
                         <QuietButton>{j.is_active ? "Turn off" : "Turn on"}</QuietButton>
+                      </form>
+                      <form action={regenerateJudgeCodeAction}>
+                        <input type="hidden" name="judge_id" value={j.id} />
+                        <input type="hidden" name="full_name" value={j.full_name} />
+                        <QuietButton>New code</QuietButton>
                       </form>
                       <form action={deleteJudgeAction}>
                         <input type="hidden" name="judge_id" value={j.id} />
