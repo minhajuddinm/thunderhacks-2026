@@ -52,6 +52,13 @@ type Judge = {
   access_code?: string | null
 }
 
+const scoreTracks = [
+  { key: "overall", name: "Main" },
+  { key: "olg", name: "OLG" },
+  { key: "cbn", name: "CBN" },
+  { key: "gamejam", name: "Game Jam" },
+]
+
 const when = (iso: string) =>
   new Date(iso).toLocaleString("en-CA", {
     timeZone: "America/Toronto",
@@ -307,6 +314,50 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
                 </li>
               ))}
             </ul>
+          )}
+        </section>
+
+        <section className="mt-10" aria-labelledby="track-scores-title">
+          <h2 id="track-scores-title" className="th-display text-xl text-foreground sm:text-2xl">Team scores by track</h2>
+          <p className="mt-2 text-[15px] text-muted-foreground">
+            Selected teams only. Each track shows the average percentage of its saved judge scores, calculated separately.
+            Missing scores are not counted as zero. No scores does not indicate whether the team entered that track.
+          </p>
+          {scoreError || rosterError ? (
+            <p role="alert" className="mt-4 text-[15px] text-muted-foreground">Track scores could not be loaded. Refresh to try again.</p>
+          ) : scoringProgress.length === 0 ? (
+            <div className="mt-4"><Empty>No teams selected for judging.</Empty></div>
+          ) : (
+            <div className="mt-4 overflow-x-auto border border-[var(--rule)] bg-[var(--raised)]">
+              <table className="w-full text-left text-sm">
+                <caption className="sr-only">Average score and number of judges for each team and track</caption>
+                <thead>
+                  <tr className="border-b border-[var(--rule)]">
+                    <th scope="col" className="px-4 py-3">Team</th>
+                    {scoreTracks.map((track) => <th key={track.key} scope="col" className="whitespace-nowrap px-4 py-3">{track.name}</th>)}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--rule)]">
+                  {scoringProgress.map((team) => (
+                    <tr key={team.team_id}>
+                      <th scope="row" className="px-4 py-3 font-medium text-foreground">{team.team_name}</th>
+                      {scoreTracks.map((track) => {
+                        const rows = (teams.get(team.team_id)?.rows ?? []).filter((row) => row.stream_key === track.key && Number(row.max_total) > 0)
+                        const average = rows.length ? rows.reduce((sum, row) => sum + Number(row.total) / Number(row.max_total), 0) / rows.length * 100 : null
+                        const judgeCount = new Set(rows.map((row) => row.judge_id)).size
+                        return (
+                          <td key={track.key} className="whitespace-nowrap px-4 py-3">
+                            {average === null ? <span className="text-muted-foreground">No scores</span> : (
+                              <><span className="font-medium text-[var(--bolt)]">{average.toFixed(1)}%</span><span className="mt-1 block text-xs text-muted-foreground">{judgeCount} {judgeCount === 1 ? "judge" : "judges"}</span></>
+                            )}
+                          </td>
+                        )
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </section>
 
