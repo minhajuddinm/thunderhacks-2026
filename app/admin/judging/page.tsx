@@ -265,6 +265,7 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
           <h2 className="th-display text-xl text-foreground sm:text-2xl">Standings</h2>
           <p className="mt-2 text-[15px] text-muted-foreground">
             Average of the overall scores, across the judges who have scored that team.
+            Select a team to expand its scores and editing controls.
           </p>
           {leaderboard.length === 0 ? (
             <div className="mt-4">
@@ -273,8 +274,9 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
           ) : (
             <ol className="mt-4 space-y-5">
               {leaderboard.map((t, i) => (
-                <li key={t.id} className="border border-[var(--rule)] bg-[var(--raised)] p-5">
-                  <div className="flex flex-wrap items-baseline justify-between gap-3">
+                <li key={t.id} className="border border-[var(--rule)] bg-[var(--raised)]">
+                  <details className="group/team">
+                  <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 p-5 transition-colors hover:bg-background/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--bolt)] [&::-webkit-details-marker]:hidden">
                     <span className="th-display-tight text-[17px] text-foreground">
                       {i + 1}. {t.name}
                     </span>
@@ -285,7 +287,14 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
                           from {t.judges} {t.judges === 1 ? "judge" : "judges"}
                         </span>
                       </span>
-                      <form action={resetTeamAction}>
+                      <span className="text-sm text-muted-foreground">
+                        {t.rows.length} {t.rows.length === 1 ? "score" : "scores"}
+                      </span>
+                      <span aria-hidden="true" className="text-[var(--bolt)] transition-transform group-open/team:rotate-180">⌄</span>
+                    </span>
+                  </summary>
+                  <div className="px-5 pb-5">
+                      <form action={resetTeamAction} className="flex justify-end">
                         <input type="hidden" name="team_id" value={t.id} />
                         <input type="hidden" name="team_name" value={t.name} />
                         <button
@@ -295,8 +304,6 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
                           Reset team
                         </button>
                       </form>
-                    </span>
-                  </div>
 
                   <ul className="mt-4 space-y-3">
                     {t.rows.map((r) => (
@@ -401,6 +408,8 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
                       </li>
                     ))}
                   </ul>
+                  </div>
+                  </details>
                 </li>
               ))}
             </ol>
