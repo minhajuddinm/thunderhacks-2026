@@ -73,7 +73,7 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
   const { data: isAdmin } = await supabase.rpc("is_admin")
   if (isAdmin !== true) redirect("/dashboard")
 
-  const [{ data: scoreRows }, { data: judgeRows }, { data: settingRows }, { data: rosterRows, error: rosterError }] = await Promise.all([
+  const [{ data: scoreRows, error: scoreError }, { data: judgeRows }, { data: settingRows }, { data: rosterRows, error: rosterError }] = await Promise.all([
     supabase.rpc("admin_judging_overview"),
     supabase.rpc("admin_judging_judges"),
     supabase.rpc("admin_judging_code"),
@@ -95,6 +95,16 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
     entry.rows.push(s)
     teams.set(s.team_id, entry)
   }
+  const scoringProgress = roster
+    .filter((team) => team.judging_enabled)
+    .map((team) => {
+      const rows = teams.get(team.team_id)?.rows ?? []
+      const scoredJudges = [...new Map(rows.map((row) => [row.judge_id, row.judge_name])).values()]
+        .sort((a, b) => a.localeCompare(b))
+      return { ...team, scoredJudges }
+    })
+    .sort((a, b) => a.team_name.localeCompare(b.team_name))
+  const teamsWithScores = scoringProgress.filter((team) => team.scoredJudges.length > 0).length
   const leaderboard = [...teams.entries()]
     .map(([id, t]) => {
       const main = t.rows.filter((r) => r.stream_key === "overall")
@@ -139,6 +149,45 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
         <p className="mt-3 text-[17px] text-muted-foreground">
           Judges reach this at /judging. The page is not linked anywhere on the site.
         </p>
+
+        <section className="mt-8" aria-labelledby="scoring-progress-title">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 id="scoring-progress-title" className="th-display text-xl text-foreground sm:text-2xl">Scoring progress</h2>
+            <form action="/admin/judging" method="get">
+              <button type="submit" className="rounded-md border border-[var(--rule)] px-4 py-2 text-sm hover:border-[var(--bolt)]">Refresh scores</button>
+            </form>
+          </div>
+          {scoreError || rosterError ? (
+            <p role="alert" className="mt-3 text-[15px] text-muted-foreground">Scoring progress could not be loaded. Refresh to try again.</p>
+          ) : (
+            <>
+              <p className="mt-2 text-[15px] text-muted-foreground">
+                {selectedTeamCount} teams in judging · {teamsWithScores} with scores · {selectedTeamCount - teamsWithScores} not scored yet.
+                Each judge counts once per team after saving any track. This does not mean all tracks are complete.
+              </p>
+              {scoringProgress.length === 0 ? <div className="mt-4"><Empty>No teams selected for judging.</Empty></div> : (
+                <ul className="mt-4 divide-y divide-[var(--rule)] border border-[var(--rule)] bg-[var(--raised)]">
+                  {scoringProgress.map((team) => (
+                    <li key={team.team_id} className="px-4 py-3 sm:px-5">
+                      <details>
+                        <summary className="flex cursor-pointer flex-wrap items-center justify-between gap-2 rounded-sm focus-visible:outline-2 focus-visible:outline-[var(--bolt)]">
+                          <span className="th-display-tight text-[16px] text-foreground">{team.team_name}</span>
+                          <span className={team.scoredJudges.length ? "text-sm text-[#86efac]" : "text-sm text-[var(--bolt)]"}>
+                            {team.scoredJudges.length ? "Scoring started" : "Not scored yet"} · {team.scoredJudges.length} {team.scoredJudges.length === 1 ? "judge" : "judges"}
+                            <span aria-hidden="true" className="ml-3">⌄</span>
+                          </span>
+                        </summary>
+                        <p className="mt-2 text-sm text-muted-foreground">
+                          {team.scoredJudges.length ? `Scored by: ${team.scoredJudges.join(", ")}` : "No judge has saved a score for this team yet."}
+                        </p>
+                      </details>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+        </section>
 
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
           <Panel
