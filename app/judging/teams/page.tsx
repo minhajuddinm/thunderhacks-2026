@@ -3,6 +3,7 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 import { getSupabaseServerClient } from "@/lib/supabase/server"
 import { readJudge, type TeamRow } from "@/lib/judging"
+import { PRESENTATION_MINUTES_PER_TEAM } from "@/lib/judging-roster"
 import { campusLabel } from "@/lib/registration"
 import { Empty } from "@/components/dashboard/ui"
 import { JudgingHeader, Pill, Progress } from "@/components/judging/judging-chrome"
@@ -41,8 +42,8 @@ export default async function JudgingTeamsPage() {
           {me?.judge_name ? `${me.judge_name.split(" ")[0]}, here are the teams` : "Teams"}
         </h1>
         <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
-          Open a team when they present. Score the main track first, then add any other track
-          they entered.
+          Each team has one {PRESENTATION_MINUTES_PER_TEAM}-minute presentation slot for all
+          of its projects and tracks. Open the team when they present.
         </p>
         <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
           Teams choose which tracks to enter. No track is mandatory. Each track has its own

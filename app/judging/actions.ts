@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { getSupabaseServerClient } from "@/lib/supabase/server"
-import { clearJudge, readJudge, readScores, writeJudge, type Criterion } from "@/lib/judging"
+import { clearJudge, readJudge, readScores, writeJudge, type Criterion, type TeamRow } from "@/lib/judging"
 
 export type JudgeState = { error?: string } | null
 
@@ -40,6 +40,16 @@ export async function saveScoreAction(formData: FormData) {
   if (!judge) redirect("/judging")
   const back = `/judging/teams/${teamId}`
 
+  // Recheck the roster on submit as well as on page load. A form opened
+  // before the roster changed must not save a score for an excluded team.
+  const supabase = await getSupabaseServerClient()
+  const { data: teamRows, error: teamError } = await supabase.rpc("judging_teams", {
+    p_judge_id: judge.id,
+    p_code: judge.code,
+  })
+  const team = ((teamRows ?? []) as unknown as TeamRow[]).find((row) => row.team_id === teamId)
+  if (teamError || !team) redirect("/judging/teams")
+
   let scores: Record<string, number>
   try {
     const criteria = JSON.parse(String(formData.get("criteria") ?? "[]")) as Criterion[]
@@ -53,7 +63,6 @@ export async function saveScoreAction(formData: FormData) {
   const mvp = String(formData.get("mvp_ok") ?? "")
   if (mvp === "yes" || mvp === "no") scores.mvp_ok = mvp === "yes" ? 1 : 0
 
-  const supabase = await getSupabaseServerClient()
   const { error } = await supabase.rpc("judging_save", {
     p_judge_id: judge.id,
     p_code: judge.code,

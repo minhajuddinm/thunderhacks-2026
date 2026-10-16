@@ -3,6 +3,7 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 import { getSupabaseServerClient } from "@/lib/supabase/server"
 import { readJudge, type SavedScore, type Stream, type TeamRow } from "@/lib/judging"
+import { PRESENTATION_MINUTES_PER_TEAM } from "@/lib/judging-roster"
 import { campusLabel } from "@/lib/registration"
 import { inputClass } from "@/components/auth/auth-shell"
 import { PrimaryButton } from "@/components/dashboard/ui"
@@ -174,6 +175,7 @@ export default async function JudgeTeamPage({ params, searchParams }: Params) {
           {campusLabel(team.campus)} · {team.members ?? "No members"}
         </p>
         <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+          This team has one {PRESENTATION_MINUTES_PER_TEAM}-minute slot for all of its projects.
           Teams choose which tracks to enter. No track is mandatory. Each track has its own
           rubric and judges, and tracks are ranked separately, so point totals differ between
           tracks.

@@ -5,6 +5,8 @@ import { getSupabaseServerClient } from "@/lib/supabase/server"
 import { inputClass } from "@/components/auth/auth-shell"
 import { Empty, Panel, PrimaryButton, QuietButton } from "@/components/dashboard/ui"
 import type { Criterion } from "@/lib/judging"
+import { campusLabel } from "@/lib/registration"
+import { PRESENTATION_MINUTES_PER_TEAM, type AdminJudgingTeam } from "@/lib/judging-roster"
 import {
   addJudgeAction,
   deleteJudgeAction,
@@ -14,6 +16,7 @@ import {
   regenerateJudgeCodeAction,
   setJudgeActiveAction,
   setJudgingOpenAction,
+  setTeamJudgingAction,
   updateScoreAction,
 } from "./actions"
 
@@ -70,14 +73,17 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
   const { data: isAdmin } = await supabase.rpc("is_admin")
   if (isAdmin !== true) redirect("/dashboard")
 
-  const [{ data: scoreRows }, { data: judgeRows }, { data: settingRows }] = await Promise.all([
+  const [{ data: scoreRows }, { data: judgeRows }, { data: settingRows }, { data: rosterRows, error: rosterError }] = await Promise.all([
     supabase.rpc("admin_judging_overview"),
     supabase.rpc("admin_judging_judges"),
     supabase.rpc("admin_judging_code"),
+    supabase.rpc("admin_judging_teams"),
   ])
 
   const scores = (scoreRows ?? []) as unknown as Score[]
   const judges = (judgeRows ?? []) as unknown as Judge[]
+  const roster = (rosterRows ?? []) as unknown as AdminJudgingTeam[]
+  const selectedTeamCount = roster.filter((team) => team.judging_enabled).length
   const settings = (Array.isArray(settingRows) ? settingRows[0] : settingRows) as
     | { access_code: string; is_open: boolean }
     | null
@@ -215,6 +221,45 @@ export default async function AdminJudgingPage({ searchParams }: Search) {
             </form>
           </Panel>
         </div>
+
+        <section className="mt-10" aria-labelledby="judging-teams-title">
+          <h2 id="judging-teams-title" className="th-display text-xl text-foreground sm:text-2xl">
+            Teams for judging ({selectedTeamCount})
+          </h2>
+          <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-muted-foreground">
+            Add registered teams when their submissions are confirmed. Only added teams appear
+            for judges. Each team gets one {PRESENTATION_MINUTES_PER_TEAM}-minute slot for all
+            its projects. Removing a team here keeps its registration, members and saved scores.
+          </p>
+          {rosterError ? (
+            <p role="alert" className="mt-4 text-[15px] text-muted-foreground">
+              Team selection could not be loaded. Try again before changing the roster.
+            </p>
+          ) : roster.length === 0 ? (
+            <div className="mt-4"><Empty>No registered teams yet.</Empty></div>
+          ) : (
+            <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {roster.map((team) => (
+                <li key={team.team_id} className="flex flex-col justify-between gap-4 border border-[var(--rule)] bg-[var(--raised)] p-5">
+                  <div>
+                    <h3 className="th-display-tight text-[17px] text-foreground">{team.team_name}</h3>
+                    <p className="mt-1 text-sm text-[var(--bolt)]">
+                      {team.judging_enabled ? "In judging" : "Not in judging"} · {campusLabel(team.campus)}
+                    </p>
+                    <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+                      {team.members ?? "No members"}
+                    </p>
+                  </div>
+                  <form action={setTeamJudgingAction}>
+                    <input type="hidden" name="team_id" value={team.team_id} />
+                    <input type="hidden" name="enabled" value={team.judging_enabled ? "false" : "true"} />
+                    <QuietButton>{team.judging_enabled ? "Remove from judging" : "Add to judging"}</QuietButton>
+                  </form>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
 
         <section className="mt-10">
           <h2 className="th-display text-xl text-foreground sm:text-2xl">Standings</h2>

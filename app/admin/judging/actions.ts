@@ -13,6 +13,27 @@ async function run(fn: string, args: Record<string, unknown>, ok: string) {
   redirect(`/admin/judging?ok=${encodeURIComponent(ok)}`)
 }
 
+export async function setTeamJudgingAction(formData: FormData) {
+  const supabase = await getSupabaseServerClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect("/login")
+  const { data: isAdmin } = await supabase.rpc("is_admin")
+  if (isAdmin !== true) redirect("/dashboard")
+
+  const enabled = String(formData.get("enabled"))
+  if (enabled !== "true" && enabled !== "false") {
+    redirect("/admin/judging?error=Choose%20whether%20the%20team%20can%20be%20judged.")
+  }
+  const { error } = await supabase.rpc("admin_set_judging_team", {
+    p_team_id: String(formData.get("team_id") ?? ""),
+    p_enabled: enabled === "true",
+  })
+  if (error) redirect(`/admin/judging?error=${encodeURIComponent(error.message)}`)
+  revalidatePath("/admin/judging")
+  revalidatePath("/judging/teams", "layout")
+  redirect(`/admin/judging?ok=${encodeURIComponent(enabled === "true" ? "Team added to judging." : "Team removed from judging. Registration and saved scores are unchanged.")}`)
+}
+
 export async function updateScoreAction(formData: FormData) {
   let scores: Record<string, number>
   try {
